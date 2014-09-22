@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)RiplGameMain.h" />
@@ -12,23 +12,11 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Common\DeviceResources.h">
       <Filter>Common</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Content\Sample3DSceneRenderer.h">
+      <Filter>Content</Filter>
+    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Content\SampleFpsTextRenderer.h">
       <Filter>Content</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Content\SceneRenderer.h">
-      <Filter>Content</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)BoundaryUnit.h">
-      <Filter>Content\Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Hero.h">
-      <Filter>Content\Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)WaterPlane.h">
-      <Filter>Content\Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)LandPlane.h">
-      <Filter>Content\Objects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -37,14 +25,11 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Common\DeviceResources.cpp">
       <Filter>Common</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Content\Sample3DSceneRenderer.cpp">
+      <Filter>Content</Filter>
+    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Content\SampleFpsTextRenderer.cpp">
       <Filter>Content</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Content\SceneRenderer.cpp">
-      <Filter>Content</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)WaterPlane.cpp">
-      <Filter>Content\Objects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -62,11 +47,5 @@
     <Filter Include="Content">
       <UniqueIdentifier>{d8802389-5e1a-452f-99d2-d768c524892f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Content\Objects">
-      <UniqueIdentifier>{0fe50135-294c-4f5a-9256-e43bfc55d305}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="$(MSBuildThisFileDirectory)ClassDiagram.cd" />
   </ItemGroup>
 </Project>
