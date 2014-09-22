@@ -8,6 +8,7 @@ using namespace Windows::System::Threading;
 using namespace Concurrency;
 
 // Loads and initializes application assets when the application is loaded.
+// Again this is using initialiser list syntax to initialise each member separately
 RiplGameMain::RiplGameMain(const std::shared_ptr<DX::DeviceResources>& deviceResources) :
 	m_deviceResources(deviceResources), m_pointerLocationX(0.0f)
 {
@@ -27,6 +28,7 @@ RiplGameMain::RiplGameMain(const std::shared_ptr<DX::DeviceResources>& deviceRes
 	*/
 }
 
+// The tilde (~) means this is the DESTRUCTOR, or denitialiser
 RiplGameMain::~RiplGameMain()
 {
 	// Deregister device notification
@@ -40,6 +42,7 @@ void RiplGameMain::CreateWindowSizeDependentResources()
 	m_sceneRenderer->CreateWindowSizeDependentResources();
 }
 
+// This just starts the render loop (the infinite loop that happens for each frame)
 void RiplGameMain::StartRenderLoop()
 {
 	// If the animation render loop is already running then do not start another thread.
@@ -49,6 +52,8 @@ void RiplGameMain::StartRenderLoop()
 	}
 
 	// Create a task that will be run on a background thread.
+	// NOTE: The ^ is a microsoft specific implementation of pointers in CLI (google C++ CLI for info)
+	// ^ is the same as *, and % is the same as & for these types of pointers
 	auto workItemHandler = ref new WorkItemHandler([this](IAsyncAction ^ action)
 	{
 		// Calculate the updated frame and render once per vertical blanking interval.
@@ -75,9 +80,12 @@ void RiplGameMain::StopRenderLoop()
 // Updates the application state once per frame.
 void RiplGameMain::Update() 
 {
+	// Take care of mouse interaction or touching, etc.
 	ProcessInput();
 
 	// Update scene objects.
+	// The timer just calculates how much time has passed since the last frame
+	// Tick basically says "execute this code when the next frame should happen"
 	m_timer.Tick([&]()
 	{
 		// TODO: Replace this with your app's content update functions.
@@ -86,7 +94,7 @@ void RiplGameMain::Update()
 	});
 }
 
-// Process all input from the user before updating game state
+// Process all input from the user before updating game state (like mouse clicks)
 void RiplGameMain::ProcessInput()
 {
 	// TODO: Add per frame input handling here.
@@ -98,11 +106,13 @@ void RiplGameMain::ProcessInput()
 bool RiplGameMain::Render() 
 {
 	// Don't try to render anything before the first Update.
+	// Or there will nothing to render, silly
 	if (m_timer.GetFrameCount() == 0)
 	{
 		return false;
 	}
 
+	// Grab the current settings of the graphics device
 	auto context = m_deviceResources->GetD3DDeviceContext();
 
 	// Reset the viewport to target the whole screen.
@@ -110,10 +120,12 @@ bool RiplGameMain::Render()
 	context->RSSetViewports(1, &viewport);
 
 	// Reset render targets to the screen.
+	// Render targets are just things you send pictures to, like a screen!
 	ID3D11RenderTargetView *const targets[1] = { m_deviceResources->GetBackBufferRenderTargetView() };
 	context->OMSetRenderTargets(1, targets, m_deviceResources->GetDepthStencilView());
 
 	// Clear the back buffer and depth stencil view.
+	// These things have to do with the queue of frames waiting to be displayed on the screen
 	context->ClearRenderTargetView(m_deviceResources->GetBackBufferRenderTargetView(), DirectX::Colors::CornflowerBlue);
 	context->ClearDepthStencilView(m_deviceResources->GetDepthStencilView(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
@@ -128,6 +140,8 @@ bool RiplGameMain::Render()
 // Notifies renderers that device resources need to be released.
 void RiplGameMain::OnDeviceLost()
 {
+	// Basically get rid of, or reset, everything in case the system loses power or something bad happens
+	// Or maybe the app just quits
 	m_sceneRenderer->ReleaseDeviceDependentResources();
 	m_fpsTextRenderer->ReleaseDeviceDependentResources();
 }

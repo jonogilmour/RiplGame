@@ -1,3 +1,6 @@
+// This measly little pixel shader just gets colour data from the vertex shader and uses that to make the big mosaic of pixels to put on your screen!
+
+
 // Per-pixel color data passed through the pixel shader.
 struct PixelShaderInput
 {
