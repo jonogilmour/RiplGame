@@ -75,15 +75,15 @@ void Sample3DSceneRenderer::Update(DX::StepTimer const& timer)
 		double totalRotation = timer.GetTotalSeconds() * radiansPerSecond;
 		float radians = static_cast<float>(fmod(totalRotation, XM_2PI));
 
-		UpdatePlane();
+		Rotate(radians);
 	}
 }
 
 // Rotate the 3D cube model a set amount of radians.
-void Sample3DSceneRenderer::UpdatePlane()
+void Sample3DSceneRenderer::Rotate(float radians)
 {
 	// Prepare to pass the updated model matrix to the shader
-	XMStoreFloat4x4(&m_constantBufferData.model, XMMatrixTranspose(XMMatrixIdentity()));
+	XMStoreFloat4x4(&m_constantBufferData.model, XMMatrixTranspose(XMMatrixRotationY(radians)));
 }
 
 void Sample3DSceneRenderer::StartTracking()
@@ -97,6 +97,7 @@ void Sample3DSceneRenderer::TrackingUpdate(float positionX)
 	if (m_tracking)
 	{
 		float radians = XM_2PI * 2.0f * positionX / m_deviceResources->GetOutputSize().Width;
+		Rotate(radians);
 	}
 }
 
