@@ -23,7 +23,7 @@ namespace RiplGame
 
 
 	private:
-		void Rotate(float radians);
+		void UpdatePlane();
 
 	private:
 		// Cached pointer to device resources.
