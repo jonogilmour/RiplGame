@@ -14,6 +14,10 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)WaterPlane.cpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)BoundaryUnit.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Hero.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)LandPlane.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)RiplGameMain.h" />
     <ClCompile Include="$(MSBuildThisFileDirectory)RiplGameMain.cpp" />
     <ClInclude Include="$(MSBuildThisFileDirectory)pch.h" />
@@ -25,9 +29,10 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Common\DirectXHelper.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Common\StepTimer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Content\SampleFpsTextRenderer.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Content\Sample3DSceneRenderer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Content\SceneRenderer.h" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Content\SampleFpsTextRenderer.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Content\Sample3DSceneRenderer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Content\SceneRenderer.cpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)WaterPlane.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="$(MSBuildThisFileDirectory)Content\SamplePixelShader.hlsl">
@@ -39,5 +44,8 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectCapability Include="SourceItemsFromImports" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)ClassDiagram.cd" />
   </ItemGroup>
 </Project>
