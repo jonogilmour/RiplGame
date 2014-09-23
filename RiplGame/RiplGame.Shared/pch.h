@@ -15,3 +15,9 @@
 #include <collection.h>
 #include <ppltasks.h>
 #include "App.xaml.h"
+#include "Common\DirectXHelper.h"
+#include "Common\DeviceResources.h"
+#include "Common\StepTimer.h"
+#include "Content\Structures\ShaderStructures.h"
+#include "Content\Structures\VertexStructures.h"
+#include "Content\Structures\Light.h"

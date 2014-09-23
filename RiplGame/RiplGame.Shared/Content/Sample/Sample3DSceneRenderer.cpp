@@ -2,7 +2,7 @@
 #include "pch.h"
 #include "Sample3DSceneRenderer.h"
 
-#include "..\Common\DirectXHelper.h"
+#include "Common\DirectXHelper.h"
 
 // Namespaces just spare us from having to write "RiplGame." before everything
 using namespace RiplGame;
@@ -76,6 +76,9 @@ void Sample3DSceneRenderer::CreateWindowSizeDependentResources()
 
 	// This stores the 3 vectors above into a view matrix
 	XMStoreFloat4x4(&m_constantBufferData.view, XMMatrixTranspose(XMMatrixLookAtRH(eye, at, up)));
+
+	//By the end of this method, we have the view and proj matrices saved into the constant buffer
+	//Just need the model/world matrix and we are good to go (see Rotate() for this)
 }
 
 // Called once per frame, rotates the cube and calculates the model and view matrices.
@@ -194,6 +197,12 @@ void Sample3DSceneRenderer::Render()
 		);
 
 	// Does the same to the constant buffer
+	// BIG NOTE!!!!:::::: The first number in this function specifies which register to stick this constant buffer into
+	// The '0' here means stick it in register b0 on the GPU. You'll notice in the vertex shader, the MVP struct is saved
+	// in register(b0), meaning that if you want to make another constant buffer and save it to register b1, you should
+	// set the first argument in VSSetConstantBuffers to 1.
+	// Try it out, change the 0 below to a 1, then try running the program. Nothing will come up because the MVP matrices have not been saved
+	// Then, try changing the register value in the vertex shader to b1, then run. It should work now, because you've mapped the buffers correctly
 	context->VSSetConstantBuffers(
 		0,
 		1,
@@ -273,7 +282,8 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources()
 				&m_pixelShader
 				)
 			);
-		// Make a constant buffer, filled with the information about the model, view, and projection matrices
+		// Make a constant buffer, filled with the information about the model, view, and projection matrices stored in constantBufferDesc
+		// This constant buffer is then saved in m_constantBuffer
 		CD3D11_BUFFER_DESC constantBufferDesc(sizeof(ModelViewProjectionConstantBuffer) , D3D11_BIND_CONSTANT_BUFFER);
 		DX::ThrowIfFailed(
 			m_deviceResources->GetD3DDevice()->CreateBuffer(

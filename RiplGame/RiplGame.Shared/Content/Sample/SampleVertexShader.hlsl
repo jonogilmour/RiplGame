@@ -58,7 +58,20 @@ The basic process is:
 */
 
 
+float3 ambientColour = float3(1.0f, 1.0f, 1.0f);
+float ambientIntensity = 0.4;
+
 // A constant buffer that stores the three basic column-major matrices for composing geometry.
+// The "register(b0)" part sets the register to expect constant buffer data to be in. You fill
+// this using the
+/*
+	VSSetConstantBuffers(
+		0,
+		1,
+		m_constantBuffer.GetAddressOf()
+		);
+*/
+// function. The first parameter specifies which register to save to.
 cbuffer ModelViewProjectionConstantBuffer : register(b0)
 {
 	matrix model;

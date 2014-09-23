@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)RiplGameMain.h" />
@@ -12,12 +12,23 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Common\DeviceResources.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Content\Sample3DSceneRenderer.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)Content\Sample\Sample3DSceneRenderer.h">
+      <Filter>Content\SampleContent</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Content\Sample\SampleFpsTextRenderer.h">
+      <Filter>Content\SampleContent</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Content\SceneRenderer.h">
       <Filter>Content</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Content\SampleFpsTextRenderer.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)Content\Structures\VertexStructures.h">
       <Filter>Content</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Content\Structures\Light.h">
+      <Filter>Content</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Content\Structures\ShaderStructures.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Content\Objects\World\Landscape.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)RiplGameMain.cpp" />
@@ -25,19 +36,29 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Common\DeviceResources.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Content\Sample3DSceneRenderer.cpp">
+    <ClCompile Include="$(MSBuildThisFileDirectory)Content\Sample\Sample3DSceneRenderer.cpp">
+      <Filter>Content\SampleContent</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Content\Sample\SampleFpsTextRenderer.cpp">
+      <Filter>Content\SampleContent</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Content\SceneRenderer.cpp">
       <Filter>Content</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Content\SampleFpsTextRenderer.cpp">
-      <Filter>Content</Filter>
-    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Content\Objects\World\Landscape.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="$(MSBuildThisFileDirectory)Content\SamplePixelShader.hlsl">
-      <Filter>Content</Filter>
+    <FxCompile Include="$(MSBuildThisFileDirectory)Content\Sample\SamplePixelShader.hlsl">
+      <Filter>Content\SampleContent</Filter>
     </FxCompile>
-    <FxCompile Include="$(MSBuildThisFileDirectory)Content\SampleVertexShader.hlsl">
-      <Filter>Content</Filter>
+    <FxCompile Include="$(MSBuildThisFileDirectory)Content\Sample\SampleVertexShader.hlsl">
+      <Filter>Content\SampleContent</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)Content\Shaders\Pixel\PixelShader.hlsl">
+      <Filter>Content\Shaders\Pixel</Filter>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)Content\Shaders\Vertex\VertexShader.hlsl">
+      <Filter>Content\Shaders\Vertex</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
@@ -46,6 +67,18 @@
     </Filter>
     <Filter Include="Content">
       <UniqueIdentifier>{d8802389-5e1a-452f-99d2-d768c524892f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Content\SampleContent">
+      <UniqueIdentifier>{a93389de-94a3-4d0d-8e8d-d398d2c1a840}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Content\Shaders">
+      <UniqueIdentifier>{5b19fc6c-2f97-41e1-bb8b-9d49d3825902}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Content\Shaders\Pixel">
+      <UniqueIdentifier>{45c3272d-5eef-4469-baf9-7202d3afc71e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Content\Shaders\Vertex">
+      <UniqueIdentifier>{336120ba-d843-44c4-9b73-d93122d4b155}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
