@@ -10,14 +10,15 @@ using namespace Windows::Foundation;
 // NOTE: This uses initialiser list syntax, essentially each part is initialised using the initialiser for that type.
 // DeviceResources uses a couple of initialisers to complete its initialisation, hence the braces.
 Landscape::Landscape(unsigned short sideLengthZ, unsigned short sideLengthX) {
-	fillVertices(sideLengthZ, sideLengthX, this->vertices, XMFLOAT3(1.0f,1.0f,1.0f));
-	fillIndices(sideLengthZ, sideLengthX, this->indices);
+	fillVertices(sideLengthZ, sideLengthX, XMFLOAT3(1.0f,1.0f,1.0f));
+	fillIndices(sideLengthZ, sideLengthX);
 }
 
 // Fills a vertex array for a rectangular landscape
-void Landscape::fillVertices(unsigned short sideLengthZ, unsigned short sideLengthX, std::vector <VertexPositionNormalColour> vertices, XMFLOAT3 colour) {
+void Landscape::fillVertices(unsigned short sideLengthZ, unsigned short sideLengthX, XMFLOAT3 colour) {
 	float zPos;
 	float xPos;
+	std::vector<VertexPositionNormalColour> vertexVector;
 
 	for (unsigned short z = 0; z < sideLengthZ; z++) {
 		zPos = z - float(sideLengthZ)/2;
@@ -26,22 +27,25 @@ void Landscape::fillVertices(unsigned short sideLengthZ, unsigned short sideLeng
 			XMFLOAT3 vPosition = XMFLOAT3(xPos, 0.0f, zPos);
 			XMFLOAT3 vNormal = XMFLOAT3(0.0f, 0.0f, 0.0f);
 			XMFLOAT3 vColour = colour;
-			vertices.push_back(VertexPositionNormalColour(vPosition, vNormal, vColour));
+			vertexVector.push_back(VertexPositionNormalColour(vPosition, vNormal, vColour));
 		}
 	}
+	//Copy the contents of the vertex vector to array form
+	vertexCount = vertexVector.size;
+	std::copy(vertexVector.begin(), vertexVector.end(), vertices);
 }
 
 // Fills an index array for a rectangular landscape
-void Landscape::fillIndices(unsigned short sideLengthZ, unsigned short sideLengthX, unsigned short* indices) {
+void Landscape::fillIndices(unsigned short sideLengthZ, unsigned short sideLengthX) {
 	sideLengthZ--; 
 	sideLengthX--;
 
-	unsigned int arrayLength = sideLengthZ * sideLengthX * 6;
-	indices = (unsigned short*)malloc(arrayLength *sizeof(unsigned short));
+	indexCount = sideLengthZ * sideLengthX * 6;
+	indices = (unsigned short*)malloc(indexCount *sizeof(unsigned short));
 
 	int x = 0;
 	int row;
-	for (unsigned short z = 0; z < arrayLength; z += 6) {
+	for (unsigned short z = 0; z < indexCount; z += 6) {
 		indices[z] = x;
 		indices[z + 1] = sideLengthX + x + 1;
 		indices[z + 2] = sideLengthX + x + 2;
@@ -52,4 +56,12 @@ void Landscape::fillIndices(unsigned short sideLengthZ, unsigned short sideLengt
 		row = (z / 6) / (sideLengthX + 1) + 1;
 		if (x + 1 - row * (sideLengthX + 1) == 0) x++;
 	}
+}
+
+uint32 Landscape::getIndexCount() {
+	return indexCount;
+}
+
+uint32 Landscape::getVertexCount() {
+	return vertexCount;
 }

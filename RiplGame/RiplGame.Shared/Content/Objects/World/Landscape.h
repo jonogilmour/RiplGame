@@ -10,10 +10,12 @@ namespace RiplGame
 	{
 	public:
 		Landscape(unsigned short sideLengthZ, unsigned short sideLengthX);
+		uint32 getIndexCount();
+		uint32 getVertexCount();
+		VertexPositionNormalColour* vertices;
+		unsigned short* indices;
 
 	private:
-		std::vector<VertexPositionNormalColour> vertices;
-		unsigned short* indices;
 		XMFLOAT4 defaultColour;
 
 		// Direct3D resources for cube geometry.
@@ -25,9 +27,10 @@ namespace RiplGame
 		// System resources for cube geometry.
 		ModelViewProjectionConstantBuffer	constantBufferData;
 		uint32	indexCount;
+		uint32	vertexCount;
 
-		void fillVertices(unsigned short sideLengthZ, unsigned short sideLengthX, std::vector <VertexPositionNormalColour> vertices, XMFLOAT3 colour);
-		void fillIndices(unsigned short sideLengthZ, unsigned short sideLengthX, unsigned short* indices);
+		void fillVertices(unsigned short sideLengthZ, unsigned short sideLengthX, XMFLOAT3 colour);
+		void fillIndices(unsigned short sideLengthZ, unsigned short sideLengthX);
 	};
 }
 

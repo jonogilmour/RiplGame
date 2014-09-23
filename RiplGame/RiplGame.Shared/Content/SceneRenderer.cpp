@@ -1,6 +1,7 @@
 // pch.h is a shortcut for importing everything that's needed by any of the files in this project. See pch.h for details
 #include "pch.h"
 #include "SceneRenderer.h"
+#include "Content\Objects\World\Landscape.h"
 
 // Namespaces just spare us from having to write "RiplGame." before everything
 using namespace RiplGame;
@@ -200,24 +201,20 @@ void SceneRenderer::CreateDeviceDependentResources()
 	// Notice how we are &&ing the two tasks, which means we wait for both to completely finish, then we do...
 	auto createLandscapeTask = (createPSTask && createVSTask).then([this]() {
 
+		Landscape landscape(1, 1);
+
 		// Load mesh vertices. Each vertex has a position and a color.
 		// Here the "mesh", or the wireframe, of the vertices is created.
 		// This is where the shape's position and colour is specified.
 		// The first in each pair of vectors (or XMFLOAT3s) is the position in X Y Z
 		// The second is the colour in RGB (1.0 meaning 255, 0.0 meaning 0)
-		static const VertexPositionNormalColour cubeVertices[] =
-		{
-			{ XMFLOAT3(-1.0f, 0.0f, 1.0f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(0.0f, 1.0f, 0.0f) },
-			{ XMFLOAT3(-1.0f, 0.0f, -1.0f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(1.0f, 0.0f, 0.0f) },
-			{ XMFLOAT3(1.0f, 0.0f, -1.0f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(0.0f, 1.0f, 0.0f) },
-			{ XMFLOAT3(1.0f, 0.0f, 1.0f), XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(0.0f, 0.0f, 1.0f) },
-		};
+		const VertexPositionNormalColour* vertices = &(landscape.vertices[0]);
 
 		// This creates the data (vertices) to put into the vertex buffer, and zeroes it
 		D3D11_SUBRESOURCE_DATA vertexBufferData = { 0 };
 
 		// pSysMem is a pointer to the data to put in
-		vertexBufferData.pSysMem = cubeVertices;
+		vertexBufferData.pSysMem = vertices;
 		// This is only used for textures, so make it 0 as we arent using textures here
 		vertexBufferData.SysMemPitch = 0;
 		// Ditto for this
@@ -225,7 +222,7 @@ void SceneRenderer::CreateDeviceDependentResources()
 
 		// Here we actually create the vertex buffer. It's length is the size of the vertex array
 		// Note this isn't a function, it's an initialiser for a variable called vertexBufferDesc
-		CD3D11_BUFFER_DESC vertexBufferDesc(sizeof(cubeVertices), D3D11_BIND_VERTEX_BUFFER);
+		CD3D11_BUFFER_DESC vertexBufferDesc(landscape.getVertexCount(), D3D11_BIND_VERTEX_BUFFER);
 
 		// And here we send it to the device like we did with the shaders
 		DX::ThrowIfFailed(
@@ -241,25 +238,22 @@ void SceneRenderer::CreateDeviceDependentResources()
 		// For example: 0,2,1 means that the vertices with indexes
 		// 0, 2 and 1 from the vertex buffer compose the 
 		// first triangle of this mesh.
-		static const unsigned short cubeIndices[] =
-		{
-			0, 1, 2, 0, 2, 3, // -x
-		};
+		static const unsigned short* indices = landscape.indices;
 
 		// Store the length of the index array
-		m_indexCount = ARRAYSIZE(cubeIndices);
+		m_indexCount = landscape.getIndexCount();
 
 		// Do the same thing as we did for the vertex buffer to set the index buffer
 		// First zero it
 		D3D11_SUBRESOURCE_DATA indexBufferData = { 0 };
 
 		// then tell it where the data is
-		indexBufferData.pSysMem = cubeIndices;
+		indexBufferData.pSysMem = indices;
 		indexBufferData.SysMemPitch = 0;
 		indexBufferData.SysMemSlicePitch = 0;
 
 		// Now push the index buffer to the graphics card
-		CD3D11_BUFFER_DESC indexBufferDesc(sizeof(cubeIndices), D3D11_BIND_INDEX_BUFFER);
+		CD3D11_BUFFER_DESC indexBufferDesc(m_indexCount, D3D11_BIND_INDEX_BUFFER);
 		DX::ThrowIfFailed(
 			m_deviceResources->GetD3DDevice()->CreateBuffer(
 			&indexBufferDesc,
