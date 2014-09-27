@@ -15,12 +15,10 @@ namespace Ripl {
 
 	void SceneRenderer::CreateDeviceResources()
 	{
-		OutputDebugString(L"Here0\n");
 		Direct3DBase::CreateDeviceResources();
 
 		auto loadVSTask = DX::ReadDataAsync("VertexShader.cso");
 		auto loadPSTask = DX::ReadDataAsync("PixelShader.cso");
-		OutputDebugString(L"RRIGHT HEREOP0.1\n");
 		auto createVSTask = loadVSTask.then([this](Platform::Array<byte>^ fileData) {
 			DX::ThrowIfFailed(
 				m_d3dDevice->CreateVertexShader(
@@ -30,14 +28,12 @@ namespace Ripl {
 					&m_vertexShader
 					)
 				);
-			OutputDebugString(L"HereErreeOP0.1\n");
 			const D3D11_INPUT_ELEMENT_DESC vertexDesc[] = 
 			{
 				{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0,  D3D11_INPUT_PER_VERTEX_DATA, 0 },
 				{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12,  D3D11_INPUT_PER_VERTEX_DATA, 0 },
 				{ "COLOR",    0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 			};
-			OutputDebugString(L"Here0.1\n");
 			DX::ThrowIfFailed(
 				m_d3dDevice->CreateInputLayout(
 					vertexDesc,
@@ -67,11 +63,9 @@ namespace Ripl {
 					&m_constantBuffer
 					)
 				);
-			OutputDebugString(L"Here0.2\n");
 		});
 
 		auto createLandscapeTask = (createPSTask && createVSTask).then([this] () {
-			OutputDebugString(L"Here1\n");
 			Landscape landscape(6, 2);
 
 			/*VertexPositionNormalColour vs[] = {
@@ -97,14 +91,11 @@ namespace Ripl {
 			//unsigned short is[] = { 0,2,3,0,3,1 };
 
 			m_indexCount = landscape.getIndexCount();
-			OutputDebugString(L"Here2\n");
 			D3D11_SUBRESOURCE_DATA indexBufferData = {0};
 			indexBufferData.pSysMem = landscape.indices;
 			indexBufferData.SysMemPitch = 0;
 			indexBufferData.SysMemSlicePitch = 0;
-			OutputDebugString(L"Here2.1\n");
 			CD3D11_BUFFER_DESC indexBufferDesc(m_indexCount*sizeof(unsigned short), D3D11_BIND_INDEX_BUFFER);
-			OutputDebugString(L"Here2.1\n");
 			DX::ThrowIfFailed(
 				m_d3dDevice->CreateBuffer(
 					&indexBufferDesc,
@@ -112,7 +103,6 @@ namespace Ripl {
 					&m_indexBuffer
 					)
 				);
-			OutputDebugString(L"Here3\n");
 		});
 
 		createLandscapeTask.then([this] () {
