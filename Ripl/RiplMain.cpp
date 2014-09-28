@@ -30,6 +30,7 @@ void RiplMain::Initialize(CoreApplicationView^ applicationView)
         ref new EventHandler<Platform::Object^>(this, &RiplMain::OnResuming);
 
 	m_renderer = ref new SceneRenderer();
+	m_controller = ref new MoveLookController();
 }
 
 void RiplMain::SetWindow(CoreWindow^ window)
@@ -52,6 +53,7 @@ void RiplMain::SetWindow(CoreWindow^ window)
 		ref new TypedEventHandler<CoreWindow^, PointerEventArgs^>(this, &RiplMain::OnPointerMoved);
 
 	m_renderer->Initialize(CoreWindow::GetForCurrentThread());
+	m_controller->Initialize(CoreWindow::GetForCurrentThread());
 }
 
 void RiplMain::Load(Platform::String^ entryPoint)

@@ -27,6 +27,8 @@ namespace Ripl {
 		Microsoft::WRL::ComPtr<ID3D11PixelShader> m_pixelShader;
 		Microsoft::WRL::ComPtr<ID3D11Buffer> m_constantBuffer;
 
+		MoveLookController^ m_controller;
+
 		uint32 m_indexCount;
 		ModelViewProjectionConstantBuffer m_constantBufferData;
 	};

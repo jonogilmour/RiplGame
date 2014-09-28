@@ -17,6 +17,10 @@ namespace Ripl {
 	{
 		Direct3DBase::CreateDeviceResources();
 
+		// Setup the keyboard/mouse controller
+		m_controller = ref new MoveLookController();
+		m_controller->Initialize(CoreWindow::GetForCurrentThread());
+
 		auto loadVSTask = DX::ReadDataAsync("VertexShader.cso");
 		auto loadPSTask = DX::ReadDataAsync("PixelShader.cso");
 		auto createVSTask = loadVSTask.then([this](Platform::Array<byte>^ fileData) {
@@ -66,14 +70,7 @@ namespace Ripl {
 		});
 
 		auto createLandscapeTask = (createPSTask && createVSTask).then([this] () {
-			Landscape landscape(6, 2);
-
-			/*VertexPositionNormalColour vs[] = {
-				VertexPositionNormalColour(XMFLOAT3(-0.5f,0,-0.5f), XMFLOAT3(0,1,0),XMFLOAT3(1,0,0)),
-				VertexPositionNormalColour(XMFLOAT3(0.5f,0,-0.5f), XMFLOAT3(0,1,0),XMFLOAT3(0,1,0)),
-				VertexPositionNormalColour(XMFLOAT3(-0.5f,0,0.5f), XMFLOAT3(0,1,0),XMFLOAT3(0,0,1)),
-				VertexPositionNormalColour(XMFLOAT3(0.5f,0,0.5f), XMFLOAT3(0,1,0),XMFLOAT3(1,1,1)),
-			};*/
+			Landscape landscape(5, 5);
 
 			D3D11_SUBRESOURCE_DATA vertexBufferData = {0};
 			vertexBufferData.pSysMem = &(landscape.vertices[0]);
@@ -87,8 +84,6 @@ namespace Ripl {
 					&m_vertexBuffer
 					)
 				);
-
-			//unsigned short is[] = { 0,2,3,0,3,1 };
 
 			m_indexCount = landscape.getIndexCount();
 			D3D11_SUBRESOURCE_DATA indexBufferData = {0};
@@ -140,14 +135,16 @@ namespace Ripl {
 
 	void SceneRenderer::Update(float timeTotal, float timeDelta)
 	{
-		(void) timeDelta; // Unused parameter.
+		// Update all controller events
+		m_controller->Update(CoreWindow::GetForCurrentThread(), timeDelta);
 
-		XMVECTOR eye = XMVectorSet(0.0f, 3.0, 3.0f, 0.0f);
-		XMVECTOR at = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
-		XMVECTOR up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+		XMVECTOR eye = XMLoadFloat3(&m_controller->get_Position());
+		XMVECTOR at = XMLoadFloat3(&m_controller->get_LookAt());
+		//XMVECTOR up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+		XMVECTOR up = XMLoadFloat3(&m_controller->get_UpAxis());
 
 		XMStoreFloat4x4(&m_constantBufferData.view, XMMatrixTranspose(XMMatrixLookAtLH(eye, at, up)));
-		XMStoreFloat4x4(&m_constantBufferData.model, XMMatrixTranspose(XMMatrixIdentity()));//RotationY(timeTotal * XM_PIDIV4)));
+		XMStoreFloat4x4(&m_constantBufferData.model, XMMatrixTranspose(XMMatrixIdentity()));
 	}
 
 	void SceneRenderer::Render()

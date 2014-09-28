@@ -27,7 +27,6 @@ void Landscape::fillVertices(unsigned short sideLengthZ, unsigned short sideLeng
 			XMFLOAT3 vNormal = XMFLOAT3(0.0f, 1.0f, 0.0f);
 			XMFLOAT3 vColour = colour;
 			vertices.push_back(VertexPositionNormalColour(vPosition, vNormal, vColour));
-
 		}
 	}
 	//Copy the contents of the vertex vector to array form

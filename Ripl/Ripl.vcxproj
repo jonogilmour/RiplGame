@@ -120,8 +120,8 @@
     <Image Include="Assets\SplashScreen.png" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="MoveLookController.h" />
     <ClInclude Include="Objects\Landscape.h" />
-    <ClInclude Include="odprint.h" />
     <ClInclude Include="RiplMain.h" />
     <ClInclude Include="SceneRenderer.h" />
     <ClInclude Include="DirectXHelper.h" />
@@ -132,8 +132,8 @@
     <ClInclude Include="Structures\VertexStructures.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="MoveLookController.cpp" />
     <ClCompile Include="Objects\Landscape.cpp" />
-    <ClCompile Include="odprint.cpp" />
     <ClCompile Include="RiplMain.cpp" />
     <ClCompile Include="SceneRenderer.cpp" />
     <ClCompile Include="Direct3DBase.cpp" />

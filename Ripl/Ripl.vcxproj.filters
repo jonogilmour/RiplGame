@@ -26,7 +26,7 @@
     <ClCompile Include="Objects\Landscape.cpp" />
     <ClCompile Include="SceneRenderer.cpp" />
     <ClCompile Include="RiplMain.cpp" />
-    <ClCompile Include="odprint.cpp" />
+    <ClCompile Include="MoveLookController.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectXHelper.h" />
@@ -38,7 +38,7 @@
     <ClInclude Include="Structures\ShaderStructures.h" />
     <ClInclude Include="SceneRenderer.h" />
     <ClInclude Include="RiplMain.h" />
-    <ClInclude Include="odprint.h" />
+    <ClInclude Include="MoveLookController.h" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest" />

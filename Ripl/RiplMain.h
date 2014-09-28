@@ -33,6 +33,7 @@ private:
 	SceneRenderer^ m_renderer;
 	bool m_windowClosed;
 	bool m_windowVisible;
+	MoveLookController^ m_controller;
 };
 
 ref class Direct3DApplicationSource sealed : Windows::ApplicationModel::Core::IFrameworkViewSource
