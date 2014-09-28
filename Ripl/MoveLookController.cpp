@@ -37,6 +37,7 @@ void MoveLookController::Initialize( _In_ CoreWindow^ window )
 
     //	need to init this as it is reset every frame
 	m_moveCommand = XMFLOAT3( 0.0f, 0.0f, 0.0f );
+	deltaTime = 0;
 
     SetOrientation( -(XM_PI/4.0f), 0 );				// look straight ahead when the app starts
 	SetPosition(XMFLOAT3(0, 3.0f, -3.0f));
@@ -107,7 +108,7 @@ void MoveLookController::OnPointerMoved(
 		pointerDelta = XMFLOAT2(position.x - m_lookLastPoint.x, position.y - m_lookLastPoint.y);		// how far did pointer move
 
         XMFLOAT2 rotationDelta;
-        rotationDelta = XMFLOAT2(pointerDelta.x * ROTATION_GAIN,pointerDelta.y * ROTATION_GAIN);	// scale for control sensitivity
+		rotationDelta = XMFLOAT2(pointerDelta.x * deltaTime * ROTATION_GAIN,pointerDelta.y * deltaTime * ROTATION_GAIN);	// scale for control sensitivity
         m_lookLastPoint = position;			 			// save for next time through
 
         // update our orientation based on the command
@@ -238,9 +239,10 @@ XMFLOAT3 computeUpAxis(XMFLOAT3 r, XMFLOAT3 l) {
 
 void MoveLookController::Update( CoreWindow ^window, float timeDelta)
 {
+	deltaTime = timeDelta;
 	XMFLOAT3 dir = computeDirection();
 	XMFLOAT3 r_axis = computeRAxis();
-	XMFLOAT3 up_axis = XMFLOAT3(0,1,0);//computeUpAxis(r_axis, dir);
+	XMFLOAT3 up_axis = computeUpAxis(r_axis, dir);
 
     // poll our state bits set by the keyboard input events
     if ( m_forward ) {
