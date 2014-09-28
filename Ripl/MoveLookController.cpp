@@ -1,9 +1,9 @@
 #include "pch.h"
 #include "MoveLookController.h"
 
-XMFLOAT3 norm(XMFLOAT3 in) {
-	float len = sqrt(in.x * in.y + in.y * in.y + in.z * in.z);
-	return XMFLOAT3(in.x/len, in.y/len, in.z/len);
+// Normalises an XMFLOAT3 like a vector
+void normalizeF3(XMFLOAT3* flt3) {
+	XMStoreFloat3(flt3, XMVector3Normalize(XMLoadFloat3(flt3)));
 }
 
 void MoveLookController::Initialize( _In_ CoreWindow^ window )
@@ -276,8 +276,8 @@ void MoveLookController::Update( CoreWindow ^window, float timeDelta)
 
     // make sure that 45  degree cases are not faster
 	XMFLOAT3 command = m_moveCommand;
-    if ( fabsf(command.x) > 0.1f || fabsf(command.z) > 0.1f || fabsf(command.y) > 0.1f )
-		command = norm(command);
+    if ( fabsf(command.x) > 0.1f || fabsf(command.z) > 0.1f || fabsf(command.y) > 0.1f ) 
+		normalizeF3(&command);
 
     // integrate
     m_position = XMFLOAT3(m_position.x + command.x, m_position.y + command.y, m_position.z + command.z);
