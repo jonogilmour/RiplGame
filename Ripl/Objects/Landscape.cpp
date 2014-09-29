@@ -10,7 +10,7 @@ using namespace Windows::Foundation;
 // NOTE: This uses initialiser list syntax, essentially each part is initialised using the initialiser for that type.
 // DeviceResources uses a couple of initialisers to complete its initialisation, hence the braces.
 Landscape::Landscape(unsigned short sideLengthZ, unsigned short sideLengthX) {
-	fillVertices(sideLengthZ, sideLengthX, XMFLOAT3(1.0f,1.0f,1.0f));
+	fillVertices(sideLengthZ, sideLengthX, XMFLOAT3(0.0f,0.0f,0.0f));
 	fillIndices(sideLengthZ, sideLengthX);
 }
 

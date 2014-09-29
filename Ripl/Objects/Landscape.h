@@ -26,7 +26,7 @@ namespace Ripl
 		Microsoft::WRL::ComPtr<ID3D11Buffer>		constantBuffer;
 
 		// System resources for cube geometry.
-		ModelViewProjectionConstantBuffer	constantBufferData;
+		ShaderCBuffer	constantBufferData;
 		uint32	indexCount;
 		uint32	vertexCount;
 

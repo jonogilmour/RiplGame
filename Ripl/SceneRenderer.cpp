@@ -59,7 +59,7 @@ namespace Ripl {
 					)
 				);
 
-			CD3D11_BUFFER_DESC constantBufferDesc(sizeof(ModelViewProjectionConstantBuffer), D3D11_BIND_CONSTANT_BUFFER);
+			CD3D11_BUFFER_DESC constantBufferDesc(sizeof(ShaderCBuffer), D3D11_BIND_CONSTANT_BUFFER);
 			DX::ThrowIfFailed(
 				m_d3dDevice->CreateBuffer(
 					&constantBufferDesc,
@@ -140,9 +140,10 @@ namespace Ripl {
 
 		XMVECTOR eye = XMLoadFloat3(&m_controller->get_Position());
 		XMVECTOR at = XMLoadFloat3(&m_controller->get_LookAt());
-		//XMVECTOR up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
 		XMVECTOR up = XMLoadFloat3(&m_controller->get_UpAxis());
 
+		// Setup the constant buffer
+		m_constantBufferData.ambientColour = XMFLOAT4(0.1f, 0.1f, 0.1f, 1.0f);
 		XMStoreFloat4x4(&m_constantBufferData.view, XMMatrixTranspose(XMMatrixLookAtLH(eye, at, up)));
 		XMStoreFloat4x4(&m_constantBufferData.model, XMMatrixTranspose(XMMatrixIdentity()));
 	}

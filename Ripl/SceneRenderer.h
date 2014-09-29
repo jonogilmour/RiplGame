@@ -30,6 +30,6 @@ namespace Ripl {
 		MoveLookController^ m_controller;
 
 		uint32 m_indexCount;
-		ModelViewProjectionConstantBuffer m_constantBufferData;
+		ShaderCBuffer m_constantBufferData;
 	};
 }
