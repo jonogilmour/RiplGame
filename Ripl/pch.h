@@ -15,3 +15,4 @@
 #include "Objects\Landscape.h"
 #include "BasicTimer.h"
 #include "MoveLookController.h"
+#include "CommonFunctions.h"

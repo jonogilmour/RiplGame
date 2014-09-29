@@ -1,11 +1,6 @@
 #include "pch.h"
 #include "MoveLookController.h"
 
-// Normalises an XMFLOAT3 like a vector
-void normalizeF3(XMFLOAT3* flt3) {
-	XMStoreFloat3(flt3, XMVector3Normalize(XMLoadFloat3(flt3)));
-}
-
 void MoveLookController::Initialize( _In_ CoreWindow^ window )
 {
 

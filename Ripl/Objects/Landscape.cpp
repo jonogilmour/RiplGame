@@ -10,8 +10,8 @@ using namespace Windows::Foundation;
 // NOTE: This uses initialiser list syntax, essentially each part is initialised using the initialiser for that type.
 // DeviceResources uses a couple of initialisers to complete its initialisation, hence the braces.
 Landscape::Landscape(unsigned short sideLengthZ, unsigned short sideLengthX) {
-	fillVertices(sideLengthZ, sideLengthX, XMFLOAT3(0.0f,0.0f,0.0f));
 	fillIndices(sideLengthZ, sideLengthX);
+	fillVertices(sideLengthZ, sideLengthX, XMFLOAT3(0.0f,0.0f,0.0f));
 }
 
 // Fills a vertex array for a rectangular landscape
@@ -29,8 +29,34 @@ void Landscape::fillVertices(unsigned short sideLengthZ, unsigned short sideLeng
 			vertices.push_back(VertexPositionNormalColour(vPosition, vNormal, vColour));
 		}
 	}
-	//Copy the contents of the vertex vector to array form
+
 	vertexCount = vertices.size();
+
+	// Calculate and average the normals
+	for (unsigned int x = 0; x < getIndexCount() / 3; x++) {
+        unsigned short index1 = indices[x * 3];
+        unsigned short index2 = indices[x * 3 + 1];
+        unsigned short index3 = indices[x * 3 + 2];
+
+		XMFLOAT3 side1 = XMFLOAT3(vertices[index2].pos.x - vertices[index1].pos.x, vertices[index2].pos.y - vertices[index1].pos.y, vertices[index2].pos.z - vertices[index1].pos.z);
+        XMFLOAT3 side2 = XMFLOAT3(vertices[index3].pos.x - vertices[index1].pos.x, vertices[index3].pos.y - vertices[index1].pos.y, vertices[index3].pos.z - vertices[index1].pos.z);
+        XMFLOAT3 normal = cross(side1, side2);
+
+		vertices[index1].normal.x += normal.x;
+		vertices[index1].normal.y += normal.y;
+		vertices[index1].normal.z += normal.z;
+        vertices[index2].normal.x += normal.x;
+		vertices[index2].normal.y += normal.y;
+		vertices[index2].normal.z += normal.z;
+        vertices[index3].normal.x += normal.x;
+		vertices[index3].normal.y += normal.y;
+		vertices[index3].normal.z += normal.z;
+    }
+
+    // Normalise all the normal vectors
+	for (unsigned int x = 0; x < getVertexCount(); x++) normalizeF3(&vertices[x].normal);
+
+	
 }
 
 // Fills an index array for a rectangular landscape

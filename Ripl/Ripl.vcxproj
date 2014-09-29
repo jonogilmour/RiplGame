@@ -120,6 +120,7 @@
     <Image Include="Assets\SplashScreen.png" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CommonFunctions.h" />
     <ClInclude Include="MoveLookController.h" />
     <ClInclude Include="Objects\Landscape.h" />
     <ClInclude Include="RiplMain.h" />
@@ -132,6 +133,7 @@
     <ClInclude Include="Structures\VertexStructures.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CommonFunctions.cpp" />
     <ClCompile Include="MoveLookController.cpp" />
     <ClCompile Include="Objects\Landscape.cpp" />
     <ClCompile Include="RiplMain.cpp" />
