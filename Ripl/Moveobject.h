@@ -3,7 +3,12 @@
 #include "pch.h"
 #include "Structures\VertexStructures.h"
 #include "Structures\ShaderStructures.h"
-namespace ripl{
+namespace Ripl
+{
 
-	class Moveobject{};
+	class Moveobject
+	{
+	public:
+		Moveobject();
+	};
 }
