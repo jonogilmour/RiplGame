@@ -136,6 +136,7 @@
   <ItemGroup>
     <ClCompile Include="CommonFunctions.cpp" />
     <ClCompile Include="MoveLookController.cpp" />
+    <ClCompile Include="Moveobject.cpp" />
     <ClCompile Include="Objects\Landscape.cpp" />
     <ClCompile Include="RiplMain.cpp" />
     <ClCompile Include="SceneRenderer.cpp" />
@@ -143,7 +144,6 @@
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Moveobject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

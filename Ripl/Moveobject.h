@@ -9,6 +9,6 @@ namespace Ripl
 	class Moveobject
 	{
 	public:
-		Moveobject();
+		Moveobject(int intialx, int initialy);
 	};
 }
