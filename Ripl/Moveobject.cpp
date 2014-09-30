@@ -5,4 +5,5 @@ using namespace Ripl;
 using namespace DirectX;
 using namespace Windows::Foundation;
 
-Moveobject::Moveobject{};
+Moveobject::Moveobject()
+{}

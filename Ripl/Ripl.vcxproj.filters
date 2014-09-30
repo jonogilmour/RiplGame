@@ -28,6 +28,7 @@
     <ClCompile Include="RiplMain.cpp" />
     <ClCompile Include="MoveLookController.cpp" />
     <ClCompile Include="CommonFunctions.cpp" />
+    <ClCompile Include="Moveobject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectXHelper.h" />
@@ -41,6 +42,7 @@
     <ClInclude Include="RiplMain.h" />
     <ClInclude Include="MoveLookController.h" />
     <ClInclude Include="CommonFunctions.h" />
+    <ClInclude Include="Moveobject.h" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest" />

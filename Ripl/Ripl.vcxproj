@@ -122,6 +122,7 @@
   <ItemGroup>
     <ClInclude Include="CommonFunctions.h" />
     <ClInclude Include="MoveLookController.h" />
+    <ClInclude Include="Moveobject.h" />
     <ClInclude Include="Objects\Landscape.h" />
     <ClInclude Include="RiplMain.h" />
     <ClInclude Include="SceneRenderer.h" />
@@ -142,6 +143,7 @@
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Moveobject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
