@@ -62,7 +62,9 @@ bool LoadHeightmapBitmap(char* fname, HeightMapInfo &hm){
   int heightIndex;
 
   // create our heightmap from the bitmap data
+  // loop through the length/height of the map
   for (int i = 0; i < hm.length; i++) {
+    // loop through the width of the map
     for (int k = 0; k < hm.width; k++) {
       height = bitmap[bitmapIndex];
 
