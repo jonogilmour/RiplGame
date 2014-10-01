@@ -1,5 +1,3 @@
-// http://www.braynzarsoft.net/index.php?p=DX10HeightMap
-
 // Stores the height, width, and array of vertices
 struct HeightMapInfo {
   int width; // width of heightmap
