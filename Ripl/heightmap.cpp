@@ -7,25 +7,27 @@ struct HeightMapInfo {
 
 // load the bitmap into our heightmap structure
 // returns true if succesful, false otherwise
+// for more info of bitmap format: http://en.wikipedia.org/wiki/BMP_file_format
 bool LoadHeightmapBitmap(char* fname, HeightMapInfo &hm){
   FILE *filepointer;
-  BITMAPINFOHEADER bmInfoHd; // info about bitmap
-  BITMAPFILEHEADER bmFileHd; // info about the bitmap file
+  BITMAPINFOHEADER Info; // info about bitmap
+  BITMAPFILEHEADER Header; // info about the bitmap file
   float factor = 2.0f; // divide bitmap "height" to get more realistic edges
 
   // first we need to open the file
   filepointer = fopen(fname, 'rb') // read the file as a binary file
   if (filepointer == NULL) { // file did not open correctly
+    fclose(filepointer);
     return false;
   }
 
   // file has opened succesfully
 
-  // Firstly, read the bitmap file info header into bmFileHd
-  fread(&bmFileHd, sizeof(BITMAPFILEHEADER), 1, filepointer)
+  // Firstly, read the bitmap file info header into Header
+  fread(&Header, sizeof(BITMAPFILEHEADER), 1, filepointer)
 
-  // Second, read the bitmap info header into bmInfoHd
-  fread(&bmInfoHd, sizeof(BITMAPINFOHEADER), 1, filepointer)
+  // Second, read the bitmap info header into Info
+  fread(&Info, sizeof(BITMAPINFOHEADER), 1, filepointer)
 
   // Get dimensions of the bitmap so we can generate our heightmap
   hm.width = bitmapInfoHeader.biWidth;
@@ -40,7 +42,7 @@ bool LoadHeightmapBitmap(char* fname, HeightMapInfo &hm){
 
   // move the pointer to the beginning of the actual image
   // SEEK_SET = beginning of file
-  fseek(filepointer, bmFileHd.bfOffBits, SEEK_SET);
+  fseek(filepointer, Header.bfOffBits, SEEK_SET);
 
   // read the bitmap image into our bitmap array
   fread(bitmap, 1, bitmapSize, filepointer);
