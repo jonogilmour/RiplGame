@@ -5,6 +5,8 @@ cbuffer ShaderCBuffer : register(b0)
 	matrix view;
 	matrix projection;
 	float4 ambientColour;
+	float4 lightVector;
+	float4 lightColour;
 };
 
 // Per-vertex data used as input to the vertex shader.
@@ -28,6 +30,7 @@ PixelShaderInput main(VertexShaderInput input)
 	PixelShaderInput output;
 	float4 pos = float4(input.pos, 1.0f);
 	float4 normal = float4(input.norm, 1.0f);
+	float4 color = float4(input.color,1.0f);
 
 	// Transform the vertex position into projected space.
 	pos = mul(pos, model);
@@ -35,9 +38,11 @@ PixelShaderInput main(VertexShaderInput input)
 	pos = mul(pos, projection);
 	output.pos = pos;
 
+	normal = mul(normal, model);
+
 	// Pass the color through without modification.
-	output.color = ambientColour; 
-	output.color +=	float4(input.color,1.0f);
+	float diffusebrightness = dot(normal, lightVector);
+    output.color = saturate(lightColour * diffusebrightness + ambientColour + color);
 
 	return output;
 }

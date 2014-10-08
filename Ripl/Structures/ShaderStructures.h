@@ -12,6 +12,8 @@ namespace Ripl {
 		XMFLOAT4X4 view;
 		XMFLOAT4X4 projection;
 		XMFLOAT4 ambientColour;
+		XMFLOAT4 lightVector;
+		XMFLOAT4 lightColour;
 	};
 
 }

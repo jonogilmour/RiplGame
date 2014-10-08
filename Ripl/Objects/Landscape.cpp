@@ -11,7 +11,7 @@ using namespace Windows::Foundation;
 // DeviceResources uses a couple of initialisers to complete its initialisation, hence the braces.
 Landscape::Landscape(unsigned short sideLengthZ, unsigned short sideLengthX) {
 	fillIndices(sideLengthZ, sideLengthX);
-	fillVertices(sideLengthZ, sideLengthX, XMFLOAT3(0.0f,0.0f,0.0f));
+	fillVertices(sideLengthZ, sideLengthX, XMFLOAT3(0.0f,0.3f,0.3f));
 }
 
 // Fills a vertex array for a rectangular landscape
@@ -24,7 +24,7 @@ void Landscape::fillVertices(unsigned short sideLengthZ, unsigned short sideLeng
 		for (unsigned short x = 0; x < sideLengthX; x++) {
 			xPos = float(x) - float(sideLengthX-1)/2.0f;
 			XMFLOAT3 vPosition = XMFLOAT3(xPos, 0.0f, zPos);
-			XMFLOAT3 vNormal = XMFLOAT3(0.0f, 1.0f, 0.0f);
+			XMFLOAT3 vNormal = XMFLOAT3(0.0f, 0.0f, 0.0f);
 			XMFLOAT3 vColour = colour;
 			vertices.push_back(VertexPositionNormalColour(vPosition, vNormal, vColour));
 		}
@@ -55,8 +55,6 @@ void Landscape::fillVertices(unsigned short sideLengthZ, unsigned short sideLeng
 
     // Normalise all the normal vectors
 	for (unsigned int x = 0; x < getVertexCount(); x++) normalizeF3(&vertices[x].normal);
-
-	
 }
 
 // Fills an index array for a rectangular landscape
