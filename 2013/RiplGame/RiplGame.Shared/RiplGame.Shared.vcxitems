@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <ItemsProjectGuid>{bf2be5d2-53d2-4d4e-ac8d-cf805a421c61}</ItemsProjectGuid>
+    <ItemsRootNamespace>RiplGame</ItemsRootNamespace>
+    <ItemsProjectName>RiplGame.Shared</ItemsProjectName>
+    <SharedGUID>899b8cc5-1bd4-4883-8fd8-21514a226753</SharedGUID>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Content\CommonFunctions.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Content\MoveLookController.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Content\Objects\World\Landscape.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Content\SceneRenderer.cpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Content\CommonFunctions.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Content\MoveLookController.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Content\Objects\World\Landscape.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Content\Structures\ShaderStructures.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)RiplGameMain.h" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)RiplGameMain.cpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)pch.h" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)pch.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Common\DeviceResources.h" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Common\DeviceResources.cpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Common\DirectXHelper.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Common\StepTimer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Content\SceneRenderer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Content\Structures\VertexStructures.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="$(MSBuildThisFileDirectory)Content\Shaders\Pixel\PixelShader.hlsl">
+      <ShaderType>Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)Content\Shaders\Vertex\VertexShader.hlsl">
+      <ShaderType>Vertex</ShaderType>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectCapability Include="SourceItemsFromImports" />
+  </ItemGroup>
+</Project>
