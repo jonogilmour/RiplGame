@@ -10,6 +10,7 @@ namespace RiplGame
 	{
 	public:
 		MoveObject::MoveObject(XMFLOAT3 coord, unsigned short sideLengthZ, unsigned short sideLengthX, unsigned short sideLengthY);
+		std::vector<VertexPositionNormalColour> vertices;
 		unsigned short* indices;
 
 	private:
@@ -25,7 +26,7 @@ namespace RiplGame
 		ShaderCBuffer	constantBufferData;
 		uint32	indexCount;
 		uint32	vertexCount;
-		void MoveObject::fillVertices(unsigned short sideLengthZ, unsigned short sideLengthX,  unsigned short sideLengthY, XMFLOAT3 colour);
+		void MoveObject::fillVertices(unsigned short sideLengthZ, unsigned short sideLengthX, unsigned short sideLengthY, XMFLOAT3 colour, XMFLOAT3 coord);
 
 	};
 }
