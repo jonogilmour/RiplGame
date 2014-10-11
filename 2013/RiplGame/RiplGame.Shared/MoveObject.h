@@ -10,6 +10,8 @@ namespace RiplGame
 	{
 	public:
 		MoveObject::MoveObject(XMFLOAT3 coord, unsigned short sideLengthZ, unsigned short sideLengthX, unsigned short sideLengthY);
+		uint32 getIndexCount();
+		uint32 getVertexCount();
 		std::vector<VertexPositionNormalColour> vertices;
 		unsigned short* indices;
 
@@ -27,6 +29,7 @@ namespace RiplGame
 		uint32	indexCount;
 		uint32	vertexCount;
 		void MoveObject::fillVertices(unsigned short sideLengthZ, unsigned short sideLengthX, unsigned short sideLengthY, XMFLOAT3 colour, XMFLOAT3 coord);
+		void MoveObject::fillIndices(unsigned short sideLengthZ, unsigned short sideLengthX);
 
 	};
 }

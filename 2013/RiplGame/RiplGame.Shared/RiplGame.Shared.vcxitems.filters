@@ -22,6 +22,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Content\MoveLookController.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)RiplGameMain.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Content\CommonFunctions.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MoveObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)pch.cpp" />
@@ -35,6 +36,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Content\MoveLookController.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)RiplGameMain.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Content\CommonFunctions.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MoveObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="$(MSBuildThisFileDirectory)Content\Shaders\Pixel\PixelShader.hlsl">
