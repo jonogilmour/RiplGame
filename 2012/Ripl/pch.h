@@ -16,3 +16,4 @@
 #include "BasicTimer.h"
 #include "MoveLookController.h"
 #include "CommonFunctions.h"
+#include "heightmap.h"

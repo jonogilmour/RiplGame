@@ -1,89 +1,105 @@
-// Stores the height, width, and array of vertices
+#include "pch.h"
+
 struct HeightMapInfo {
-  int width; // width of heightmap
-  int length; // length of heightmap
-  XMFLOAT3 *heightmap; // stores (x, y, z) positions where y is bitmap height
+	int width; // width of heightmap
+	int length; // length of heightmap
+	XMFLOAT3 *heightmap; // stores (x, y, z) positions where y is bitmap height
 };
 
-// load the bitmap into our heightmap structure
-// returns true if succesful, false otherwise
-// for more info of bitmap format: http://en.wikipedia.org/wiki/BMP_file_format
-bool LoadHeightmapBitmap(char* fname, HeightMapInfo &hm){
-  FILE *filepointer;
-  BITMAPINFOHEADER Info; // info about bitmap
-  BITMAPFILEHEADER Header; // info about the bitmap file
-  float factor = 2.0f; // divide bitmap "height" to get more realistic edges
 
-  // first we need to open the file
-  filepointer = fopen(fname, 'rb') // read the file as a binary file
-  if (filepointer == NULL) { // file did not open correctly
-    fclose(filepointer);
-    return false;
-  }
+// BITMAPFILEHEADER - for whatever reason it's not reading it zzzz
+typedef struct tagBITMAPFILEHEADER {
+	WORD  bfType;
+	DWORD bfSize;
+	WORD  bfReserved1;
+	WORD  bfReserved2;
+	DWORD bfOffBits;
+} BITMAPFILEHEADER, *PBITMAPFILEHEADER;
 
-  // file has opened succesfully
 
-  // Firstly, read the bitmap file info header into Header
-  fread(&Header, sizeof(BITMAPFILEHEADER), 1, filepointer)
+class HeightMap {
+public:
+	// load the bitmap into our heightmap structure
+	// returns true if succesful, false otherwise
+	// for more info of bitmap format: http://en.wikipedia.org/wiki/BMP_file_format
+	bool HeightMap::LoadHeightmapBitmap(char* fname, HeightMapInfo &hm){
+	  FILE *filepointer;
+	  BITMAPFILEHEADER Header; // info about the bitmap file
+	  BITMAPINFOHEADER Info; // info about bitmap
+	  float factor = 2.0f; // divide bitmap "height" to get more realistic edges
 
-  // Second, read the bitmap info header into Info
-  fread(&Info, sizeof(BITMAPINFOHEADER), 1, filepointer)
+	  // first we need to open the file
+	  errno_t errorCode = fopen_s(&filepointer, fname, "rb"); // read the file as a binary file
+	  if (filepointer == NULL) { // file did not open correctly
+		fclose(filepointer);
+		return false;
+	  }
 
-  // Get dimensions of the bitmap so we can generate our heightmap
-  hm.width = bitmapInfoHeader.biWidth;
-  hm.length = bitmapInfoHeader.biHeight;
+	  // file has opened succesfully
 
-  // now calculate the size of the bitmap in bytes
-  // use 3 as the multiplier (1 each for RGB) even if grayscale image
-  int bitmapSize = hm.width * hm.length * 3;
+	  // Firstly, read the bitmap file info header into Header
+	  fread(&Header, sizeof(BITMAPFILEHEADER), 1, filepointer);
 
-  // create an array to store the bitmap data
-  unsigned char* bitmap = new unsigned char[bitmapSize];
+	  // Second, read the bitmap info header into Info
+	  fread(&Info, sizeof(BITMAPINFOHEADER), 1, filepointer);
 
-  // move the pointer to the beginning of the actual image
-  // SEEK_SET = beginning of file
-  fseek(filepointer, Header.bfOffBits, SEEK_SET);
+	  // Get dimensions of the bitmap so we can generate our heightmap
+	  hm.width = Info.biWidth;
+	  hm.length = Info.biHeight;
 
-  // read the bitmap image into our bitmap array
-  fread(bitmap, 1, bitmapSize, filepointer);
+	  // now calculate the size of the bitmap in bytes
+	  // use 3 as the multiplier (1 each for RGB) even if grayscale image
+	  int bitmapSize = hm.width * hm.length * 3;
 
-  // close the bitmap file
-  fclose(filepointer);
+	  // create an array to store the bitmap data
+	  unsigned char* bitmap = new unsigned char[bitmapSize];
 
-  // now we will transfer the data into our heightmap struct
-  hm.heightmap= new XMFLOAT3[hm.width * hm.length];
+	  // move the pointer to the beginning of the actual image
+	  // SEEK_SET = beginning of file
+	  fseek(filepointer, Header.bfOffBits, SEEK_SET);
 
-  // we decide to use grayscale bitmap, so only need to read one of the RGB
-  // components, use this index to keep track of our position
-  int bitmapIndex = 0;
+	  // read the bitmap image into our bitmap array
+	  fread(bitmap, 1, bitmapSize, filepointer);
 
-  // create index to calculate the correct location to store the height in the
-  // heightmap array, since not using 2d array
-  int heightIndex;
+	  // close the bitmap file
+	  fclose(filepointer);
 
-  // create our heightmap from the bitmap data
-  // loop through the length/height of the map
-  for (int i = 0; i < hm.length; i++) {
-    // loop through the width of the map
-    for (int k = 0; k < hm.width; k++) {
-      height = bitmap[bitmapIndex];
+	  // now we will transfer the data into our heightmap struct
+	  hm.heightmap= new XMFLOAT3[hm.width * hm.length];
 
-      // index location = width + 2*length
-      heightIndex = k + (hm.length * i);
+	  // we decide to use grayscale bitmap, so only need to read one of the RGB
+	  // components, use this index to keep track of our position
+	  int bitmapIndex = 0;
 
-      // store the position and height data in the heightmap
-      hm.heightmap[heightIndex].x = (float)k;
-      hm.heightmap[heightIndex].y = (float)height / factor;
-      hm.heightmap[heightIndex].z = (float)i;
+	  // create index to calculate the correct location to store the height in the
+	  // heightmap array, since not using 2d array
+	  int heightIndex;
+	  signed char height;
 
-      // increment to the next pixel (skipping over the other 2 RGB components)
-      bitmapIndex += 3;
-    }
-  }
+	  // create our heightmap from the bitmap data
+	  // loop through the length/height of the map
+	  for (int i = 0; i < hm.length; i++) {
+		// loop through the width of the map
+		for (int k = 0; k < hm.width; k++) {
+		  height = bitmap[bitmapIndex];
 
-  // cleanup memory
-  delete[] bitmap;
+		  // index location = width + 2*length
+		  heightIndex = k + (hm.length * i);
 
-  // heightmap successfully generated
-  return true;
-}
+		  // store the position and height data in the heightmap
+		  hm.heightmap[heightIndex].x = (float)k;
+		  hm.heightmap[heightIndex].y = (float)height / factor;
+		  hm.heightmap[heightIndex].z = (float)i;
+
+		  // increment to the next pixel (skipping over the other 2 RGB components)
+		  bitmapIndex += 3;
+		}
+	  }
+
+	  // cleanup memory
+	  delete[] bitmap;
+
+	  // heightmap successfully generated
+	  return true;
+	}
+};
