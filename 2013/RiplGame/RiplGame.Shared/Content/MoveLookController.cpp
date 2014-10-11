@@ -23,19 +23,14 @@ void MoveLookController::Initialize(_In_ CoreWindow^ window)
 	window->KeyUp +=
 		ref new TypedEventHandler<CoreWindow^, KeyEventArgs^>(this, &MoveLookController::OnKeyUp);
 
-
-	// Initialize state of the controller
-	m_moveInUse = FALSE;				// no pointer is in the Move control
-	m_movePointerID = 0;
-
-	m_lookInUse = FALSE;				// no pointer is in the Look control
-	m_lookPointerID = 0;
+	Windows::Devices::Input::MouseDevice::GetForCurrentView()->MouseMoved +=
+		ref new TypedEventHandler<MouseDevice^, MouseEventArgs^>(this, &MoveLookController::OnMouseMoved);
 
 	//	need to init this as it is reset every frame
 	m_moveCommand = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	deltaTime = 0;
 
-	SetOrientation(-(XM_PI / 4.0f), 0);				// look straight ahead when the app starts
+	SetOrientation(-(XM_PI / 4.0f), 0);				// look down slightly ahead when the app starts
 	SetPosition(XMFLOAT3(0, 3.0f, -3.0f));
 }
 
@@ -49,36 +44,21 @@ void MoveLookController::OnPointerPressed(
 
 	auto device = args->CurrentPoint->PointerDevice;
 	auto deviceType = device->PointerDeviceType;
-	if (deviceType == PointerDeviceType::Mouse)
-	{
-		// Action, Jump, or Fire
-	}
 
 	// check  if this pointer is in the move control
 	// Change the values  to percentages of the preferred screen resolution.
 	// You can set the x value to <preferred resolution> * <percentage of width>
 	// for example, ( position.x < (screenResolution.x * 0.15) )
 
-	if ((position.x < 300 && position.y > 380) && (deviceType != PointerDeviceType::Mouse))
-	{
-		if (!m_moveInUse)	// if no pointer is in this control yet
-		{
-			// process a DPad touch down event
-			m_moveFirstDown = position;					// save location of initial contact
-			m_movePointerPosition = position;
-			m_movePointerID = pointerID;				// store the id of pointer using this control
-			m_moveInUse = TRUE;
-		}
+	if (deviceType != PointerDeviceType::Mouse) {
+		// Touch
+		m_moveFirstDown = position;					// save location of initial contact
+		m_movePointerPosition = position;
 	}
-	else // this pointer must be in the look control
-	{
-		if (!m_lookInUse)	// if no pointer is in this control yet
-		{
-			m_lookLastPoint = position;							// save point for later move
-			m_lookPointerID = args->CurrentPoint->PointerId;	// store the id of pointer using this control
-			m_lookLastDelta.x = m_lookLastDelta.y = 0;			// these are for smoothing
-			m_lookInUse = TRUE;
-		}
+	else {
+		// Mouse
+		m_lookLastPoint = position;							// save point for later move
+		m_lookLastDelta.x = m_lookLastDelta.y = 0;			// these are for smoothing
 	}
 }
 
@@ -86,35 +66,23 @@ void MoveLookController::OnPointerMoved(
 	_In_ CoreWindow ^sender,
 	_In_ PointerEventArgs ^args)
 {
-	uint32 pointerID = args->CurrentPoint->PointerId;
+
 	XMFLOAT2 position = XMFLOAT2(args->CurrentPoint->Position.X, args->CurrentPoint->Position.Y);
 
-	// decide which control this pointer is operating
-	if (pointerID == m_movePointerID)			// this is the move pointer
-	{
-		// Move control
-		m_movePointerPosition = position;		// save current position
+	XMFLOAT2 pointerDelta;
+	pointerDelta = XMFLOAT2(position.x - m_lookLastPoint.x, position.y - m_lookLastPoint.y);		// how far did pointer move
 
-	}
-	else if (pointerID == m_lookPointerID)		// this is the look pointer
-	{
-		// Look control
+	XMFLOAT2 rotationDelta;
+	rotationDelta = XMFLOAT2(pointerDelta.x * deltaTime * ROTATION_GAIN, pointerDelta.y * deltaTime * ROTATION_GAIN);	// scale for control sensitivity
+	m_lookLastPoint = position;			 			// save for next time through
 
-		XMFLOAT2 pointerDelta;
-		pointerDelta = XMFLOAT2(position.x - m_lookLastPoint.x, position.y - m_lookLastPoint.y);		// how far did pointer move
+	// update our orientation based on the command
+	m_pitch -= rotationDelta.y;						// mouse y increases down, but pitch increases up
+	m_yaw += rotationDelta.x;						// yaw defined as CCW around y-axis
 
-		XMFLOAT2 rotationDelta;
-		rotationDelta = XMFLOAT2(pointerDelta.x * deltaTime * ROTATION_GAIN, pointerDelta.y * deltaTime * ROTATION_GAIN);	// scale for control sensitivity
-		m_lookLastPoint = position;			 			// save for next time through
-
-		// update our orientation based on the command
-		m_pitch -= rotationDelta.y;						// mouse y increases down, but pitch increases up
-		m_yaw += rotationDelta.x;						// yaw defined as CCW around y-axis
-
-		// Limit pitch to straight up or straight down
-		m_pitch = (float)__max(-XM_PI / 2.0f, m_pitch);
-		m_pitch = (float)__min(+XM_PI / 2.0f, m_pitch);
-	}
+	// Limit pitch to straight up or straight down
+	m_pitch = (float)__max(-XM_PI / 2.0f, m_pitch);
+	m_pitch = (float)__min(+XM_PI / 2.0f, m_pitch);
 }
 
 void MoveLookController::OnPointerReleased(
@@ -123,18 +91,6 @@ void MoveLookController::OnPointerReleased(
 {
 	uint32 pointerID = args->CurrentPoint->PointerId;
 	XMFLOAT2 position = XMFLOAT2(args->CurrentPoint->Position.X, args->CurrentPoint->Position.Y);
-
-
-	if (pointerID == m_movePointerID)    // this was the move pointer
-	{
-		m_moveInUse = FALSE;
-		m_movePointerID = 0;
-	}
-	else if (pointerID == m_lookPointerID) // this was the look pointer
-	{
-		m_lookInUse = FALSE;
-		m_lookPointerID = 0;
-	}
 }
 
 void MoveLookController::OnKeyDown(
@@ -181,6 +137,41 @@ void MoveLookController::OnKeyUp(
 		m_down = false;
 }
 
+void MoveLookController::OnMouseMoved(
+	_In_ MouseDevice^,
+	_In_ MouseEventArgs^ args
+	)
+{
+	// Handle Mouse Input via dedicated relative movement handler.
+
+	XMFLOAT2 mouseDelta;
+	mouseDelta.x = static_cast<float>(args->MouseDelta.X);
+	mouseDelta.y = static_cast<float>(args->MouseDelta.Y);
+
+	XMFLOAT2 rotationDelta;
+	rotationDelta.x = mouseDelta.x * deltaTime * ROTATION_GAIN;   // scale for control sensitivity
+	rotationDelta.y = mouseDelta.y * deltaTime * ROTATION_GAIN;
+
+	// Update our orientation based on the command.
+	m_pitch -= rotationDelta.y;
+	m_yaw += rotationDelta.x;
+
+	// Limit pitch to straight up or straight down.
+	float limit = XM_PI / 2.0f - 0.01f;
+	m_pitch = __max(-limit, m_pitch);
+	m_pitch = __min(+limit, m_pitch);
+
+	// Keep longitude in same range by wrapping.
+	if (m_yaw >  XM_PI)
+	{
+		m_yaw -= XM_PI * 2.0f;
+	}
+	else if (m_yaw < -XM_PI)
+	{
+		m_yaw += XM_PI * 2.0f;
+	}
+}
+
 void MoveLookController::SetPosition(_In_ XMFLOAT3 pos)
 {
 	m_position = pos;
@@ -210,9 +201,9 @@ XMFLOAT3 MoveLookController::get_UpAxis() {
 
 XMFLOAT3 MoveLookController::computeRAxis() {
 	return XMFLOAT3(
-		(float)(sinf(m_yaw + XM_PI / 2.0f)),
+		(float)(sinf(m_yaw + (XM_PI / 2.0f))),
 		0.0f,
-		(float)(cosf(m_yaw + XM_PI / 2.0f))
+		(float)(cosf(m_yaw + (XM_PI / 2.0f)))
 		);
 }
 

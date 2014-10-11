@@ -3,7 +3,7 @@
 #include "pch.h"
 
 #define ROTATION_GAIN 0.2f	// sensitivity adjustment for look controller
-#define MOVEMENT_GAIN 0.5f		// sensitivity adjustment for move controller
+#define MOVEMENT_GAIN 0.7f		// sensitivity adjustment for move controller
 
 using namespace Windows::UI::Core;
 using namespace Windows::System;
@@ -64,6 +64,11 @@ namespace RiplGame {
 		void OnKeyUp(
 			_In_ Windows::UI::Core::CoreWindow^ sender,
 			_In_ Windows::UI::Core::KeyEventArgs^ args
+			);
+
+		void OnMouseMoved(
+			_In_ MouseDevice^,
+			_In_ MouseEventArgs^ args
 			);
 
 		// set up the Controls that this controller supports

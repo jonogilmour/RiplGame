@@ -19,10 +19,11 @@ RiplGameMain::RiplGameMain(const std::shared_ptr<DX::DeviceResources>& deviceRes
 
 	// TODO: Change the timer settings if you want something other than the default variable timestep mode.
 	// e.g. for 60 FPS fixed timestep update logic, call:
-	/*
+	
 	m_timer.SetFixedTimeStep(true);
 	m_timer.SetTargetElapsedSeconds(1.0 / 60);
-	*/
+	
+	CoreWindow::GetForCurrentThread()->PointerCursor = nullptr;
 }
 
 // The tilde (~) means this is the DESTRUCTOR, or denitialiser
@@ -124,7 +125,6 @@ bool RiplGameMain::Render()
 	context->ClearDepthStencilView(m_deviceResources->GetDepthStencilView(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
 	// Render the scene objects.
-	// TODO: Replace this with your app's content rendering functions.
 	m_sceneRenderer->Render();
 
 	return true;
