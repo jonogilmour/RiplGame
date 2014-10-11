@@ -113,6 +113,7 @@ void MoveLookController::OnKeyDown(
 		m_up = true;
 	if (Key == VirtualKey::Control)		// down
 		m_down = true;
+		
 }
 
 void MoveLookController::OnKeyUp(

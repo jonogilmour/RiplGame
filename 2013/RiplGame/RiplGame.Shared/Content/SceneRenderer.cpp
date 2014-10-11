@@ -216,7 +216,7 @@ void SceneRenderer::CreateDeviceDependentResources()
 	// Notice how we are &&ing the two tasks, which means we wait for both to completely finish, then we do...
 	auto createLandscapeTask = (createPSTask && createVSTask).then([this]() {
 
-		Landscape landscape(15, 15);
+		Landscape landscape(3, 3);
 
 		// This creates the data (vertices) to put into the vertex buffer, and zeroes it
 		D3D11_SUBRESOURCE_DATA vertexBufferData = { 0 };

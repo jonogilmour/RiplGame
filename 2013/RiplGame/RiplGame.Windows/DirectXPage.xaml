@@ -8,10 +8,10 @@
     mc:Ignorable="d">
 
   <SwapChainPanel x:Name="swapChainPanel">
-    <TextBlock Text="Hello from XAML!"
-               HorizontalAlignment="Right"
+    <TextBlock Text="RiplGame Test Environment"
+               HorizontalAlignment="Center"
                VerticalAlignment="Top"
-               FontSize="30" />
+               FontSize="30" Margin="0,40,0,0" />
   </SwapChainPanel>
 
   <Page.BottomAppBar>
