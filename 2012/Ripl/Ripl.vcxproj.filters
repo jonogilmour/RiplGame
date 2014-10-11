@@ -28,7 +28,6 @@
     <ClCompile Include="RiplMain.cpp" />
     <ClCompile Include="MoveLookController.cpp" />
     <ClCompile Include="CommonFunctions.cpp" />
-    <ClCompile Include="heightmap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectXHelper.h" />
@@ -42,7 +41,6 @@
     <ClInclude Include="RiplMain.h" />
     <ClInclude Include="MoveLookController.h" />
     <ClInclude Include="CommonFunctions.h" />
-    <ClInclude Include="heightmap.h" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest" />
@@ -53,10 +51,5 @@
   <ItemGroup>
     <FxCompile Include="Shaders\PixelShader.hlsl" />
     <FxCompile Include="Shaders\VertexShader.hlsl" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="Assets\heightmap.bmp">
-      <Filter>Assets</Filter>
-    </Image>
   </ItemGroup>
 </Project>

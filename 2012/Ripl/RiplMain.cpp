@@ -31,7 +31,6 @@ void RiplMain::Initialize(CoreApplicationView^ applicationView)
 
 	m_renderer = ref new SceneRenderer();
 	m_controller = ref new MoveLookController();
-
 }
 
 void RiplMain::SetWindow(CoreWindow^ window)
