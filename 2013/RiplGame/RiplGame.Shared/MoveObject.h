@@ -9,7 +9,7 @@ namespace RiplGame
 	class MoveObject
 	{
 	public:
-		MoveObject::MoveObject(unsigned short sideLengthZ, unsigned short sideLengthX, unsigned short sideLengthY);
+		MoveObject::MoveObject(float sideLengthZ, float sideLengthX, float sideLengthY);
 		uint32 getIndexCount();
 		uint32 getVertexCount();
 		void incrementIndices(unsigned short amount);
@@ -29,7 +29,7 @@ namespace RiplGame
 		ShaderCBuffer	constantBufferData;
 		uint32	indexCount;
 		uint32	vertexCount;
-		void MoveObject::fillVertices(unsigned short sideLengthZ, unsigned short sideLengthX, unsigned short sideLengthY, XMFLOAT3 colour);
+		void MoveObject::fillVertices(float sideLengthZ, float sideLengthX, float sideLengthY, XMFLOAT3 colour);
 		void MoveObject::fillIndices();
 
 	};

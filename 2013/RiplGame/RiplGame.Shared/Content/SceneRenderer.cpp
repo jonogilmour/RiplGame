@@ -218,7 +218,7 @@ void SceneRenderer::CreateDeviceDependentResources()
 	auto createLandscapeTask = (createPSTask && createVSTask).then([this]() {
 
 		Landscape landscape(3, 3);
-		MoveObject moveObject(1,1,1);
+		MoveObject moveObject(0.5,0.5,0.5);
 
 		// This creates the data (vertices) to put into the vertex buffer, and zeroes it
 		D3D11_SUBRESOURCE_DATA vertexBufferData = { 0 };
