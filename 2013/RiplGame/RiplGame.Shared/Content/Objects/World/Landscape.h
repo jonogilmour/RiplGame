@@ -14,7 +14,7 @@ namespace RiplGame
 		uint32 getIndexCount();
 		uint32 getVertexCount();
 		std::vector<VertexPositionNormalColour> vertices;
-		unsigned short* indices;
+		std::vector<unsigned short> indices;
 
 	private:
 		XMFLOAT4 defaultColour;

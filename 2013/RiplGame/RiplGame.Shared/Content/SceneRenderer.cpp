@@ -218,21 +218,18 @@ void SceneRenderer::CreateDeviceDependentResources()
 	auto createLandscapeTask = (createPSTask && createVSTask).then([this]() {
 
 		Landscape landscape(3, 3);
-		MoveObject moveobject(XMFLOAT3(0.0f,0.0f,0.0f),3,3,3);
+		MoveObject moveObject(3,3,3);
 
 		// This creates the data (vertices) to put into the vertex buffer, and zeroes it
 		D3D11_SUBRESOURCE_DATA vertexBufferData = { 0 };
-		VertexPositionNormalColour*result = new VertexPositionNormalColour[landscape.getVertexCount() + moveobject.getVertexCount()];
-		std::copy(landscape.vertices._Myfirst, landscape.vertices._Mylast, result);
-		std::copy(moveobject.vertices._Myfirst, moveobject.vertices._Mylast, result);
+		std::vector<VertexPositionNormalColour> vertices;
 
-		static const unsigned short* combindex;
-		std::copy(landscape.indices,landscape.indices+landscape.getIndexCount(),combindex);
-		std::copy(landscape.indices, moveobject.indices + moveobject.getIndexCount(), combindex+landscape.getIndexCount());
+		vertices.reserve(landscape.getVertexCount() + moveObject.getVertexCount()); // preallocate memory
+		vertices.insert(vertices.end(), landscape.vertices.begin(), landscape.vertices.end());
+		vertices.insert(vertices.end(), moveObject.vertices.begin(), moveObject.vertices.end());
 
 		// pSysMem is a pointer to the data to put in
-		//vertexBufferData.pSysMem = &(landscape.vertices[0]);
-		vertexBufferData.pSysMem = &(result[0]);
+		vertexBufferData.pSysMem = &(vertices[0]);
 		// This is only used for textures, so make it 0 as we arent using textures here
 		vertexBufferData.SysMemPitch = 0;
 		// Ditto for this
@@ -241,8 +238,8 @@ void SceneRenderer::CreateDeviceDependentResources()
 		// Here we actually create the vertex buffer. It's length is the size of the vertex array
 		// Note this isn't a function, it's an initialiser for a variable called vertexBufferDesc
 
-		//CD3D11_BUFFER_DESC vertexBufferDesc(landscape.getVertexCount()*sizeof(VertexPositionNormalColour), D3D11_BIND_VERTEX_BUFFER);
-		CD3D11_BUFFER_DESC vertexBufferDesc((landscape.getVertexCount() + moveobject.getVertexCount())*sizeof(VertexPositionNormalColour), D3D11_BIND_VERTEX_BUFFER);
+		int vertexCount = (landscape.getVertexCount() + moveObject.getVertexCount())*sizeof(VertexPositionNormalColour);
+		CD3D11_BUFFER_DESC vertexBufferDesc(vertexCount, D3D11_BIND_VERTEX_BUFFER);
 		// And here we send it to the device like we did with the shaders
 		DX::ThrowIfFailed(
 			m_deviceResources->GetD3DDevice()->CreateBuffer(
@@ -259,17 +256,20 @@ void SceneRenderer::CreateDeviceDependentResources()
 		// first triangle of this mesh.
 
 		//static const unsigned short* indices = landscape.indices;
-		static const unsigned short* indices = combindex;
+		std::vector<unsigned short> indices;
+
+		indices.insert(indices.end(), landscape.indices.begin(), landscape.indices.end());
+		indices.insert(indices.end(), moveObject.indices.begin(), moveObject.indices.end());
 
 		// Store the length of the index array
-		m_indexCount = landscape.getIndexCount()+moveobject.getIndexCount();
+		m_indexCount = landscape.getIndexCount() + moveObject.getIndexCount();
 
 		// Do the same thing as we did for the vertex buffer to set the index buffer
 		// First zero it
 		D3D11_SUBRESOURCE_DATA indexBufferData = { 0 };
 
 		// then tell it where the data is
-		indexBufferData.pSysMem = indices;
+		indexBufferData.pSysMem = (&indices[0]);
 		indexBufferData.SysMemPitch = 0;
 		indexBufferData.SysMemSlicePitch = 0;
 

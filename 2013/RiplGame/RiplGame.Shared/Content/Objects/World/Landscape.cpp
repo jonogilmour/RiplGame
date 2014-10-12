@@ -64,17 +64,17 @@ void Landscape::fillIndices(unsigned short sideLengthZ, unsigned short sideLengt
 	sideLengthX--;
 
 	indexCount = sideLengthZ * sideLengthX * 6;
-	indices = new unsigned short[indexCount];
+	indices.reserve(indexCount);
 
 	int x = 0;
 	int row;
 	for (unsigned short z = 0; z < indexCount; z += 6) {
-		indices[z] = x;
-		indices[z + 1] = sideLengthX + x + 1;
-		indices[z + 2] = sideLengthX + x + 2;
-		indices[z + 3] = x;
-		indices[z + 4] = sideLengthX + x + 2;
-		indices[z + 5] = x + 1;
+		indices.push_back(x);
+		indices.push_back(sideLengthX + x + 1);
+		indices.push_back(sideLengthX + x + 2);
+		indices.push_back(x);
+		indices.push_back(sideLengthX + x + 2);
+		indices.push_back(x + 1);
 		x++;
 		row = ((z / 6) / (sideLengthX + 1)) + 1;
 		if (((x + 1) - (row * (sideLengthX + 1))) == 0) x++;
