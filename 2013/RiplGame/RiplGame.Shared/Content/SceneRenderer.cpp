@@ -218,7 +218,7 @@ void SceneRenderer::CreateDeviceDependentResources()
 	auto createLandscapeTask = (createPSTask && createVSTask).then([this]() {
 
 		Landscape landscape(3, 3);
-		MoveObject moveObject(3,3,3);
+		MoveObject moveObject(1,1,1);
 
 		// This creates the data (vertices) to put into the vertex buffer, and zeroes it
 		D3D11_SUBRESOURCE_DATA vertexBufferData = { 0 };
@@ -259,6 +259,9 @@ void SceneRenderer::CreateDeviceDependentResources()
 		std::vector<unsigned short> indices;
 
 		indices.insert(indices.end(), landscape.indices.begin(), landscape.indices.end());
+
+		moveObject.incrementIndices(landscape.getVertexCount());
+
 		indices.insert(indices.end(), moveObject.indices.begin(), moveObject.indices.end());
 
 		// Store the length of the index array

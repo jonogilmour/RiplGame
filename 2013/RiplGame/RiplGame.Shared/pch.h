@@ -18,8 +18,10 @@
 #include <vector>
 #include <iostream>
 #include <tuple>
+#include <algorithm>
 
 #include "App.xaml.h"
 #include "Common\DirectXHelper.h"
 #include "Common\DeviceResources.h"
 #include "Common\StepTimer.h"
+#include "heightmap.h"

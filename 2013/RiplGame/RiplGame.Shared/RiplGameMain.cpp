@@ -2,6 +2,7 @@
 #include "RiplGameMain.h"
 #include "Common\DirectXHelper.h"
 
+using namespace std;
 using namespace RiplGame;
 using namespace Windows::Foundation;
 using namespace Windows::System::Threading;
@@ -24,6 +25,12 @@ RiplGameMain::RiplGameMain(const std::shared_ptr<DX::DeviceResources>& deviceRes
 	m_timer.SetTargetElapsedSeconds(1.0 / 60);
 	
 	CoreWindow::GetForCurrentThread()->PointerCursor = nullptr;
+
+	//HeightMapInfo* hm = new HeightMapInfo;
+	/*HeightMapInfo* hm = HeightMapLoad("heightmap.bmp");
+	string width = "width=";*/
+	//OutputDebugStringA(width.c_str());
+
 }
 
 // The tilde (~) means this is the DESTRUCTOR, or denitialiser
