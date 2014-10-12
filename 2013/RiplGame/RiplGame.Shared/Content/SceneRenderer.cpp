@@ -2,6 +2,7 @@
 #include "pch.h"
 #include "SceneRenderer.h"
 #include "Content\Objects\World\Landscape.h"
+#include "MoveObject.h"
 
 // Namespaces just spare us from having to write "RiplGame." before everything
 using namespace RiplGame;
@@ -217,12 +218,21 @@ void SceneRenderer::CreateDeviceDependentResources()
 	auto createLandscapeTask = (createPSTask && createVSTask).then([this]() {
 
 		Landscape landscape(3, 3);
+		MoveObject moveobject(XMFLOAT3(0.0f,0.0f,0.0f),3,3,3);
 
 		// This creates the data (vertices) to put into the vertex buffer, and zeroes it
 		D3D11_SUBRESOURCE_DATA vertexBufferData = { 0 };
+		VertexPositionNormalColour*result = new VertexPositionNormalColour[landscape.getVertexCount() + moveobject.getVertexCount()];
+		std::copy(landscape.vertices._Myfirst, landscape.vertices._Mylast, result);
+		std::copy(moveobject.vertices._Myfirst, moveobject.vertices._Mylast, result);
+
+		static const unsigned short* combindex;
+		std::copy(landscape.indices,landscape.indices+landscape.getIndexCount(),combindex);
+		std::copy(landscape.indices, moveobject.indices + moveobject.getIndexCount(), combindex+landscape.getIndexCount());
 
 		// pSysMem is a pointer to the data to put in
-		vertexBufferData.pSysMem = &(landscape.vertices[0]);
+		//vertexBufferData.pSysMem = &(landscape.vertices[0]);
+		vertexBufferData.pSysMem = &(result[0]);
 		// This is only used for textures, so make it 0 as we arent using textures here
 		vertexBufferData.SysMemPitch = 0;
 		// Ditto for this
@@ -230,8 +240,9 @@ void SceneRenderer::CreateDeviceDependentResources()
 
 		// Here we actually create the vertex buffer. It's length is the size of the vertex array
 		// Note this isn't a function, it's an initialiser for a variable called vertexBufferDesc
-		CD3D11_BUFFER_DESC vertexBufferDesc(landscape.getVertexCount()*sizeof(VertexPositionNormalColour), D3D11_BIND_VERTEX_BUFFER);
 
+		//CD3D11_BUFFER_DESC vertexBufferDesc(landscape.getVertexCount()*sizeof(VertexPositionNormalColour), D3D11_BIND_VERTEX_BUFFER);
+		CD3D11_BUFFER_DESC vertexBufferDesc((landscape.getVertexCount() + moveobject.getVertexCount())*sizeof(VertexPositionNormalColour), D3D11_BIND_VERTEX_BUFFER);
 		// And here we send it to the device like we did with the shaders
 		DX::ThrowIfFailed(
 			m_deviceResources->GetD3DDevice()->CreateBuffer(
@@ -246,10 +257,12 @@ void SceneRenderer::CreateDeviceDependentResources()
 		// For example: 0,2,1 means that the vertices with indexes
 		// 0, 2 and 1 from the vertex buffer compose the 
 		// first triangle of this mesh.
-		static const unsigned short* indices = landscape.indices;
+
+		//static const unsigned short* indices = landscape.indices;
+		static const unsigned short* indices = combindex;
 
 		// Store the length of the index array
-		m_indexCount = landscape.getIndexCount();
+		m_indexCount = landscape.getIndexCount()+moveobject.getIndexCount();
 
 		// Do the same thing as we did for the vertex buffer to set the index buffer
 		// First zero it

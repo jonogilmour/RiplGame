@@ -7,8 +7,9 @@ using namespace DirectX;
 using namespace Windows::Foundation;
 
 MoveObject::MoveObject(XMFLOAT3 coord, unsigned short sideLengthZ, unsigned short sideLengthX, unsigned short sideLengthY) {
-	fillVertices(sideLengthZ, sideLengthX, sideLengthY, XMFLOAT3(0.1f, 0.3f, 0.3f), coord);
 	fillIndices(sideLengthZ, sideLengthX);
+	fillVertices(sideLengthZ, sideLengthX, sideLengthY, XMFLOAT3(0.1f, 0.3f, 0.3f), coord);
+	
 	
 }
 
