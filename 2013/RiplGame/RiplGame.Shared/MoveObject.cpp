@@ -43,31 +43,72 @@ void MoveObject::fillVertices(unsigned short sideLengthZ, unsigned short sideLen
 	
 	vertices.push_back(VertexPositionNormalColour(vPosition7, vNormal, vColour));
 
-	XMFLOAT3 vPosition8 = XMFLOAT3(sideLengthX / 2 - coord.x, sideLengthY / 2 + coord.y, sideLengthZ / 2 + coord.z);
+	XMFLOAT3 vPosition8 = XMFLOAT3(sideLengthX / 2 - coord.x, sideLengthY / 2 + coord.y, sideLengthZ / 2 - coord.z);
 	
 	vertices.push_back(VertexPositionNormalColour(vPosition8, vNormal, vColour));
 }
 
 void MoveObject::fillIndices(unsigned short sideLengthZ, unsigned short sideLengthX) {
-	sideLengthZ--;
-	sideLengthX--;
 
-	indexCount = sideLengthZ * sideLengthX * 6;
+
+	indexCount = 36;
 	indices = new unsigned short[indexCount];
 
 	int x = 0;
-	int row;
-	for (unsigned short z = 0; z < indexCount; z += 6) {
-		indices[z] = x;
-		indices[z + 1] = sideLengthX + x + 1;
-		indices[z + 2] = sideLengthX + x + 2;
-		indices[z + 3] = x;
-		indices[z + 4] = sideLengthX + x + 2;
-		indices[z + 5] = x + 1;
-		x++;
-		row = ((z / 6) / (sideLengthX + 1)) + 1;
-		if (((x + 1) - (row * (sideLengthX + 1))) == 0) x++;
-	}
+		indices[0] = 0;
+		indices[1] = 1;
+		indices[2] = 2;
+
+		indices[3] = 1;
+		indices[4] = 3;
+		indices[5] = 2;
+		//right hand face
+
+		indices[6] = 5;
+		indices[7] = 1;
+		indices[8] = 6;
+
+		indices[9] = 1;
+		indices[10] = 3;
+		indices[11] = 6;
+		//front face
+
+		indices[12] = 5;
+		indices[13] = 6;
+		indices[14] = 7;
+
+		indices[15] = 5;
+		indices[16] = 7;
+		indices[17] = 8;
+		//left face
+
+		indices[18] = 8;
+		indices[19] = 7;
+		indices[20] = 4;
+
+		indices[21] = 8;
+		indices[22] = 2;
+		indices[23] = 4;
+		//rear face
+
+		indices[24] = 8;
+		indices[25] = 5;
+		indices[26] = 2;
+		indices[27] = 5;
+		indices[28] = 1;
+		indices[29] = 2;
+		//top face
+
+		indices[30] = 6;
+		indices[31] = 3;
+		indices[32] = 4;
+
+		indices[33] = 6;
+		indices[34] = 7;
+		indices[35] = 2;
+		//bottom face
+ 
+	
 }
 
 uint32 MoveObject::getIndexCount() {
