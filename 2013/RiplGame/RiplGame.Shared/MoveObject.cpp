@@ -95,6 +95,7 @@ void MoveObject::fillIndices(unsigned short sideLengthZ, unsigned short sideLeng
 		indices[24] = 8;
 		indices[25] = 5;
 		indices[26] = 2;
+
 		indices[27] = 5;
 		indices[28] = 1;
 		indices[29] = 2;

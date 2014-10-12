@@ -18,6 +18,7 @@
 #include <vector>
 #include <iostream>
 #include <tuple>
+#include <algorithm>
 
 #include "App.xaml.h"
 #include "Common\DirectXHelper.h"
