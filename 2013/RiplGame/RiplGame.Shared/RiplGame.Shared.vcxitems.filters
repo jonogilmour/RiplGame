@@ -23,6 +23,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)RiplGameMain.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Content\CommonFunctions.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MoveObject.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)HeightMap.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)pch.cpp" />
@@ -37,6 +38,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)RiplGameMain.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Content\CommonFunctions.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MoveObject.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)HeightMap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="$(MSBuildThisFileDirectory)Content\Shaders\Pixel\PixelShader.hlsl">
@@ -65,5 +67,8 @@
     <Filter Include="Content\Shaders\Vertex">
       <UniqueIdentifier>{336120ba-d843-44c4-9b73-d93122d4b155}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="$(MSBuildThisFileDirectory)heightmap.bmp" />
   </ItemGroup>
 </Project>
