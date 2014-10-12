@@ -7,17 +7,6 @@
 	bool loaded = false;
 } map;*/
 
-//#pragma pack(2)
-#pragma once
-// for whatever reason it's not reading it in :/
-typedef struct tagBITMAPFILEHEADER {
-	WORD	bfType;
-	DWORD	bfSize;
-	WORD	bfReserved1;
-	WORD	bfReserved2;
-	DWORD	bfOffBits;
-} BITMAPFILEHEADER, *PBITMAPFILEHEADER;
-
 HeightMapInfo* HeightMapLoad(char* fname)
 {
 	HeightMapInfo *hm = new HeightMapInfo();
