@@ -1,12 +1,5 @@
 #include "pch.h"
 
-/*struct HeightMapInfo {
-	int width;	// width of heightmap
-	int length;	// length of heightmap
-	XMFLOAT3 *heightmap;
-	bool loaded = false;
-} map;*/
-
 HeightMapInfo* HeightMapLoad(char* fname)
 {
 	HeightMapInfo *hm = new HeightMapInfo();
