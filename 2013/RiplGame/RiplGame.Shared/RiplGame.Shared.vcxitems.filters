@@ -68,4 +68,7 @@
       <UniqueIdentifier>{336120ba-d843-44c4-9b73-d93122d4b155}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="$(MSBuildThisFileDirectory)heightmap.bmp" />
+  </ItemGroup>
 </Project>
