@@ -14,6 +14,7 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Collision.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Content\CommonFunctions.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Content\MoveLookController.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Content\Objects\World\Landscape.cpp" />
@@ -24,6 +25,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Content\MoveLookController.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Content\Objects\World\Landscape.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Content\Structures\ShaderStructures.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Collision.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)HeightMap.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MoveObject.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)RiplGameMain.h" />
