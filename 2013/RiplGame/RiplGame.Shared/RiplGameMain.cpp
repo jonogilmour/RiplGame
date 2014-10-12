@@ -27,9 +27,10 @@ RiplGameMain::RiplGameMain(const std::shared_ptr<DX::DeviceResources>& deviceRes
 	CoreWindow::GetForCurrentThread()->PointerCursor = nullptr;
 
 	//HeightMapInfo* hm = new HeightMapInfo;
-	/*HeightMapInfo* hm = HeightMapLoad("heightmap.bmp");
-	string width = "width=";*/
-	//OutputDebugStringA(width.c_str());
+	HeightMapInfo* hm = HeightMapLoad("heightmap.bmp");
+	// Add breakpoint at this line to see heightmap values
+	string width = "width=";
+	OutputDebugStringA(width.c_str());
 
 }
 

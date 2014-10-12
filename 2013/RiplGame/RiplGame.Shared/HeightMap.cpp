@@ -1,5 +1,16 @@
 #include "pch.h"
-/*
+
+#pragma pack(2)
+// for whatever reason it's not reading it in :/
+typedef struct tagBITMAPFILEHEADER {
+	WORD	bfType;
+	DWORD	bfSize;
+	WORD	bfReserved1;
+	WORD	bfReserved2;
+	DWORD	bfOffBits;
+} BITMAPFILEHEADER, *PBITMAPFILEHEADER;
+
+
 HeightMapInfo* HeightMapLoad(char* fname)
 {
 	HeightMapInfo *hm = new HeightMapInfo();
@@ -78,7 +89,7 @@ HeightMapInfo* HeightMapLoad(char* fname)
 	}
 
 	// cleanup memory
-	delete[] bitmap;
+	//delete[] bitmap;
 
 	// heightmap successfully generated :D
 	hm->loaded = true;
@@ -86,4 +97,3 @@ HeightMapInfo* HeightMapLoad(char* fname)
 	// return HeightMapInfo pointer
 	return hm;
 }
-*/
