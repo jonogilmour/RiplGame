@@ -1,7 +1,12 @@
 #pragma once
+#include "pch.h"
 
+struct HeightMapInfo {
+	int width;  // width of heightmap
+	int length; // length of heightmap
+	XMFLOAT3 *heightmap;
+	bool loaded = false;
+} map;
 
-struct HeightMapInfo;
-
-void MakeHeightMap(char* fname, HeightMapInfo &hm);
-
+// generating height map function
+HeightMapInfo* HeightMapLoad(char *fname);

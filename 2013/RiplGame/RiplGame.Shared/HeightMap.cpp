@@ -1,12 +1,14 @@
 #include "pch.h"
 
-struct HeightMapInfo {
+/*struct HeightMapInfo {
 	int width;	// width of heightmap
 	int length;	// length of heightmap
 	XMFLOAT3 *heightmap;
 	bool loaded = false;
-};
+} map;*/
 
+//#pragma pack(2)
+#pragma once
 // for whatever reason it's not reading it in :/
 typedef struct tagBITMAPFILEHEADER {
 	WORD	bfType;
@@ -16,8 +18,11 @@ typedef struct tagBITMAPFILEHEADER {
 	DWORD	bfOffBits;
 } BITMAPFILEHEADER, *PBITMAPFILEHEADER;
 
-void MakeHeightMap(char* fname, HeightMapInfo &hm)
+HeightMapInfo* HeightMapLoad(char* fname)
 {
+	HeightMapInfo *hm = new HeightMapInfo();
+	assert(hm != NULL);
+
 	FILE *filepointer;
 	BITMAPFILEHEADER Header;	// info about bitmap file
 	BITMAPINFOHEADER Info;		// info about bitmap
@@ -27,7 +32,7 @@ void MakeHeightMap(char* fname, HeightMapInfo &hm)
 	errno_t errorCode = fopen_s(&filepointer, fname, "rb"); // read the file as a binary file
 	if (filepointer == NULL) {	// file did not open correctly
 		fclose(filepointer);
-		hm.loaded = false;
+		hm->loaded = false;
 	}
 
 	// file has opened successfully
@@ -39,12 +44,12 @@ void MakeHeightMap(char* fname, HeightMapInfo &hm)
 	fread(&Info, sizeof(BITMAPINFOHEADER), 1, filepointer);
 
 	// get the dimensions of bitmap so we can generate heightmap
-	hm.width = Info.biWidth;
-	hm.length = Info.biHeight;
+	hm->width = Info.biWidth;
+	hm->length = Info.biHeight;
 
 	// now calculate the size of bitmap in bytes
 	// use 3 as the multiplier (1 each for RGB) even if grayscale image
-	int bitmapSize = hm.width * hm.length * 3;
+	int bitmapSize = hm->width * hm->length * 3;
 
 	// create an array to store the bitmap data
 	unsigned char* bitmap = new unsigned char[bitmapSize];
@@ -60,7 +65,8 @@ void MakeHeightMap(char* fname, HeightMapInfo &hm)
 	fclose(filepointer);
 
 	// transfer data into heightmap struct
-	hm.heightmap = new XMFLOAT3[hm.width * hm.length];
+	hm->heightmap = new XMFLOAT3[hm->width * hm->length];
+	assert(hm->heightmap != NULL);
 
 	// keep track of position
 	int bitmapIndex = 0;
@@ -71,18 +77,18 @@ void MakeHeightMap(char* fname, HeightMapInfo &hm)
 
 	// create our heightmap from the bitmap data
 	// loop through the length/height of the map
-	for (int i = 0; i < hm.length; i++) {
+	for (int i = 0; i < hm->length; i++) {
 		// loop through the width of map
-		for (int k = 0; k < hm.width; k++) {
+		for (int k = 0; k < hm->width; k++) {
 			height = bitmap[bitmapIndex];
 
 			// index location = width + 2*length
-			heightIndex = k + (hm.length * i);
+			heightIndex = k + (hm->length * i);
 
 			// store the position and height data in heightmap
-			hm.heightmap[heightIndex].x = (float)k;
-			hm.heightmap[heightIndex].y = (float)height / factor;
-			hm.heightmap[heightIndex].z = (float)i;
+			hm->heightmap[heightIndex].x = (float)k;
+			hm->heightmap[heightIndex].y = (float)height / factor;
+			hm->heightmap[heightIndex].z = (float)i;
 			
 			// increment to next pixel (skip 2 other RGB components)
 			bitmapIndex += 3;
@@ -93,7 +99,8 @@ void MakeHeightMap(char* fname, HeightMapInfo &hm)
 	delete[] bitmap;
 
 	// heightmap successfully generated :D
-	hm.loaded = true;
+	hm->loaded = true;
+
+	// return HeightMapInfo pointer
+	return hm;
 }
-
-
