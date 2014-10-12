@@ -33,8 +33,8 @@ void SceneRenderer::Update(DX::StepTimer const& timer)
 
 	// Setup the constant buffer
 	m_constantBufferData.ambientColour = XMFLOAT4(0.1f, 0.1f, 0.1f, 1.0f);
-	m_constantBufferData.lightVector = XMFLOAT4(0, 1.0f, 0, 0);
-	m_constantBufferData.lightColour = XMFLOAT4(0.1f, 0.1f, 0.1f, 1.0f);
+	m_constantBufferData.lightVector = XMFLOAT4(1.0f, 0, 0, 0);
+	m_constantBufferData.lightColour = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	XMStoreFloat4x4(&m_constantBufferData.view, XMMatrixTranspose(XMMatrixLookAtLH(eye, at, up)));
 	XMStoreFloat4x4(&m_constantBufferData.model, XMMatrixTranspose(XMMatrixIdentity()));
 }
