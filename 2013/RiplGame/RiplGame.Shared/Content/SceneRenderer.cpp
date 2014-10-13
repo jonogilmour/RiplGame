@@ -33,8 +33,9 @@ void SceneRenderer::Update(DX::StepTimer const& timer)
 
 	// Setup the constant buffer
 	m_constantBufferData.ambientColour = XMFLOAT4(0.1f, 0.1f, 0.1f, 1.0f);
-	m_constantBufferData.lightVector = XMFLOAT4(1.0f, 0, 0, 0);
+	m_constantBufferData.lightVector = XMFLOAT4(0, -0.0001f, 0, 0);
 	m_constantBufferData.lightColour = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	XMStoreFloat4(&m_constantBufferData.eyeVector, eye);
 	XMStoreFloat4x4(&m_constantBufferData.view, XMMatrixTranspose(XMMatrixLookAtLH(eye, at, up)));
 	XMStoreFloat4x4(&m_constantBufferData.model, XMMatrixTranspose(XMMatrixIdentity()));
 }
@@ -217,8 +218,8 @@ void SceneRenderer::CreateDeviceDependentResources()
 	// Notice how we are &&ing the two tasks, which means we wait for both to completely finish, then we do...
 	auto createLandscapeTask = (createPSTask && createVSTask).then([this]() {
 
-		Landscape landscape(3, 3);
-		MoveObject moveObject(0.5,0.5,0.5);
+		Landscape landscape(10, 10);
+		MoveObject moveObject(0.5f,0.5f,0.5f);
 
 		// This creates the data (vertices) to put into the vertex buffer, and zeroes it
 		D3D11_SUBRESOURCE_DATA vertexBufferData = { 0 };

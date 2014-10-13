@@ -3,7 +3,7 @@
 #include "pch.h"
 
 #define ROTATION_GAIN 0.2f	// sensitivity adjustment for look controller
-#define MOVEMENT_GAIN 0.7f		// sensitivity adjustment for move controller
+#define MOVEMENT_GAIN 2.0f		// sensitivity adjustment for move controller
 
 using namespace Windows::UI::Core;
 using namespace Windows::System;
