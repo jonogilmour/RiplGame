@@ -133,16 +133,28 @@ void MoveObject::fillIndices() {
 	indices.push_back(6);
 }
 
-void MoveObject::incrementIndices(unsigned short amount) {
-	for (unsigned short x = 0; x < getIndexCount(); x++) {
-		indices[x] += amount;
-	}
-}
-
 uint32 MoveObject::getIndexCount() {
 	return indexCount;
 }
 
 uint32 MoveObject::getVertexCount() {
 	return vertexCount;
+}
+
+// Returns the location of the first index for this object in the large index array
+uint32 MoveObject::getStartIndexOffset() {
+	return startIndexOffset;
+}
+
+// Returns the location of the first vertex for this object in the large vertex array
+// This value should be set ass the third argument of DrawIndexed
+uint32 MoveObject::getStartVertexOffset() {
+	return startVertexOffset;
+}
+
+void MoveObject::setStartIndexOffset(uint32 value) {
+	startIndexOffset = value;
+}
+void MoveObject::setStartVertexOffset(uint32 value) {
+	startVertexOffset = value;
 }

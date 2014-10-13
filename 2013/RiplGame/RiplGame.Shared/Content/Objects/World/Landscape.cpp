@@ -88,3 +88,21 @@ uint32 Landscape::getIndexCount() {
 uint32 Landscape::getVertexCount() {
 	return vertexCount;
 }
+
+// Returns the location of the first index for this object in the large index array
+uint32 Landscape::getStartIndexOffset() {
+	return startIndexOffset;
+}
+
+// Returns the location of the first vertex for this object in the large vertex array
+// This value should be set ass the third argument of DrawIndexed
+uint32 Landscape::getStartVertexOffset() {
+	return startVertexOffset;
+}
+
+void Landscape::setStartIndexOffset(uint32 value) {
+	startIndexOffset = value;
+}
+void Landscape::setStartVertexOffset(uint32 value) {
+	startVertexOffset = value;
+}

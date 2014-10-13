@@ -13,6 +13,10 @@ namespace RiplGame
 		Landscape(unsigned short sideLengthZ, unsigned short sideLengthX);
 		uint32 getIndexCount();
 		uint32 getVertexCount();
+		uint32 getStartIndexOffset();
+		uint32 getStartVertexOffset();
+		void setStartIndexOffset(uint32 value);
+		void setStartVertexOffset(uint32 value);
 		std::vector<VertexPositionNormalColour> vertices;
 		std::vector<unsigned short> indices;
 
@@ -29,6 +33,8 @@ namespace RiplGame
 		ShaderCBuffer	constantBufferData;
 		uint32	indexCount;
 		uint32	vertexCount;
+		uint32 startIndexOffset;
+		uint32 startVertexOffset;
 
 		void fillVertices(unsigned short sideLengthZ, unsigned short sideLengthX, XMFLOAT3 colour);
 		void fillIndices(unsigned short sideLengthZ, unsigned short sideLengthX);

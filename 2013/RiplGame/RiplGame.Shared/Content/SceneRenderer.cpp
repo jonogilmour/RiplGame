@@ -37,7 +37,6 @@ void SceneRenderer::Update(DX::StepTimer const& timer)
 	m_constantBufferData.lightColour = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	XMStoreFloat4(&m_constantBufferData.eyeVector, eye);
 	XMStoreFloat4x4(&m_constantBufferData.view, XMMatrixTranspose(XMMatrixLookAtLH(eye, at, up)));
-	XMStoreFloat4x4(&m_constantBufferData.model, XMMatrixTranspose(XMMatrixIdentity()));
 }
 
 // Renders one frame using the vertex and pixel shaders.
@@ -130,12 +129,46 @@ void SceneRenderer::Render()
 		0
 		);
 
-	// Draws everything to screen according to everything set above
-	context->DrawIndexed(
-		m_indexCount,
-		0,
-		0
-		);
+	/* Shaders and buffers set. Begin draw calls */
+	for (int x = 0; x < staticObject_IndexCount.size(); x++) {
+		// First, set the model matrix to render the static object and update the constant buffer
+		XMStoreFloat4x4(&m_constantBufferData.model, XMMatrixTranspose(XMMatrixIdentity()));
+		context->UpdateSubresource(
+			m_constantBuffer.Get(),
+			0,
+			NULL,
+			&m_constantBufferData,
+			0,
+			0
+			);
+
+		// Draw the object
+		context->DrawIndexed(
+			staticObject_IndexCount[x],
+			staticObject_StartIndexOffset[x],
+			staticObject_StartVertexOffset[x]
+			);
+	}
+	
+	for (int x = 0; x < dynamicObject_IndexCount.size(); x++) {
+		// First, set the model matrix to render the static object and update the constant buffer
+		XMStoreFloat4x4(&m_constantBufferData.model, XMMatrixTranspose(XMMatrixTranslation(0,3,0)));
+		context->UpdateSubresource(
+			m_constantBuffer.Get(),
+			0,
+			NULL,
+			&m_constantBufferData,
+			0,
+			0
+			);
+
+		// Draw the object
+		context->DrawIndexed(
+			dynamicObject_IndexCount[x],
+			dynamicObject_StartIndexOffset[x],
+			dynamicObject_StartVertexOffset[x]
+			);
+	}
 }
 
 void SceneRenderer::CreateDeviceDependentResources()
@@ -259,11 +292,38 @@ void SceneRenderer::CreateDeviceDependentResources()
 		//static const unsigned short* indices = landscape.indices;
 		std::vector<unsigned short> indices;
 
+
+		/////////////////////////////
+		/* SETUP THE MODEL INDICES */
+		/////////////////////////////
+
+		/* 
+		In this section, every object's indices must be setup in the order you wish the render them. 
+		
+		This order must be preserved when calling the DrawIndexed() function to draw the objects in the Render() method.
+		
+		This allows objects to be moved independently of each other, by setting and resetting the world matrix before 
+		and after every draw call, respectively.
+		*/
+
+		//STATIC OBJECTS
+		// Insert the landscape
+		staticObject_StartIndexOffset.push_back(indices.size());
+		staticObject_StartVertexOffset.push_back(0);
+		staticObject_IndexCount.push_back(landscape.getIndexCount());
 		indices.insert(indices.end(), landscape.indices.begin(), landscape.indices.end());
 
-		moveObject.incrementIndices(landscape.getVertexCount());
-
+		//DYNAMIC OBJECTS
+		// Insert the moving object
+		dynamicObject_StartIndexOffset.push_back(indices.size());
+		dynamicObject_StartVertexOffset.push_back(landscape.getVertexCount());
+		dynamicObject_IndexCount.push_back(moveObject.getIndexCount());
 		indices.insert(indices.end(), moveObject.indices.begin(), moveObject.indices.end());
+		
+		////////////////////////
+		/* MODEL INDICES DONE */
+		////////////////////////
+
 
 		// Store the length of the index array
 		m_indexCount = landscape.getIndexCount() + moveObject.getIndexCount();

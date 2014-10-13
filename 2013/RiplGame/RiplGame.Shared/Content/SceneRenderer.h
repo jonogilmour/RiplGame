@@ -20,6 +20,14 @@ namespace RiplGame
 		void Render();
 		SceneRenderer();
 
+		// Vectors for storing draw-related values for static and dynamic objects
+		std::vector<uint32> staticObject_StartIndexOffset;
+		std::vector<uint32> dynamicObject_StartIndexOffset;
+		std::vector<uint32> staticObject_StartVertexOffset;
+		std::vector<uint32> dynamicObject_StartVertexOffset;
+		std::vector<uint32> staticObject_IndexCount;
+		std::vector<uint32> dynamicObject_IndexCount;
+
 	private:
 		// Cached pointer to device resources.
 		std::shared_ptr<DX::DeviceResources> m_deviceResources;
@@ -36,6 +44,8 @@ namespace RiplGame
 		uint32 m_indexCount;
 		ShaderCBuffer m_constantBufferData;
 		MoveLookController^ m_controller;
+
+		
 	};
 }
 
