@@ -5,6 +5,19 @@
 using namespace DirectX;
 namespace RiplGame {
 
+	struct Material
+	{
+		Material() { Ka = Kd = Ks = A = 0; }
+		Material(float ka, float kd, float ks, float a) :
+			Ka(ka),
+			Kd(kd),
+			Ks(ks),
+			A(a)
+		{}
+
+		float Ka, Kd, Ks, A;
+	};
+
 	// Constant buffer used to send MVP matrices to the vertex shader.
 	struct ShaderCBuffer
 	{
@@ -15,6 +28,7 @@ namespace RiplGame {
 		XMFLOAT4 ambientColour;
 		XMFLOAT4 lightVector;
 		XMFLOAT4 lightColour;
+		struct Material material;
 	};
 
 }

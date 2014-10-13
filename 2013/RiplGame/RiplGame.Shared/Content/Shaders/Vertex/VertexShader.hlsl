@@ -1,3 +1,7 @@
+struct Material
+{
+	float Ka, Kd, Ks, A;
+};
 
 cbuffer ShaderCBuffer : register(b0)
 {
@@ -15,7 +19,11 @@ cbuffer ShaderCBuffer : register(b0)
 	// Directional Light
 	float4 lightVector;
 	float4 lightColour;
+
+	// material characteristics
+	Material material;
 };
+
 
 // Per-vertex data used as input to the vertex shader.
 struct VertexShaderInput
@@ -34,13 +42,13 @@ struct PixelShaderInput
 };
 
 // Does blinn-phong lighting (more efficient)
-float4 calcLightingBP(float4 ambient_colour, float4 light_colour, float4 surface_normal, float4 view_vector, float4 halfway_vector, float4 light_vector)
+float4 calcLightingBP(Material m, float4 ambient_colour, float4 light_colour, float4 surface_normal, float4 view_vector, float4 halfway_vector, float4 light_vector)
 {
 	float specular_shine = 0.9f;
 
-	float4 Ia = ambient_colour;
-	float4 Id = saturate(dot(surface_normal, light_vector));
-	float4 Is = pow(saturate(dot(surface_normal, halfway_vector)), specular_shine);
+	float4 Ia = m.Ka * ambient_colour;
+	float4 Id = m.Kd * saturate(dot(surface_normal, light_vector));
+	float4 Is = m.Ks * pow(saturate(dot(surface_normal, halfway_vector)), m.A);
 
 	return Ia + (Id + Is) * light_colour;
 }
@@ -66,7 +74,7 @@ PixelShaderInput main(VertexShaderInput input)
 	normal = mul(normal, model);
 	output.norm = normal;
 
-	output.color = calcLightingBP(ambientColour, lightColour, normal, viewVector, halfVector, -lightVector);
+	output.color = calcLightingBP(material, ambientColour, lightColour, normal, viewVector, halfVector, -lightVector);
 	
 
 	return output;

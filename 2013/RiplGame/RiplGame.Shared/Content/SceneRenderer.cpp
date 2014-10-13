@@ -133,6 +133,7 @@ void SceneRenderer::Render()
 	for (int x = 0; x < staticObject_IndexCount.size(); x++) {
 		// First, set the model matrix to render the static object and update the constant buffer
 		XMStoreFloat4x4(&m_constantBufferData.model, XMMatrixTranspose(XMMatrixIdentity()));
+		m_constantBufferData.material = Material(1.0f, 1.0f, 1.0f, 1.0f);
 		context->UpdateSubresource(
 			m_constantBuffer.Get(),
 			0,
@@ -153,6 +154,7 @@ void SceneRenderer::Render()
 	for (int x = 0; x < dynamicObject_IndexCount.size(); x++) {
 		// First, set the model matrix to render the static object and update the constant buffer
 		XMStoreFloat4x4(&m_constantBufferData.model, XMMatrixTranspose(XMMatrixTranslation(0,3,0)));
+		m_constantBufferData.material = Material(0.5f, 0.5f, 0.5f, 0.5f);
 		context->UpdateSubresource(
 			m_constantBuffer.Get(),
 			0,
