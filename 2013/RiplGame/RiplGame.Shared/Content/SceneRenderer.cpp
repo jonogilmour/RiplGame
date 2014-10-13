@@ -129,11 +129,18 @@ void SceneRenderer::Render()
 		0
 		);
 
+	// Send the same constant buffer to the pixel shader
+	context->PSSetConstantBuffers(
+		0,
+		1,
+		m_constantBuffer.GetAddressOf()
+		);
+
 	/* Shaders and buffers set. Begin draw calls */
 	for (int x = 0; x < staticObject_IndexCount.size(); x++) {
 		// First, set the model matrix to render the static object and update the constant buffer
 		XMStoreFloat4x4(&m_constantBufferData.model, XMMatrixTranspose(XMMatrixIdentity()));
-		m_constantBufferData.material = Material(1.0f, 1.0f, 1.0f, 1.0f);
+		m_constantBufferData.material = Material(1.0f, 1.0f, 1.0f, 10.0f);
 		context->UpdateSubresource(
 			m_constantBuffer.Get(),
 			0,

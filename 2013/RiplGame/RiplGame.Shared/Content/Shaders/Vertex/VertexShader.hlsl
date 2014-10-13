@@ -38,20 +38,12 @@ struct PixelShaderInput
 {
 	float4 pos : SV_POSITION;
 	float4 norm : NORMAL;
-	float4 color : COLOR0;
+	//float4 color : COLOR0;
+	float4 hvector : TEXCOORD0;
+	float4 vvector : TEXCOORD1;
 };
 
-// Does blinn-phong lighting (more efficient)
-float4 calcLightingBP(Material m, float4 ambient_colour, float4 light_colour, float4 surface_normal, float4 view_vector, float4 halfway_vector, float4 light_vector)
-{
-	float specular_shine = 0.9f;
 
-	float4 Ia = m.Ka * ambient_colour;
-	float4 Id = m.Kd * saturate(dot(surface_normal, light_vector));
-	float4 Is = m.Ks * pow(saturate(dot(surface_normal, halfway_vector)), m.A);
-
-	return Ia + (Id + Is) * light_colour;
-}
 
 // Simple shader to do vertex processing on the GPU.
 PixelShaderInput main(VertexShaderInput input)
@@ -74,8 +66,8 @@ PixelShaderInput main(VertexShaderInput input)
 	normal = mul(normal, model);
 	output.norm = normal;
 
-	output.color = calcLightingBP(material, ambientColour, lightColour, normal, viewVector, halfVector, -lightVector);
-	
+	output.vvector = viewVector;
+	output.hvector = halfVector;
 
 	return output;
 }
