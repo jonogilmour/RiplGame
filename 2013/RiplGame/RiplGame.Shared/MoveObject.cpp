@@ -18,9 +18,9 @@ void MoveObject::fillVertices(float sideLengthZ, float sideLengthX, float sideLe
 	XMFLOAT3 vNormal = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	XMFLOAT3 vColour = colour;
 
-	vertexCount = 8;
+	vertexCount = 24;
 
-	
+	// TOP
 	XMFLOAT3 vPosition1 = XMFLOAT3(-float(sideLengthX) / 2, float(sideLengthY) / 2, -float(sideLengthZ) / 2);
 	vertices.push_back(VertexPositionNormalColour(vPosition1, vNormal, vColour));
 
@@ -33,17 +33,72 @@ void MoveObject::fillVertices(float sideLengthZ, float sideLengthX, float sideLe
 	XMFLOAT3 vPosition4 = XMFLOAT3(float(sideLengthX) / 2, float(sideLengthY) / 2, -float(sideLengthZ) / 2);
 	vertices.push_back(VertexPositionNormalColour(vPosition4, vNormal, vColour));
 	
-	XMFLOAT3 vPosition5 = XMFLOAT3(-float(sideLengthX) / 2, -float(sideLengthY) / 2, -float(sideLengthZ) / 2);
-	vertices.push_back(VertexPositionNormalColour(vPosition5, vNormal, vColour));
+	
 
-	XMFLOAT3 vPosition6 = XMFLOAT3(-float(sideLengthX) / 2, -float(sideLengthY) / 2, float(sideLengthZ) / 2);
-	vertices.push_back(VertexPositionNormalColour(vPosition6, vNormal, vColour));
+	// LEFT
+	vPosition1 = XMFLOAT3(-float(sideLengthX) / 2, -float(sideLengthY) / 2, float(sideLengthZ) / 2);
+	vertices.push_back(VertexPositionNormalColour(vPosition1, vNormal, vColour));
 
-	XMFLOAT3 vPosition7 = XMFLOAT3(float(sideLengthX) / 2, -float(sideLengthY) / 2, float(sideLengthZ) / 2);
-	vertices.push_back(VertexPositionNormalColour(vPosition7, vNormal, vColour));
+	vPosition2 = XMFLOAT3(-float(sideLengthX) / 2, float(sideLengthY) / 2, float(sideLengthZ) / 2);
+	vertices.push_back(VertexPositionNormalColour(vPosition2, vNormal, vColour));
 
-	XMFLOAT3 vPosition8 = XMFLOAT3(float(sideLengthX) / 2, -float(sideLengthY) / 2, -float(sideLengthZ) / 2);
-	vertices.push_back(VertexPositionNormalColour(vPosition8, vNormal, vColour));
+	vPosition3 = XMFLOAT3(-float(sideLengthX) / 2, float(sideLengthY) / 2, -float(sideLengthZ) / 2);
+	vertices.push_back(VertexPositionNormalColour(vPosition3, vNormal, vColour));
+
+	vPosition4 = XMFLOAT3(-float(sideLengthX) / 2, -float(sideLengthY) / 2, -float(sideLengthZ) / 2);
+	vertices.push_back(VertexPositionNormalColour(vPosition4, vNormal, vColour));
+
+	// RIGHT
+	vPosition1 = XMFLOAT3(float(sideLengthX) / 2, -float(sideLengthY) / 2, -float(sideLengthZ) / 2);
+	vertices.push_back(VertexPositionNormalColour(vPosition1, vNormal, vColour));
+
+	vPosition2 = XMFLOAT3(float(sideLengthX) / 2, float(sideLengthY) / 2, -float(sideLengthZ) / 2);
+	vertices.push_back(VertexPositionNormalColour(vPosition2, vNormal, vColour));
+
+	vPosition3 = XMFLOAT3(float(sideLengthX) / 2, float(sideLengthY) / 2, float(sideLengthZ) / 2);
+	vertices.push_back(VertexPositionNormalColour(vPosition3, vNormal, vColour));
+
+	vPosition4 = XMFLOAT3(float(sideLengthX) / 2, -float(sideLengthY) / 2, float(sideLengthZ) / 2);
+	vertices.push_back(VertexPositionNormalColour(vPosition4, vNormal, vColour));
+
+	// BACK
+	vPosition1 = XMFLOAT3(float(sideLengthX) / 2, -float(sideLengthY) / 2, float(sideLengthZ) / 2);
+	vertices.push_back(VertexPositionNormalColour(vPosition1, vNormal, vColour));
+
+	vPosition2 = XMFLOAT3(float(sideLengthX) / 2, float(sideLengthY) / 2, float(sideLengthZ) / 2);
+	vertices.push_back(VertexPositionNormalColour(vPosition2, vNormal, vColour));
+
+	vPosition3 = XMFLOAT3(-float(sideLengthX) / 2, float(sideLengthY) / 2, float(sideLengthZ) / 2);
+	vertices.push_back(VertexPositionNormalColour(vPosition3, vNormal, vColour));
+
+	vPosition4 = XMFLOAT3(-float(sideLengthX) / 2, -float(sideLengthY) / 2, float(sideLengthZ) / 2);
+	vertices.push_back(VertexPositionNormalColour(vPosition4, vNormal, vColour));
+
+	// FRONT
+	vPosition1 = XMFLOAT3(-float(sideLengthX) / 2, -float(sideLengthY) / 2, -float(sideLengthZ) / 2);
+	vertices.push_back(VertexPositionNormalColour(vPosition1, vNormal, vColour));
+
+	vPosition2 = XMFLOAT3(-float(sideLengthX) / 2, float(sideLengthY) / 2, -float(sideLengthZ) / 2);
+	vertices.push_back(VertexPositionNormalColour(vPosition2, vNormal, vColour));
+
+	vPosition3 = XMFLOAT3(float(sideLengthX) / 2, float(sideLengthY) / 2, -float(sideLengthZ) / 2);
+	vertices.push_back(VertexPositionNormalColour(vPosition3, vNormal, vColour));
+
+	vPosition4 = XMFLOAT3(float(sideLengthX) / 2, -float(sideLengthY) / 2, -float(sideLengthZ) / 2);
+	vertices.push_back(VertexPositionNormalColour(vPosition4, vNormal, vColour));
+
+	// BOTTOM
+	vPosition1 = XMFLOAT3(-float(sideLengthX) / 2, -float(sideLengthY) / 2, -float(sideLengthZ) / 2);
+	vertices.push_back(VertexPositionNormalColour(vPosition1, vNormal, vColour));
+
+	vPosition2 = XMFLOAT3(-float(sideLengthX) / 2, -float(sideLengthY) / 2, float(sideLengthZ) / 2);
+	vertices.push_back(VertexPositionNormalColour(vPosition2, vNormal, vColour));
+
+	vPosition3 = XMFLOAT3(float(sideLengthX) / 2, -float(sideLengthY) / 2, float(sideLengthZ) / 2);
+	vertices.push_back(VertexPositionNormalColour(vPosition3, vNormal, vColour));
+
+	vPosition4 = XMFLOAT3(float(sideLengthX) / 2, -float(sideLengthY) / 2, -float(sideLengthZ) / 2);
+	vertices.push_back(VertexPositionNormalColour(vPosition4, vNormal, vColour));
 
 	// Calculate and average the normals
 	for (unsigned int x = 0; x < getIndexCount() / 3; x++) {
@@ -76,61 +131,25 @@ void MoveObject::fillIndices() {
 	indexCount = 36;
 	indices.reserve(indexCount);
 
-	int x = 0;
+	for (int x = 0; x < 20; x += 4) {
+		indices.push_back(x);
+		indices.push_back(x + 1);
+		indices.push_back(x + 2);
 
-	// TOP
-	indices.push_back(0);
-	indices.push_back(1);
-	indices.push_back(2);
-
-	indices.push_back(0);
-	indices.push_back(2);
-	indices.push_back(3);
-	
-	// FRONT
-	indices.push_back(4);
-	indices.push_back(0);
-	indices.push_back(3);
-
-	indices.push_back(4);
-	indices.push_back(3);
-	indices.push_back(7);
+		indices.push_back(x);
+		indices.push_back(x + 2);
+		indices.push_back(x + 3);
+	}
 
 	// BOTTOM
-	indices.push_back(4);
-	indices.push_back(6);
-	indices.push_back(5);
+	indices.push_back(20);
+	indices.push_back(22);
+	indices.push_back(21);
 
-	indices.push_back(4);
-	indices.push_back(7);
-	indices.push_back(6);
-
-	// BACK
-	indices.push_back(6);
-	indices.push_back(2);
-	indices.push_back(1);
-
-	indices.push_back(6);
-	indices.push_back(1);
-	indices.push_back(5);
-
-	// LEFT
-	indices.push_back(5);
-	indices.push_back(1);
-	indices.push_back(0);
-
-	indices.push_back(5);
-	indices.push_back(0);
-	indices.push_back(4);
-
-	// RIGHT
-	indices.push_back(7);
-	indices.push_back(3);
-	indices.push_back(2);
-
-	indices.push_back(7);
-	indices.push_back(2);
-	indices.push_back(6);
+	indices.push_back(20);
+	indices.push_back(23);
+	indices.push_back(22);
+	
 }
 
 uint32 MoveObject::getIndexCount() {
