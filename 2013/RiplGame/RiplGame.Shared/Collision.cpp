@@ -26,7 +26,7 @@
 //}
 
 //// Inside main call. i assume RiplGameMain.cpp?
-//XMFLOAT3 cameraPos = camPos(); //Position of the camera
+//XMFLOAT3 cameraPos = camPosition(); //Position of the camera
 //if (spheresphereCollision(cameraPos, 3.0, XMFLOAT3(0.0f, 0.0f, 0.0f), 3.0)
 //{ //the radius are just a guess atm.
 //	cout << "Collision Detected!\n"; 

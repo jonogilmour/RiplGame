@@ -15,7 +15,7 @@ namespace RiplGame {
 	{
 	private:
 		// properties of the controller object
-		XMFLOAT3 m_position, m_lookat, m_upaxis;
+		XMFLOAT3 m_position, m_lookat, m_upaxis, m_camPosition;
 		float m_pitch, m_yaw;			// orientation euler angles in radians
 
 		// properties of the Move control
@@ -93,6 +93,10 @@ namespace RiplGame {
 
 		XMFLOAT3 computeRAxis();
 		XMFLOAT3 computeDirection();
+
+		XMFLOAT3 camPosition();
+
+		void moveTo(XMFLOAT3 center);
 
 	};  // class MoveLookController
 }

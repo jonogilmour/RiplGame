@@ -225,6 +225,22 @@ XMFLOAT3 computeUpAxis(XMFLOAT3 r, XMFLOAT3 l) {
 	return returnVal;
 }
 
+XMFLOAT3 MoveLookController::camPosition(){
+
+	auto camX = m_position.x;
+	auto camY = m_position.y;
+	auto camZ = m_position.z;
+
+	return (XMFLOAT3(camX, camY, camZ));
+}
+
+void MoveLookController::moveTo(XMFLOAT3 center){
+
+	m_position.x = center.x;
+	m_position.y = center.y;
+	m_position.z = center.z;
+}
+
 void MoveLookController::Update(CoreWindow ^window, float timeDelta)
 {
 	deltaTime = timeDelta;
