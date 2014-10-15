@@ -8,7 +8,5 @@ struct HeightMapInfo {
 	bool loaded = false;
 } map;
 
-
-
 // generating height map function
 void HeightMapLoad(char *fname, HeightMapInfo *hm);

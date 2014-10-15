@@ -89,7 +89,7 @@ void HeightMapLoad(char* fname, HeightMapInfo *hm)
 	}
 
 	// cleanup memory
-	//delete[] bitmap;
+	delete[] bitmap;
 
 	// heightmap successfully generated :D
 	hm->loaded = true;
