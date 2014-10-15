@@ -14,7 +14,7 @@ typedef struct tagBITMAPFILEHEADER {
 void HeightMapLoad(char* fname, HeightMapInfo *hm)
 {
 	//HeightMapInfo *hm = new HeightMapInfo();
-	assert(hm != NULL);
+	assert(hm != nullptr);
 
 	FILE *filepointer;
 	BITMAPFILEHEADER Header;	// info about bitmap file
