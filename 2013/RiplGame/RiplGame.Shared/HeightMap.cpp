@@ -11,9 +11,9 @@ typedef struct tagBITMAPFILEHEADER {
 } BITMAPFILEHEADER, *PBITMAPFILEHEADER;
 
 
-HeightMapInfo* HeightMapLoad(char* fname)
+void HeightMapLoad(char* fname, HeightMapInfo *hm)
 {
-	HeightMapInfo *hm = new HeightMapInfo();
+	//HeightMapInfo *hm = new HeightMapInfo();
 	assert(hm != NULL);
 
 	FILE *filepointer;
@@ -95,5 +95,5 @@ HeightMapInfo* HeightMapLoad(char* fname)
 	hm->loaded = true;
 
 	// return HeightMapInfo pointer
-	return hm;
+	//return hm;
 }

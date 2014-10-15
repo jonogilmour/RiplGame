@@ -11,4 +11,4 @@ struct HeightMapInfo {
 
 
 // generating height map function
-HeightMapInfo* HeightMapLoad(char *fname);
+void HeightMapLoad(char *fname, HeightMapInfo *hm);
