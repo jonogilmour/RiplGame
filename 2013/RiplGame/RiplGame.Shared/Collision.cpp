@@ -1,5 +1,5 @@
 #include "pch.h"
-
+#include "Content\CommonFunctions.h"
 //If this works, when we try looking inside the box object we have right now, the camera should stop just outside the surface.
 
 
@@ -45,26 +45,24 @@ float pointdistance(XMFLOAT3 c1, XMFLOAT3 c2)
 	return (vec.x*vec.x + vec.y*vec.y + vec.z*vec.z);
 }
 
-bool spheresphereCollision(XMFLOAT3& center1, float r1, XMFLOAT3 center2, float r2)
+bool spheresphereCollision(XMFLOAT3* center1, float r1, XMFLOAT3 center2, float r2)
 {
-	float dist = pointdistance(center1, center2);
+	float dist = pointdistance(*center1, center2);
 	//Compare the distance
-	if (dist <= (r1 + r2) * (r1 + r2)){
+	if (dist <= (r1 + r2) * (r1 + r2)) {
 		//If they is a collision, there will be a overlapping value, we will want to move one of the objects back
 		//by the overlap value before the next render.
 		float overlap = sqrt(dist) - (r1 + r2);
-		XMFLOAT3 vector(center2.x - center1.x, center2.y - center1.y, center2.z - center1.z);
-		//GEt the length of this vector to normaliseeeeee
-		float length = sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z);
-		vector.x /= length;
-		vector.y /= length;                         // now we have a normalised vector from point center 1 to center 2.
-		vector.z /= length;
+		XMFLOAT3 vector(center2.x - center1->x, center2.y - center1->y, center2.z - center1->z);
+		
+		// Normalise this vector
+		normalizeF3(&vector);
 
 		// now have to calculate the new center coordinate. 
-		center1.x = center1.x + vector.x * overlap;
-		center1.y = center1.y + vector.y * overlap;
-		center1.z = center1.z + vector.z * overlap;
-		return 1;
+		center1->x = center1->x + vector.x * overlap;
+		center1->y = center1->y + vector.y * overlap;
+		center1->z = center1->z + vector.z * overlap;
+		return true;
 	}
-	return 0;
+	return false;
 }

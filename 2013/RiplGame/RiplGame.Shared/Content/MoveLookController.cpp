@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Content\CommonFunctions.h"
+#include "Collision.h"
 
 void MoveLookController::Initialize(_In_ CoreWindow^ window)
 {
@@ -315,6 +316,8 @@ void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4*
 
 	// integrate
 	m_position = XMFLOAT3(m_position.x + command.x, m_position.y + command.y, m_position.z + command.z);
+	// Sample collision for origin
+	spheresphereCollision(&m_position, 0.5, XMFLOAT3(0,0,0), 0.5);
 	m_lookat = XMFLOAT3(m_position.x + dir.x, m_position.y + dir.y, m_position.z + dir.z);
 	m_upaxis = up_axis;
 
@@ -344,5 +347,11 @@ void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4*
 		if (obj_down) {
 			moveObjectTransform->_24 -= (timeDelta * MOVEMENT_GAIN);
 		}
+
+		// Save new centre point
+		XMFLOAT3 centre(moveObjectTransform->_14, moveObjectTransform->_24, moveObjectTransform->_34);
+		// Save new coordinates into F3
+		// Detect collisions, which may alter F3
+		// If true, apply F3 to MOT
 	}
 }
