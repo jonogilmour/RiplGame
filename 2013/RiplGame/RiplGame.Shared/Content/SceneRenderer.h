@@ -27,6 +27,8 @@ namespace RiplGame
 		std::vector<uint32> dynamicObject_StartVertexOffset;
 		std::vector<uint32> staticObject_IndexCount;
 		std::vector<uint32> dynamicObject_IndexCount;
+		std::vector<XMFLOAT4X4> staticObject_Transforms;
+		std::vector<XMFLOAT4X4> dynamicObject_Transforms;
 
 	private:
 		// Cached pointer to device resources.

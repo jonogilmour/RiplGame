@@ -4,6 +4,7 @@
 
 #define ROTATION_GAIN 0.2f	// sensitivity adjustment for look controller
 #define MOVEMENT_GAIN 2.0f		// sensitivity adjustment for move controller
+#define OBJ_MOVEMENT_GAIN 2.0f
 
 using namespace Windows::UI::Core;
 using namespace Windows::System;
@@ -34,6 +35,8 @@ namespace RiplGame {
 		bool m_forward, m_back;			// states for movement
 		bool m_left, m_right;
 		bool m_up, m_down;
+
+		bool obj_up, obj_down, obj_fwd, obj_back, obj_left, obj_rght;
 
 		float deltaTime;
 
@@ -89,7 +92,7 @@ namespace RiplGame {
 
 		XMFLOAT3 get_UpAxis();
 
-		void Update(Windows::UI::Core::CoreWindow^ window, float timeDelta);
+		void Update(Windows::UI::Core::CoreWindow^ window, float timeDelta, XMFLOAT4X4* moveObjectTransform);
 
 		XMFLOAT3 computeRAxis();
 		XMFLOAT3 computeDirection();

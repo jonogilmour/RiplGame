@@ -24,8 +24,8 @@ m_deviceResources(deviceResources)
 // Called once per frame, rotates the cube and calculates the model and view matrices.
 void SceneRenderer::Update(DX::StepTimer const& timer)
 {
-	// Update all controller events
-	m_controller->Update(CoreWindow::GetForCurrentThread(), timer.GetElapsedSeconds());
+	if (!(dynamicObject_Transforms.size() < 1))	m_controller->Update(CoreWindow::GetForCurrentThread(), timer.GetElapsedSeconds(), &dynamicObject_Transforms[0]);
+	else m_controller->Update(CoreWindow::GetForCurrentThread(), timer.GetElapsedSeconds(), nullptr);
 
 	XMVECTOR eye = XMLoadFloat3(&m_controller->get_Position());
 	XMVECTOR at = XMLoadFloat3(&m_controller->get_LookAt());
@@ -140,7 +140,9 @@ void SceneRenderer::Render()
 	for (int x = 0; x < staticObject_IndexCount.size(); x++) {
 		// First, set the model matrix to render the static object and update the constant buffer
 		XMStoreFloat4x4(&m_constantBufferData.model, XMMatrixTranspose(XMMatrixIdentity()));
+
 		m_constantBufferData.material = Material(1.0f, 1.0f, 1.0f, 5.0f);
+
 		context->UpdateSubresource(
 			m_constantBuffer.Get(),
 			0,
@@ -156,12 +158,19 @@ void SceneRenderer::Render()
 			staticObject_StartIndexOffset[x],
 			staticObject_StartVertexOffset[x]
 			);
+
+		// Reset model matrix
+		XMStoreFloat4x4(&m_constantBufferData.model, XMMatrixTranspose(XMMatrixIdentity()));
 	}
-	
+
 	for (int x = 0; x < dynamicObject_IndexCount.size(); x++) {
+
 		// First, set the model matrix to render the static object and update the constant buffer
-		XMStoreFloat4x4(&m_constantBufferData.model, XMMatrixTranspose(XMMatrixTranslation(0,3,0)));
+		if (dynamicObject_Transforms.size() > 0) {
+			memcpy(&m_constantBufferData.model, &dynamicObject_Transforms[x], sizeof(XMFLOAT4X4));
+		}
 		m_constantBufferData.material = Material(1.0f, 1.0f, 1.0f, 10.0f);
+
 		context->UpdateSubresource(
 			m_constantBuffer.Get(),
 			0,
@@ -177,6 +186,9 @@ void SceneRenderer::Render()
 			dynamicObject_StartIndexOffset[x],
 			dynamicObject_StartVertexOffset[x]
 			);
+
+		// Reset model matrix
+		XMStoreFloat4x4(&m_constantBufferData.model, XMMatrixTranspose(XMMatrixIdentity()));
 	}
 }
 
@@ -315,12 +327,16 @@ void SceneRenderer::CreateDeviceDependentResources()
 		and after every draw call, respectively.
 		*/
 
+		XMFLOAT4X4 tempMatrix;
+		XMStoreFloat4x4(&tempMatrix, XMMatrixIdentity());
+
 		//STATIC OBJECTS
 		// Insert the landscape
 		staticObject_StartIndexOffset.push_back(indices.size());
 		staticObject_StartVertexOffset.push_back(0);
 		staticObject_IndexCount.push_back(landscape.getIndexCount());
 		indices.insert(indices.end(), landscape.indices.begin(), landscape.indices.end());
+		staticObject_Transforms.push_back(tempMatrix);
 
 		//DYNAMIC OBJECTS
 		// Insert the moving object
@@ -328,6 +344,7 @@ void SceneRenderer::CreateDeviceDependentResources()
 		dynamicObject_StartVertexOffset.push_back(landscape.getVertexCount());
 		dynamicObject_IndexCount.push_back(moveObject.getIndexCount());
 		indices.insert(indices.end(), moveObject.indices.begin(), moveObject.indices.end());
+		dynamicObject_Transforms.push_back(tempMatrix);
 		
 		////////////////////////
 		/* MODEL INDICES DONE */

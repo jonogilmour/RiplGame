@@ -100,7 +100,7 @@ void MoveLookController::OnKeyDown(
 	Windows::System::VirtualKey Key;
 	Key = args->VirtualKey;
 
-	// figure out the command from the keyboard
+	// CAMERA
 	if (Key == VirtualKey::W)		// forward
 		m_forward = true;
 	if (Key == VirtualKey::S)		// back
@@ -113,6 +113,20 @@ void MoveLookController::OnKeyDown(
 		m_up = true;
 	if (Key == VirtualKey::Control)		// down
 		m_down = true;
+
+	// OBJECT
+	if (Key == VirtualKey::PageDown)		// down
+		obj_down = true;
+	if (Key == VirtualKey::PageUp)		// up
+		obj_up = true;
+	if (Key == VirtualKey::Up)		// forward
+		obj_fwd = true;
+	if (Key == VirtualKey::Down)		// back
+		obj_back = true;
+	if (Key == VirtualKey::Left)		// left
+		obj_left = true;
+	if (Key == VirtualKey::Right)		// right
+		obj_rght = true;
 		
 }
 
@@ -123,7 +137,7 @@ void MoveLookController::OnKeyUp(
 	Windows::System::VirtualKey Key;
 	Key = args->VirtualKey;
 
-	// figure out the command from the keyboard
+	// CAMERA
 	if (Key == VirtualKey::W)		// forward
 		m_forward = false;
 	if (Key == VirtualKey::S)		// back
@@ -136,6 +150,20 @@ void MoveLookController::OnKeyUp(
 		m_up = false;
 	if (Key == VirtualKey::Control)		// down
 		m_down = false;
+
+	// OBJECT
+	if (Key == VirtualKey::PageDown)		// down
+		obj_down = false;
+	if (Key == VirtualKey::PageUp)		// up
+		obj_up = false;
+	if (Key == VirtualKey::Up)		// forward
+		obj_fwd = false;
+	if (Key == VirtualKey::Down)		// back
+		obj_back = false;
+	if (Key == VirtualKey::Left)		// left
+		obj_left = false;
+	if (Key == VirtualKey::Right)		// right
+		obj_rght = false;
 }
 
 void MoveLookController::OnMouseMoved(
@@ -241,7 +269,7 @@ void MoveLookController::moveTo(XMFLOAT3 center){
 	m_position.z = center.z;
 }
 
-void MoveLookController::Update(CoreWindow ^window, float timeDelta)
+void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4* moveObjectTransform)
 {
 	deltaTime = timeDelta;
 	XMFLOAT3 dir = computeDirection();
@@ -294,4 +322,27 @@ void MoveLookController::Update(CoreWindow ^window, float timeDelta)
 	// clear movement input accumulator for use during next frame
 	m_moveCommand = XMFLOAT3(0.0f, 0.0f, 0.0f);
 
+
+	// OBJECT MOVEMENT
+	if (moveObjectTransform != nullptr) {
+
+		if (obj_fwd) {
+			moveObjectTransform->_34 += (timeDelta * OBJ_MOVEMENT_GAIN);
+		}
+		if (obj_back) {
+			moveObjectTransform->_34 -= (timeDelta * OBJ_MOVEMENT_GAIN);
+		}
+		if (obj_left){
+			moveObjectTransform->_14 -= (timeDelta * OBJ_MOVEMENT_GAIN);
+		}
+		if (obj_rght) {
+			moveObjectTransform->_14 += (timeDelta * OBJ_MOVEMENT_GAIN);
+		}
+		if (obj_up) {
+			moveObjectTransform->_24 += (timeDelta * OBJ_MOVEMENT_GAIN);
+		}
+		if (obj_down) {
+			moveObjectTransform->_24 -= (timeDelta * MOVEMENT_GAIN);
+		}
+	}
 }
