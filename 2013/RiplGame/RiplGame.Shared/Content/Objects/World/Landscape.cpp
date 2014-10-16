@@ -46,7 +46,7 @@ void Landscape::fillVertices(unsigned short sideLengthZ, unsigned short sideLeng
 		for (unsigned short x = 0; x < sideLengthX; x++) {
 			xPos = float(x) - float(sideLengthX - 1) / 2.0f;
 			height = GetHeightAtLocation(hm, x, z);
-			XMFLOAT3 vPosition = XMFLOAT3(xPos + float(sideLengthX - 1) / 2.0f, height, zPos + float(sideLengthZ - 1) / 2.0f);
+			XMFLOAT3 vPosition = XMFLOAT3(xPos, height, zPos);
 			XMFLOAT3 vNormal = XMFLOAT3(0.0f, 0.0f, 0.0f);
 			XMFLOAT3 vColour = colour;
 			vertices.push_back(VertexPositionNormalColour(vPosition, vNormal, vColour));
