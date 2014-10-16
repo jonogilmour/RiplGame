@@ -19,7 +19,7 @@ void HeightMapLoad(char* fname, HeightMapInfo *hm)
 	FILE *filepointer;
 	BITMAPFILEHEADER Header;	// info about bitmap file
 	BITMAPINFOHEADER Info;		// info about bitmap
-	float factor = 2.0f;		// divide bitmap "height" to get more realistic edges
+	float factor = 10.0f;		// divide bitmap "height" to get more realistic edges
 
 	// first open the file
 	errno_t errorCode = fopen_s(&filepointer, fname, "rb"); // read the file as a binary file
