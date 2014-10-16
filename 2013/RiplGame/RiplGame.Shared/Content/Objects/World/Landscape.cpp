@@ -18,7 +18,7 @@ Landscape::Landscape(unsigned short sideLengthZ, unsigned short sideLengthX) {
 // Fills a vertex array for a rectangular landscape
 void Landscape::fillVertices(unsigned short sideLengthZ, unsigned short sideLengthX, XMFLOAT3 colour) {
 	HeightMapInfo* hm = new HeightMapInfo;
-	HeightMapLoad("heightmap_small.bmp", hm);
+	HeightMapLoad("heightmap_medium.bmp", hm);
 
 	// If you want to use the current HeightMapInfo structure:.
 	// Access height at (x, z) with:

@@ -274,7 +274,7 @@ void SceneRenderer::CreateDeviceDependentResources()
 
 		// make it same as bitmap
 		//Landscape landscape(10, 10);
-		Landscape landscape(16, 16);
+		Landscape landscape(64, 64);
 		MoveObject moveObject(0.5f,0.5f,0.5f);
 
 		// This creates the data (vertices) to put into the vertex buffer, and zeroes it

@@ -73,5 +73,6 @@
   <ItemGroup>
     <Image Include="$(MSBuildThisFileDirectory)heightmap.bmp" />
     <Image Include="$(MSBuildThisFileDirectory)heightmap_small.bmp" />
+    <Image Include="$(MSBuildThisFileDirectory)heightmap_medium.bmp" />
   </ItemGroup>
 </Project>
