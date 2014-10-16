@@ -74,5 +74,7 @@
     <Image Include="$(MSBuildThisFileDirectory)heightmap.bmp" />
     <Image Include="$(MSBuildThisFileDirectory)heightmap_small.bmp" />
     <Image Include="$(MSBuildThisFileDirectory)heightmap_medium.bmp" />
+    <Image Include="$(MSBuildThisFileDirectory)..\..\..\..\..\..\Downloads\hm256.bmp" />
+    <Image Include="$(MSBuildThisFileDirectory)..\..\..\..\..\..\Downloads\hmlge.bmp" />
   </ItemGroup>
 </Project>
