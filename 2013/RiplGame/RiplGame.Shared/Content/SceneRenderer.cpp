@@ -272,7 +272,9 @@ void SceneRenderer::CreateDeviceDependentResources()
 	// Notice how we are &&ing the two tasks, which means we wait for both to completely finish, then we do...
 	auto createLandscapeTask = (createPSTask && createVSTask).then([this]() {
 
-		Landscape landscape(10, 10);
+		// make it same as bitmap
+		//Landscape landscape(10, 10);
+		Landscape landscape(16, 16);
 		MoveObject moveObject(0.5f,0.5f,0.5f);
 
 		// This creates the data (vertices) to put into the vertex buffer, and zeroes it

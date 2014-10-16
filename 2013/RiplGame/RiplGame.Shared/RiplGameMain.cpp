@@ -25,32 +25,6 @@ RiplGameMain::RiplGameMain(const std::shared_ptr<DX::DeviceResources>& deviceRes
 	m_timer.SetTargetElapsedSeconds(1.0 / 60);
 	
 	CoreWindow::GetForCurrentThread()->PointerCursor = nullptr;
-
-	//HeightMapInfo* hm = new HeightMapInfo;
-	//HeightMapInfo* hm = HeightMapLoad("heightmap.bmp");
-	HeightMapInfo* hm = new HeightMapInfo;
-	HeightMapLoad("heightmap.bmp", hm);
-
-	// If you want to use the current HeightMapInfo structure:.
-	// Access height at (x, z) with:
-	// hm->heightmap[x + (z * hm->length)].y
-
-	// HeightMapInfo converted to 2d array for Jono
-	float** heightmap = new float*[hm->length];
-	for (int i = 0; i < hm->width; ++i){
-		heightmap[i] = new float[hm->width];
-	}
-
-	// Set heightmap values
-	for (int z = 0; z < hm->length; ++z){
-		for (int x = 0; x < hm->width; ++x) {
-			heightmap[z][x] = GetHeightAtLocation(hm, x, z);
-		}
-	}
-
-	// Add breakpoint at this line to see heightmap values
-	string width = "width=";
-	OutputDebugStringA(width.c_str());
 }
 
 // The tilde (~) means this is the DESTRUCTOR, or denitialiser

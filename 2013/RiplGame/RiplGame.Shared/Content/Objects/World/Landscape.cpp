@@ -17,14 +17,36 @@ Landscape::Landscape(unsigned short sideLengthZ, unsigned short sideLengthX) {
 
 // Fills a vertex array for a rectangular landscape
 void Landscape::fillVertices(unsigned short sideLengthZ, unsigned short sideLengthX, XMFLOAT3 colour) {
+	HeightMapInfo* hm = new HeightMapInfo;
+	HeightMapLoad("heightmap_small.bmp", hm);
+
+	// If you want to use the current HeightMapInfo structure:.
+	// Access height at (x, z) with:
+	// hm->heightmap[x + (z * hm->length)].y
+
+	// HeightMapInfo converted to 2d array for Jono
+	//float** heightmap = new float*[hm->length];
+	//for (int i = 0; i < hm->width; ++i){
+	//	heightmap[i] = new float[hm->width];
+	//}
+
+	// Set heightmap values
+	//for (int z = 0; z < hm->length; ++z){
+	//	for (int x = 0; x < hm->width; ++x) {
+	//		heightmap[z][x] = GetHeightAtLocation(hm, x, z);
+	//	}
+	//}
+
 	float zPos;
+	float height;
 	float xPos;
 
 	for (unsigned short z = 0; z < sideLengthZ; z++) {
 		zPos = float(z) - float(sideLengthZ - 1) / 2.0f;
 		for (unsigned short x = 0; x < sideLengthX; x++) {
 			xPos = float(x) - float(sideLengthX - 1) / 2.0f;
-			XMFLOAT3 vPosition = XMFLOAT3(xPos, 0.0f, zPos);
+			height = GetHeightAtLocation(hm, x, z);
+			XMFLOAT3 vPosition = XMFLOAT3(xPos + float(sideLengthX - 1) / 2.0f, height, zPos + float(sideLengthZ - 1) / 2.0f);
 			XMFLOAT3 vNormal = XMFLOAT3(0.0f, 0.0f, 0.0f);
 			XMFLOAT3 vColour = colour;
 			vertices.push_back(VertexPositionNormalColour(vPosition, vNormal, vColour));

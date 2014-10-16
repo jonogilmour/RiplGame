@@ -73,7 +73,8 @@ void HeightMapLoad(char* fname, HeightMapInfo *hm)
 	for (int i = 0; i < hm->length; i++) {
 		// loop through the width of map
 		for (int k = 0; k < hm->width; k++) {
-			height = bitmap[bitmapIndex];
+			height = abs(255 - bitmap[bitmapIndex]);
+			
 
 			// index location = width + 2*length
 			heightIndex = k + (hm->length * i);
