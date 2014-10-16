@@ -16,9 +16,10 @@ Landscape::Landscape(unsigned short sideLengthZ, unsigned short sideLengthX) {
 }
 
 XMFLOAT3 colourForHeight(float h) {
-	if (h < 2) return XMFLOAT3(0.29f, 0.29f, 0.29f);
+	if (h < 2) return XMFLOAT3(0.19f, 0.14f, 0.0f);
 	if (h < 4) return XMFLOAT3(0.34f, 0.3f, 0.17f);
 	if (h < 7) return XMFLOAT3(0.44f, 0.35f, 0.2f);
+	if (h < 10) return XMFLOAT3(0.1f, 0.3f, 0.05f);
 	return XMFLOAT3(0.1f, 0.6f, 0.2f);
 }
 
