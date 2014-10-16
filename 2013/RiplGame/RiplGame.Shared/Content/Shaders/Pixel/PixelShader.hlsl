@@ -29,7 +29,7 @@ struct PixelShaderInput
 {
 	float4 pos : SV_POSITION;
 	float4 norm : NORMAL;
-	//float4 color : COLOR0;
+	float4 color : COLOR0;
 	float4 hvector : TEXCOORD0;
 	float4 vvector : TEXCOORD1;
 };
@@ -52,5 +52,5 @@ float4 main(PixelShaderInput input) : SV_TARGET
 	input.norm = normalize(input.norm);
 	input.hvector = normalize(input.hvector);
 
-	return calcLightingBP(material, ambientColour, lightColour, input.norm, input.vvector, input.hvector, -lightVector);
+	return calcLightingBP(material, ambientColour, lightColour, input.norm, input.vvector, input.hvector, -lightVector) * input.color;
 }

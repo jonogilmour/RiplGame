@@ -38,7 +38,7 @@ struct PixelShaderInput
 {
 	float4 pos : SV_POSITION;
 	float4 norm : NORMAL;
-	//float4 color : COLOR0;
+	float4 color : COLOR0;
 	float4 hvector : TEXCOORD0;
 	float4 vvector : TEXCOORD1;
 };
@@ -68,6 +68,8 @@ PixelShaderInput main(VertexShaderInput input)
 
 	output.vvector = viewVector;
 	output.hvector = halfVector;
+
+	output.color = color;
 
 	return output;
 }

@@ -15,6 +15,13 @@ Landscape::Landscape(unsigned short sideLengthZ, unsigned short sideLengthX) {
 	fillVertices(sideLengthZ, sideLengthX, XMFLOAT3(0.0f, 0.3f, 0.3f));
 }
 
+XMFLOAT3 colourForHeight(float h) {
+	if (h < 2) return XMFLOAT3(0.29f, 0.29f, 0.29f);
+	if (h < 4) return XMFLOAT3(0.34f, 0.3f, 0.17f);
+	if (h < 7) return XMFLOAT3(0.44f, 0.35f, 0.2f);
+	return XMFLOAT3(0.1f, 0.6f, 0.2f);
+}
+
 // Fills a vertex array for a rectangular landscape
 void Landscape::fillVertices(unsigned short sideLengthZ, unsigned short sideLengthX, XMFLOAT3 colour) {
 	HeightMapInfo* hm = new HeightMapInfo;
@@ -48,7 +55,7 @@ void Landscape::fillVertices(unsigned short sideLengthZ, unsigned short sideLeng
 			height = GetHeightAtLocation(hm, x, z);
 			XMFLOAT3 vPosition = XMFLOAT3(xPos, height, zPos);
 			XMFLOAT3 vNormal = XMFLOAT3(0.0f, 0.0f, 0.0f);
-			XMFLOAT3 vColour = colour;
+			XMFLOAT3 vColour = colourForHeight(height);
 			vertices.push_back(VertexPositionNormalColour(vPosition, vNormal, vColour));
 		}
 	}
