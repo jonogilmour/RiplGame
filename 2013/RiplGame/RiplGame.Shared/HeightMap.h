@@ -10,3 +10,6 @@ struct HeightMapInfo {
 
 // generating height map function
 void HeightMapLoad(char *fname, HeightMapInfo *hm);
+
+// get height at location (x, z)
+float GetHeightAtLocation(HeightMapInfo *hm, int x, int z);

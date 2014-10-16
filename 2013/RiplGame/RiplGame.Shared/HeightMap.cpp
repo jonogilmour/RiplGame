@@ -97,3 +97,8 @@ void HeightMapLoad(char* fname, HeightMapInfo *hm)
 	// return HeightMapInfo pointer
 	//return hm;
 }
+
+// Searches the heightmap and returns the height at the specified location
+float GetHeightAtLocation(HeightMapInfo *hm, int x, int z) {
+	return hm->heightmap[x + (hm->length * z)].y;
+}

@@ -42,9 +42,9 @@ RiplGameMain::RiplGameMain(const std::shared_ptr<DX::DeviceResources>& deviceRes
 	}
 
 	// Set heightmap values
-	for (int k = 0; k < hm->length; ++k){
-		for (int i = 0; i < hm->width; ++i) {
-			heightmap[k][i] = hm->heightmap[i + (k*hm->length)].y;
+	for (int z = 0; z < hm->length; ++z){
+		for (int x = 0; x < hm->width; ++x) {
+			heightmap[z][x] = GetHeightAtLocation(hm, x, z);
 		}
 	}
 
