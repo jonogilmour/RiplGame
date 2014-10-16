@@ -141,7 +141,7 @@ void SceneRenderer::Render()
 		// First, set the model matrix to render the static object and update the constant buffer
 		XMStoreFloat4x4(&m_constantBufferData.model, XMMatrixTranspose(XMMatrixIdentity()));
 
-		m_constantBufferData.material = Material(1.0f, 1.0f, 1.0f, 5.0f);
+		m_constantBufferData.material = Material(6.0f, 3.0f, 3.0f, 5.0f);
 
 		context->UpdateSubresource(
 			m_constantBuffer.Get(),
