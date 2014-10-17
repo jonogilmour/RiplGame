@@ -8,7 +8,8 @@
     mc:Ignorable="d">
 
   <SwapChainPanel x:Name="swapChainPanel">
-    <TextBlock Text="RiplGame Test Environment"
+        <Canvas HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent"/>
+        <TextBlock Text="RiplGame Test Environment"
                HorizontalAlignment="Center"
                VerticalAlignment="Top"
                FontSize="30" Margin="0,40,0,0" />

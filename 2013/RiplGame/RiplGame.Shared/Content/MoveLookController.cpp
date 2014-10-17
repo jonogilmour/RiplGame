@@ -6,6 +6,8 @@ void MoveLookController::Initialize(_In_ CoreWindow^ window)
 {
 
 	// opt in to recieve touch/mouse events
+	
+
 	window->PointerPressed +=
 		ref new TypedEventHandler<CoreWindow^, PointerEventArgs^>(this, &MoveLookController::OnPointerPressed);
 
