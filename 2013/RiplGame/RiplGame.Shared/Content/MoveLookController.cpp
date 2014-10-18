@@ -414,8 +414,9 @@ void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4*
 		// If true, apply F3 to MOT
 	}
 }
-XMFLOAT2 raycalc(Size size)
+XMFLOAT2 raycalc(Size size, int x, int y, XMVECTOR &p1, XMVECTOR &p2)
 {
+	//using http://www.mvps.org/directx/articles/rayproj.htm
 	float nearVal = 10.0f;
 	float farVal = 4000.0f;
 	float fovVal = 0.8f;
@@ -426,7 +427,11 @@ XMFLOAT2 raycalc(Size size)
 	float widthDiv = widthVal*half;
 	float aspectRatio = size.Width / size.Height;
 	
+	float dx = tanf(fovVal*half)*(x / widthDiv - 1.0f) / aspectRatio;
+	float dy = tanf(fovVal*half)*(1.0f - y / heightDiv);
 
+	XMVECTOR p1(dx*nearVal, dy*nearVal, nearVal);
+	XMVECTOR p2(dx*farVal, dy*farVal, farVal);
 	XMFLOAT2 finalcalc;
 	return finalcalc;
 }
