@@ -92,7 +92,7 @@ namespace RiplGame {
 
 		XMFLOAT3 get_UpAxis();
 
-		void Update(Windows::UI::Core::CoreWindow^ window, float timeDelta, XMFLOAT4X4* moveObjectTransform);
+		void Update(Windows::UI::Core::CoreWindow^ window, float timeDelta, XMFLOAT4X4* moveObjectTransform, Size outputSize);
 
 		XMFLOAT3 computeRAxis();
 		XMFLOAT3 computeDirection();
@@ -100,6 +100,7 @@ namespace RiplGame {
 		XMFLOAT3 camPosition();
 
 		void moveTo(XMFLOAT3 center);
+		XMFLOAT2 raycalc(Size size);
 
 	};  // class MoveLookController
 }

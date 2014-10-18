@@ -272,7 +272,7 @@ void MoveLookController::moveTo(XMFLOAT3 center){
 	m_position.z = center.z;
 }
 
-void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4* moveObjectTransform)
+void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4* moveObjectTransform, Size outputSize)
 {
 	deltaTime = timeDelta;
 	XMFLOAT3 dir = computeDirection();
@@ -356,4 +356,20 @@ void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4*
 		// Detect collisions, which may alter F3
 		// If true, apply F3 to MOT
 	}
+}
+XMFLOAT2 raycalc(Size size)
+{
+	float nearVal = 10.0f;
+	float farVal = 4000.0f;
+	float fovVal = 0.8f;
+	float heightVal = size.Height;
+	float widthVal = size.Width;
+	float half = 0.5f;
+	float heightDiv = heightVal*half;
+	float widthDiv = widthVal*half;
+	float aspectRatio = size.Width / size.Height;
+	
+
+	XMFLOAT2 finalcalc;
+	return finalcalc;
 }

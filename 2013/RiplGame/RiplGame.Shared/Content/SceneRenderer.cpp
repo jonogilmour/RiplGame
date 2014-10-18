@@ -24,8 +24,9 @@ m_deviceResources(deviceResources)
 // Called once per frame, rotates the cube and calculates the model and view matrices.
 void SceneRenderer::Update(DX::StepTimer const& timer)
 {
-	if (!(dynamicObject_Transforms.size() < 1))	m_controller->Update(CoreWindow::GetForCurrentThread(), timer.GetElapsedSeconds(), &dynamicObject_Transforms[0]);
-	else m_controller->Update(CoreWindow::GetForCurrentThread(), timer.GetElapsedSeconds(), nullptr);
+	Size outputSize = m_deviceResources->GetOutputSize();
+	if (!(dynamicObject_Transforms.size() < 1))	m_controller->Update(CoreWindow::GetForCurrentThread(), timer.GetElapsedSeconds(), &dynamicObject_Transforms[0], outputSize);
+	else m_controller->Update(CoreWindow::GetForCurrentThread(), timer.GetElapsedSeconds(), nullptr, outputSize);
 
 	XMVECTOR eye = XMLoadFloat3(&m_controller->get_Position());
 	XMVECTOR at = XMLoadFloat3(&m_controller->get_LookAt());
