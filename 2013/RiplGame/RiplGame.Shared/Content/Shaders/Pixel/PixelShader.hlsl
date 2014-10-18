@@ -3,6 +3,20 @@ struct Material
 	float Ka, Kd, Ks, A;
 };
 
+cbuffer MaterialProperties : register(b4)
+{
+	Material material;
+};
+
+cbuffer LightProperties : register(b5)
+{
+	//float4 EyePosition;                 // 16 bytes
+	//----------------------------------- (16 byte boundary)
+	float4 ambientColour;               // 16 bytes
+	//----------------------------------- (16 byte boundary)
+	//Light Lights[MAX_LIGHTS];           // 80 * 8 = 640 bytes
+};  // Total:                           // 672 bytes (42 * 16 byte boundary)
+
 cbuffer ShaderCBuffer : register(b0)
 {
 	// MVP matrices
@@ -14,14 +28,14 @@ cbuffer ShaderCBuffer : register(b0)
 	float4 eyeVector;
 
 	// Ambient lighting
-	float4 ambientColour;
+	//float4 ambientColour;
 
 	// Directional Light
 	float4 lightVector;
 	float4 lightColour;
 
 	// material characteristics
-	Material material;
+	//Material material;
 };
 
 // Per-pixel color data passed through the pixel shader.

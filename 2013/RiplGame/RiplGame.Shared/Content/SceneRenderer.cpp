@@ -33,7 +33,7 @@ void SceneRenderer::Update(DX::StepTimer const& timer)
 	XMVECTOR up = XMLoadFloat3(&m_controller->get_UpAxis());
 
 	// Setup the constant buffer
-	m_constantBufferData.ambientColour = XMFLOAT4(0.1f, 0.1f, 0.1f, 1.0f);
+	m_constantBufferData_Light.ambientColour = XMFLOAT4(0.1f, 0.1f, 0.1f, 1.0f);
 	m_constantBufferData.lightVector = XMFLOAT4(0, -0.0001f, 0, 0);
 	m_constantBufferData.lightColour = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	XMStoreFloat4(&m_constantBufferData.eyeVector, eye);
@@ -167,19 +167,46 @@ void SceneRenderer::Render()
 		1,
 		m_constantBuffer.GetAddressOf()
 		);
+	context->PSSetConstantBuffers(
+		4,
+		1,
+		m_constantBuffer_Material.GetAddressOf()
+		);
+	context->PSSetConstantBuffers(
+		5,
+		1,
+		m_constantBuffer_Light.GetAddressOf()
+		);
+
+	context->UpdateSubresource(
+		m_constantBuffer.Get(),
+		0,
+		NULL,
+		&m_constantBufferData,
+		0,
+		0
+		);
+	context->UpdateSubresource(
+		m_constantBuffer_Light.Get(),
+		0,
+		NULL,
+		&m_constantBufferData_Light,
+		0,
+		0
+		);
 
 	/* Shaders and buffers set. Begin draw calls */
 	for (int x = 0; x < staticObject_IndexCount.size(); x++) {
 		// First, set the model matrix to render the static object and update the constant buffer
 		XMStoreFloat4x4(&m_constantBufferData_Model.model, XMMatrixTranspose(XMMatrixIdentity()));
 
-		m_constantBufferData.material = Material(6.0f, 3.0f, 3.0f, 5.0f);
+		m_constantBufferData_Material.material = Material(6.0f, 3.0f, 3.0f, 5.0f);
 
 		context->UpdateSubresource(
-			m_constantBuffer.Get(),
+			m_constantBuffer_Material.Get(),
 			0,
 			NULL,
-			&m_constantBufferData,
+			&m_constantBufferData_Material,
 			0,
 			0
 			);
@@ -209,9 +236,10 @@ void SceneRenderer::Render()
 		if (dynamicObject_Transforms.size() > 0) {
 			memcpy(&m_constantBufferData_Model.model, &dynamicObject_Transforms[x], sizeof(XMFLOAT4X4));
 		}
-		m_constantBufferData.material = Material(1.0f, 1.0f, 1.0f, 10.0f);
+		m_constantBufferData_Material.material = Material(1.0f, 1.0f, 1.0f, 10.0f);
+	
 		context->UpdateSubresource(
-			m_constantBuffer.Get(),
+			m_constantBuffer_Material.Get(),
 			0,
 			NULL,
 			&m_constantBufferData,
@@ -336,6 +364,22 @@ void SceneRenderer::CreateDeviceDependentResources()
 			&constantBufferDesc_Proj,
 			nullptr,
 			&m_constantBuffer_Proj
+			)
+			);
+		CD3D11_BUFFER_DESC constantBufferDesc_Material(sizeof(MaterialCBuffer), D3D11_BIND_CONSTANT_BUFFER);
+		DX::ThrowIfFailed(
+			m_deviceResources->GetD3DDevice()->CreateBuffer(
+			&constantBufferDesc_Material,
+			nullptr,
+			&m_constantBuffer_Material
+			)
+			);
+		CD3D11_BUFFER_DESC constantBufferDesc_Light(sizeof(LightCBuffer), D3D11_BIND_CONSTANT_BUFFER);
+		DX::ThrowIfFailed(
+			m_deviceResources->GetD3DDevice()->CreateBuffer(
+			&constantBufferDesc_Light,
+			nullptr,
+			&m_constantBuffer_Light
 			)
 			);
 	});

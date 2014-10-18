@@ -1,8 +1,3 @@
-struct Material
-{
-	float Ka, Kd, Ks, A;
-};
-
 cbuffer ShaderCBuffer : register(b0)
 {
 	// MVP matrices
@@ -14,14 +9,14 @@ cbuffer ShaderCBuffer : register(b0)
 	float4 eyeVector;
 
 	// Ambient lighting
-	float4 ambientColour;
+	//float4 ambientColour;
 
 	// Directional Light
 	float4 lightVector;
 	float4 lightColour;
 
 	// material characteristics
-	Material material;
+	//Material material;
 };
 
 cbuffer viewMatrix : register(b1)

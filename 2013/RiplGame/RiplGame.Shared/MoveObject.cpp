@@ -8,7 +8,7 @@ using namespace Windows::Foundation;
 
 MoveObject::MoveObject(float sideLengthZ, float sideLengthX, float sideLengthY) {
 	fillIndices();
-	fillVertices(sideLengthZ, sideLengthX, sideLengthY, XMFLOAT3(0, 0, 0));
+	fillVertices(sideLengthZ, sideLengthX, sideLengthY, XMFLOAT3(0.4f, 0.4f, 0.2f));
 
 
 }

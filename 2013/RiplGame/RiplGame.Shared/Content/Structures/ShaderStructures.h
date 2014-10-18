@@ -25,10 +25,10 @@ namespace RiplGame {
 		//XMFLOAT4X4 view;
 		//XMFLOAT4X4 projection;
 		XMFLOAT4 eyeVector;
-		XMFLOAT4 ambientColour;
+		//XMFLOAT4 ambientColour;
 		XMFLOAT4 lightVector;
 		XMFLOAT4 lightColour;
-		struct Material material;
+		//struct Material material;
 	};
 
 	struct ModelCBuffer {
@@ -41,6 +41,14 @@ namespace RiplGame {
 
 	struct ProjCBuffer {
 		XMFLOAT4X4 projection;
+	};
+
+	struct MaterialCBuffer {
+		struct Material material;
+	};
+
+	struct LightCBuffer {
+		XMFLOAT4 ambientColour;
 	};
 
 }
