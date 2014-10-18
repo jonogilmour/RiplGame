@@ -21,7 +21,7 @@ namespace RiplGame {
 	// Constant buffer used to send MVP matrices to the vertex shader.
 	struct ShaderCBuffer
 	{
-		XMFLOAT4X4 model;
+		//XMFLOAT4X4 model;
 		//XMFLOAT4X4 view;
 		//XMFLOAT4X4 projection;
 		XMFLOAT4 eyeVector;
@@ -31,6 +31,9 @@ namespace RiplGame {
 		struct Material material;
 	};
 
+	struct ModelCBuffer {
+		XMFLOAT4X4 model;
+	};
 
 	struct ViewCBuffer {
 		XMFLOAT4X4 view;

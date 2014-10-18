@@ -6,7 +6,7 @@ struct Material
 cbuffer ShaderCBuffer : register(b0)
 {
 	// MVP matrices
-	matrix model;
+	//matrix model;
 	//matrix view;
 	//matrix projection;
 

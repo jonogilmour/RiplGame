@@ -148,6 +148,11 @@ void SceneRenderer::Render()
 		1,
 		m_constantBuffer_Proj.GetAddressOf()
 		);
+	context->VSSetConstantBuffers(
+		3,
+		1,
+		m_constantBuffer_Model.GetAddressOf()
+		);
 
 	// And the pixel shader
 	context->PSSetShader(
@@ -166,7 +171,7 @@ void SceneRenderer::Render()
 	/* Shaders and buffers set. Begin draw calls */
 	for (int x = 0; x < staticObject_IndexCount.size(); x++) {
 		// First, set the model matrix to render the static object and update the constant buffer
-		XMStoreFloat4x4(&m_constantBufferData.model, XMMatrixTranspose(XMMatrixIdentity()));
+		XMStoreFloat4x4(&m_constantBufferData_Model.model, XMMatrixTranspose(XMMatrixIdentity()));
 
 		m_constantBufferData.material = Material(6.0f, 3.0f, 3.0f, 5.0f);
 
@@ -175,6 +180,14 @@ void SceneRenderer::Render()
 			0,
 			NULL,
 			&m_constantBufferData,
+			0,
+			0
+			);
+		context->UpdateSubresource(
+			m_constantBuffer_Model.Get(),
+			0,
+			NULL,
+			&m_constantBufferData_Model,
 			0,
 			0
 			);
@@ -187,22 +200,29 @@ void SceneRenderer::Render()
 			);
 
 		// Reset model matrix
-		XMStoreFloat4x4(&m_constantBufferData.model, XMMatrixTranspose(XMMatrixIdentity()));
+		XMStoreFloat4x4(&m_constantBufferData_Model.model, XMMatrixTranspose(XMMatrixIdentity()));
 	}
 
 	for (int x = 0; x < dynamicObject_IndexCount.size(); x++) {
 
 		// First, set the model matrix to render the static object and update the constant buffer
 		if (dynamicObject_Transforms.size() > 0) {
-			memcpy(&m_constantBufferData.model, &dynamicObject_Transforms[x], sizeof(XMFLOAT4X4));
+			memcpy(&m_constantBufferData_Model.model, &dynamicObject_Transforms[x], sizeof(XMFLOAT4X4));
 		}
 		m_constantBufferData.material = Material(1.0f, 1.0f, 1.0f, 10.0f);
-
 		context->UpdateSubresource(
 			m_constantBuffer.Get(),
 			0,
 			NULL,
 			&m_constantBufferData,
+			0,
+			0
+			);
+		context->UpdateSubresource(
+			m_constantBuffer_Model.Get(),
+			0,
+			NULL,
+			&m_constantBufferData_Model,
 			0,
 			0
 			);
@@ -215,7 +235,7 @@ void SceneRenderer::Render()
 			);
 
 		// Reset model matrix
-		XMStoreFloat4x4(&m_constantBufferData.model, XMMatrixTranspose(XMMatrixIdentity()));
+		XMStoreFloat4x4(&m_constantBufferData_Model.model, XMMatrixTranspose(XMMatrixIdentity()));
 	}
 }
 
@@ -294,6 +314,14 @@ void SceneRenderer::CreateDeviceDependentResources()
 			)
 			);
 
+		CD3D11_BUFFER_DESC constantBufferDesc_Model(sizeof(ModelCBuffer), D3D11_BIND_CONSTANT_BUFFER);
+		DX::ThrowIfFailed(
+			m_deviceResources->GetD3DDevice()->CreateBuffer(
+			&constantBufferDesc_Model,
+			nullptr,
+			&m_constantBuffer_Model
+			)
+			);
 		CD3D11_BUFFER_DESC constantBufferDesc_View(sizeof(ViewCBuffer), D3D11_BIND_CONSTANT_BUFFER);
 		DX::ThrowIfFailed(
 			m_deviceResources->GetD3DDevice()->CreateBuffer(

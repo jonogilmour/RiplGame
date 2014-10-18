@@ -6,7 +6,7 @@ struct Material
 cbuffer ShaderCBuffer : register(b0)
 {
 	// MVP matrices
-	matrix model;
+	//matrix model;
 	//matrix view;
 	//matrix projection;
 
@@ -34,6 +34,10 @@ cbuffer projMatrix : register(b2)
 	matrix projection;
 }
 
+cbuffer modelMatrix : register(b3)
+{
+	matrix model;
+}
 
 // Per-vertex data used as input to the vertex shader.
 struct VertexShaderInput
