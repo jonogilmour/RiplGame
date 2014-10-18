@@ -103,7 +103,7 @@ namespace RiplGame {
 		XMFLOAT3 camPosition();
 
 		void moveTo(XMFLOAT3 center);
-		XMFLOAT2 raycalc(Size size);
+		void raycalc(Size size, int x, int y, XMFLOAT3 &p1, XMFLOAT3 &p2);
 
 		bool equal(XMFLOAT3 pos1, XMFLOAT3 pos2);
 		XMFLOAT3 computeDirectionVector();
