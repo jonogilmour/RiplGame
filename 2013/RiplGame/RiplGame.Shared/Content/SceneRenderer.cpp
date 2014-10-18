@@ -37,7 +37,7 @@ void SceneRenderer::Update(DX::StepTimer const& timer)
 	m_constantBufferData.lightVector = XMFLOAT4(0, -0.0001f, 0, 0);
 	m_constantBufferData.lightColour = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	XMStoreFloat4(&m_constantBufferData.eyeVector, eye);
-	XMStoreFloat4x4(&m_constantBufferData.view, XMMatrixTranspose(XMMatrixLookAtLH(eye, at, up)));
+	XMStoreFloat4x4(&m_constantBufferData_View.view, XMMatrixTranspose(XMMatrixLookAtLH(eye, at, up)));
 }
 
 // Renders one frame using the vertex and pixel shaders.
@@ -64,6 +64,22 @@ void SceneRenderer::Render()
 		0,
 		NULL,
 		&m_constantBufferData,
+		0,
+		0
+		);
+	context->UpdateSubresource(
+		m_constantBuffer_View.Get(),
+		0,
+		NULL,
+		&m_constantBufferData_View,
+		0,
+		0
+		);
+	context->UpdateSubresource(
+		m_constantBuffer_Proj.Get(),
+		0,
+		NULL,
+		&m_constantBufferData_Proj,
 		0,
 		0
 		);
@@ -121,6 +137,16 @@ void SceneRenderer::Render()
 		0,
 		1,
 		m_constantBuffer.GetAddressOf()
+		);
+	context->VSSetConstantBuffers(
+		1,
+		1,
+		m_constantBuffer_View.GetAddressOf()
+		);
+	context->VSSetConstantBuffers(
+		2,
+		1,
+		m_constantBuffer_Proj.GetAddressOf()
 		);
 
 	// And the pixel shader
@@ -265,6 +291,23 @@ void SceneRenderer::CreateDeviceDependentResources()
 			&constantBufferDesc,
 			nullptr,
 			&m_constantBuffer
+			)
+			);
+
+		CD3D11_BUFFER_DESC constantBufferDesc_View(sizeof(ViewCBuffer), D3D11_BIND_CONSTANT_BUFFER);
+		DX::ThrowIfFailed(
+			m_deviceResources->GetD3DDevice()->CreateBuffer(
+			&constantBufferDesc_View,
+			nullptr,
+			&m_constantBuffer_View
+			)
+			);
+		CD3D11_BUFFER_DESC constantBufferDesc_Proj(sizeof(ProjCBuffer), D3D11_BIND_CONSTANT_BUFFER);
+		DX::ThrowIfFailed(
+			m_deviceResources->GetD3DDevice()->CreateBuffer(
+			&constantBufferDesc_Proj,
+			nullptr,
+			&m_constantBuffer_Proj
 			)
 			);
 	});
@@ -435,7 +478,7 @@ void SceneRenderer::CreateWindowSizeDependentResources()
 
 	// This combines the projection and orientation matrices into the final projection matrix.
 	XMStoreFloat4x4(
-		&m_constantBufferData.projection,
+		&m_constantBufferData_Proj.projection,
 		XMMatrixTranspose(perspectiveMatrix * orientationMatrix)
 		);
 

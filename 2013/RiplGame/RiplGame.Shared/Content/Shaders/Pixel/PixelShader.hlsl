@@ -7,8 +7,8 @@ cbuffer ShaderCBuffer : register(b0)
 {
 	// MVP matrices
 	matrix model;
-	matrix view;
-	matrix projection;
+	//matrix view;
+	//matrix projection;
 
 	// Position of the camera
 	float4 eyeVector;

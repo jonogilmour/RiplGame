@@ -22,13 +22,22 @@ namespace RiplGame {
 	struct ShaderCBuffer
 	{
 		XMFLOAT4X4 model;
-		XMFLOAT4X4 view;
-		XMFLOAT4X4 projection;
+		//XMFLOAT4X4 view;
+		//XMFLOAT4X4 projection;
 		XMFLOAT4 eyeVector;
 		XMFLOAT4 ambientColour;
 		XMFLOAT4 lightVector;
 		XMFLOAT4 lightColour;
 		struct Material material;
+	};
+
+
+	struct ViewCBuffer {
+		XMFLOAT4X4 view;
+	};
+
+	struct ProjCBuffer {
+		XMFLOAT4X4 projection;
 	};
 
 }
