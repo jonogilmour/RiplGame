@@ -430,8 +430,8 @@ void raycalc(Size size, int x, int y, XMFLOAT3 &p1, XMFLOAT3 &p2)
 	float dx = tanf(fovVal*half)*(x / widthDiv - 1.0f) / aspectRatio;
 	float dy = tanf(fovVal*half)*(1.0f - y / heightDiv);
 
-	XMFLOAT3 p1(dx*nearVal, dy*nearVal, nearVal);
-	XMFLOAT3 p2(dx*farVal, dy*farVal, farVal);
+	//XMFLOAT3 p1(dx*nearVal, dy*nearVal, nearVal);
+	//XMFLOAT3 p2(dx*farVal, dy*farVal, farVal);
 	//xmfloat4x4
 	//load xmfloat4x4
 }
