@@ -117,6 +117,16 @@ void MoveLookController::OnKeyDown(
 	if (Key == VirtualKey::Control)		// down
 		m_down = true;
 
+	// test movement to dest_position
+	if (Key == VirtualKey::M){
+		dest_position = XMFLOAT3(0, 5.0f, 0);	// temporary destination location for testing
+		dest_lookat = XMFLOAT3(0, 3, 0);				// temporary look at location for testing
+
+		m_point = true;
+		if (equal(m_position, dest_position))
+			m_point = false;
+	}
+
 	// OBJECT
 	if (Key == VirtualKey::PageDown)		// down
 		obj_down = true;
@@ -272,12 +282,46 @@ void MoveLookController::moveTo(XMFLOAT3 center){
 	m_position.z = center.z;
 }
 
+XMFLOAT3 MoveLookController::computeLookAtVector() {
+	/*return XMFLOAT3(
+	(float)(dest_lookat.x - m_lookat.x) / (sqrt(pow(dest_lookat.x, 2.0) + pow(m_lookat.x, 2.0))),
+	(float)(dest_lookat.y - m_lookat.y) / (sqrt(pow(dest_lookat.y, 2.0) + pow(m_lookat.y, 2.0))),
+	(float)(dest_lookat.z - m_lookat.z) / (sqrt(pow(dest_lookat.z, 2.0) + pow(m_lookat.z, 2.0)))
+	);*/
+	return XMFLOAT3(
+		(float)(dest_lookat.x - m_lookat.x),
+		(float)(dest_lookat.y - m_lookat.y),
+		(float)(dest_lookat.z - m_lookat.z)
+		);
+}
+
+bool MoveLookController::equal(XMFLOAT3 curr, XMFLOAT3 dest){
+	float range = 0.1;
+
+	if (curr.x <= dest.x + range && curr.x >= dest.x - range
+		&& curr.y <= dest.y + range && curr.y >= dest.y - range
+		&& curr.z <= dest.z + range && curr.z >= dest.z - range)
+		return true;
+	return false;
+}
+
+XMFLOAT3 MoveLookController::computeDirectionVector(){
+	return XMFLOAT3(
+		(float)(dest_position.x - m_position.x),
+		(float)(dest_position.y - m_position.y),
+		(float)(dest_position.z - m_position.z)
+		);
+}
+
+
 void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4* moveObjectTransform, Size outputSize)
 {
 	deltaTime = timeDelta;
 	XMFLOAT3 dir = computeDirection();
 	XMFLOAT3 r_axis = computeRAxis();
 	XMFLOAT3 up_axis = computeUpAxis(r_axis, dir);
+
+	XMFLOAT3 lookat_vector = XMFLOAT3(0, 0, 0);
 
 	// poll our state bits set by the keyboard input events
 	if (m_forward) {
@@ -311,6 +355,19 @@ void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4*
 		m_moveCommand.z -= (up_axis.z * timeDelta * MOVEMENT_GAIN);
 	}
 
+	// Move camera to a specific location
+	if (m_point) {				// if keypressed and current position is not destination position
+		XMFLOAT3 dir_vector = computeDirectionVector();
+		//lookat_vector = computeLookAtVector();
+
+		m_moveCommand.x += (dir_vector.x * timeDelta * MOVEMENT_GAIN);
+		m_moveCommand.y += (dir_vector.y * timeDelta * MOVEMENT_GAIN);
+		m_moveCommand.z += (dir_vector.z * timeDelta * MOVEMENT_GAIN);
+
+		if (equal(m_position, dest_position))
+			m_point = false;
+	}
+
 	// make sure that 45  degree cases are not faster
 	XMFLOAT3 command = m_moveCommand;
 	if (fabsf(command.x) > 0.1f || fabsf(command.z) > 0.1f || fabsf(command.y) > 0.1f)
@@ -320,7 +377,7 @@ void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4*
 	m_position = XMFLOAT3(m_position.x + command.x, m_position.y + command.y, m_position.z + command.z);
 	// Sample collision for origin
 	spheresphereCollision(&m_position, 0.5, XMFLOAT3(0,0,0), 0.5);
-	m_lookat = XMFLOAT3(m_position.x + dir.x, m_position.y + dir.y, m_position.z + dir.z);
+	m_lookat = XMFLOAT3(m_position.x + dir.x + lookat_vector.x, m_position.y + dir.y + lookat_vector.y, m_position.z + dir.z + lookat_vector.z);
 	m_upaxis = up_axis;
 
 

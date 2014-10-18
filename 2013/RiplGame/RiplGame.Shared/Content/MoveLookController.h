@@ -40,6 +40,9 @@ namespace RiplGame {
 
 		float deltaTime;
 
+		XMFLOAT3 dest_position, dir_vector, dest_lookat;
+		bool m_point, reached_dest;
+
 
 	public:
 
@@ -101,6 +104,10 @@ namespace RiplGame {
 
 		void moveTo(XMFLOAT3 center);
 		XMFLOAT2 raycalc(Size size);
+
+		bool equal(XMFLOAT3 pos1, XMFLOAT3 pos2);
+		XMFLOAT3 computeDirectionVector();
+		XMFLOAT3 computeLookAtVector();
 
 	};  // class MoveLookController
 }
