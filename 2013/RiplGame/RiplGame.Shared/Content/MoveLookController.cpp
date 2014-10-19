@@ -34,7 +34,7 @@ void MoveLookController::Initialize(_In_ CoreWindow^ window)
 	deltaTime = 0;
 
 	SetOrientation(-(XM_PI / 4.0f), 0);				// look down slightly ahead when the app starts
-	SetPosition(XMFLOAT3(0, 3.0f, -3.0f));
+	SetPosition(XMFLOAT3(0, 10.0f, -10.0f));
 }
 
 void MoveLookController::OnPointerPressed(
