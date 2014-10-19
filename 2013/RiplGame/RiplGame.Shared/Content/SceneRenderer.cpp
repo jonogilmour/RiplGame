@@ -57,7 +57,7 @@ void SceneRenderer::Update(DX::StepTimer const& timer)
 	light.LinearAttenuation = 0.08f;
 	light.QuadraticAttenuation = 0.0f;
 	light.Position = XMFLOAT4(0,0,0,1);
-	XMVECTOR LightDirection = XMVectorSet(0, -1, 0, 0.0f);
+	XMVECTOR LightDirection = XMVectorSet(10, -5, 10, 0.0f);
 	LightDirection = XMVector3Normalize(LightDirection);
 	XMStoreFloat4(&light.Direction, LightDirection);
 
@@ -521,7 +521,7 @@ void SceneRenderer::CreateDeviceDependentResources()
 		);
 
 		// Ambient light colour is always constant, so update it once
-		m_constantBufferData_Light.GlobalAmbientColour = XMFLOAT4(0.1f, 0.1f, 0.1f, 1.0f);
+		m_constantBufferData_Light.GlobalAmbientColour = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	});
 
 	// Once the cube is loaded, the object is ready to be rendered.

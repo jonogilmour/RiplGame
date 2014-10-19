@@ -12,7 +12,7 @@ using namespace Windows::Foundation;
 // DeviceResources uses a couple of initialisers to complete its initialisation, hence the braces.
 Water::Water(unsigned short sideLengthZ, unsigned short sideLengthX) {
 	fillIndices(sideLengthZ, sideLengthX);
-	fillVertices(sideLengthZ, sideLengthX, XMFLOAT4(0.0f, 0.3f, 0.5f, 0.5f));
+	fillVertices(sideLengthZ, sideLengthX, XMFLOAT4(0.0f, 0.3f, 0.5f, 1.0f));
 }
 
 // Fills a vertex array for a rectangular landscape
