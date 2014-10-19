@@ -24,9 +24,17 @@ m_deviceResources(deviceResources)
 // Called once per frame, rotates the cube and calculates the model and view matrices.
 void SceneRenderer::Update(DX::StepTimer const& timer)
 {
+	XMFLOAT4 CubePos;
+
 	Size outputSize = m_deviceResources->GetOutputSize();
-	if (!(dynamicObject_Transforms.size() < 1))	m_controller->Update(CoreWindow::GetForCurrentThread(), timer.GetElapsedSeconds(), &dynamicObject_Transforms[0], outputSize);
-	else m_controller->Update(CoreWindow::GetForCurrentThread(), timer.GetElapsedSeconds(), nullptr, outputSize);
+	if (!(dynamicObject_Transforms.size() < 1))	{
+		m_controller->Update(CoreWindow::GetForCurrentThread(), timer.GetElapsedSeconds(), &dynamicObject_Transforms[0], outputSize);
+		CubePos = XMFLOAT4(dynamicObject_Transforms[0]._14, dynamicObject_Transforms[0]._24+1, dynamicObject_Transforms[0]._34, 1);
+	}
+	else {
+		m_controller->Update(CoreWindow::GetForCurrentThread(), timer.GetElapsedSeconds(), nullptr, outputSize);
+		CubePos = XMFLOAT4(0, 0, 0, 1);
+	}
 
 	XMVECTOR eye = XMLoadFloat3(&m_controller->get_Position());
 	XMVECTOR at = XMLoadFloat3(&m_controller->get_LookAt());
@@ -41,13 +49,13 @@ void SceneRenderer::Update(DX::StepTimer const& timer)
 	// Do lights (directional first)
 	Light light;
 	light.Enabled = 1;
-	light.LightType = DirectionalLight;
+	light.LightType = PointLight;
 	light.Color = XMFLOAT4(1,1,1,1);
 	light.SpotAngle = XMConvertToRadians(45.0f);
 	light.ConstantAttenuation = 1.0f;
 	light.LinearAttenuation = 0.08f;
 	light.QuadraticAttenuation = 0.0f;
-	light.Position = XMFLOAT4(0, 10, 0, 1);
+	light.Position = CubePos;
 	XMVECTOR LightDirection = XMVectorSet(0, -1, 0, 0.0f);
 	LightDirection = XMVector3Normalize(LightDirection);
 	XMStoreFloat4(&light.Direction, LightDirection);
