@@ -458,7 +458,14 @@ void SceneRenderer::CreateDeviceDependentResources()
 		*/
 
 		XMFLOAT4X4 tempMatrix;
+		XMFLOAT4X4 objectPosition;
 		XMStoreFloat4x4(&tempMatrix, XMMatrixIdentity());
+		XMStoreFloat4x4(&objectPosition, XMMatrixIdentity());
+
+		objectPosition._14 = 0;
+		objectPosition._24 = 7;
+		objectPosition._34 = 0;
+
 		int currentVertexCount = 0; // Counter for current length of vertex array
 
 		//STATIC OBJECTS
@@ -483,7 +490,7 @@ void SceneRenderer::CreateDeviceDependentResources()
 		dynamicObject_StartVertexOffset.push_back(currentVertexCount);
 		dynamicObject_IndexCount.push_back(moveObject.getIndexCount());
 		indices.insert(indices.end(), moveObject.indices.begin(), moveObject.indices.end());
-		dynamicObject_Transforms.push_back(tempMatrix);
+		dynamicObject_Transforms.push_back(objectPosition);
 		currentVertexCount += moveObject.getVertexCount();
 		
 		////////////////////////
