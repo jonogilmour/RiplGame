@@ -1,22 +1,11 @@
 cbuffer ShaderCBuffer : register(b0)
 {
-	// MVP matrices
-	//matrix model;
-	//matrix view;
-	//matrix projection;
-
 	// Position of the camera
 	float4 eyeVector;
 
-	// Ambient lighting
-	//float4 ambientColour;
-
 	// Directional Light
 	float4 lightVector;
-	float4 lightColour;
-
-	// material characteristics
-	//Material material;
+	//float4 lightColour;
 };
 
 cbuffer viewMatrix : register(b1)

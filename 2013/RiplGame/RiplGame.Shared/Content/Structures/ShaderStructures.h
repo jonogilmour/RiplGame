@@ -93,6 +93,7 @@ namespace RiplGame {
 	struct LightCBuffer {
 		//XMFLOAT4 eyePosition;
 		XMFLOAT4 ambientColour;
+		XMFLOAT4 lightColour; //move this into the light structure
 		//Light Lights[MAX_LIGHTS];           // 80 * 8 = 640 bytes
 	};
 
