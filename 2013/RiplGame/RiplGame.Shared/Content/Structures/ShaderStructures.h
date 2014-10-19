@@ -18,6 +18,49 @@ namespace RiplGame {
 		float Ka, Kd, Ks, A;
 	};
 
+	struct _Material
+	{
+		_Material() 
+			: Emissive( 0.0f, 0.0f, 0.0f, 1.0f )
+			, Ambient( 0.1f, 0.1f, 0.1f, 1.0f )
+			, Diffuse( 1.0f, 1.0f, 1.0f, 1.0f )
+			, Specular( 1.0f, 1.0f, 1.0f, 1.0f )
+			, SpecularPower( 128.0f )
+		{}
+
+		DirectX::XMFLOAT4   Emissive;
+		//----------------------------------- (16 byte boundary)
+		DirectX::XMFLOAT4   Ambient;
+		//----------------------------------- (16 byte boundary)
+		DirectX::XMFLOAT4   Diffuse;
+		//----------------------------------- (16 byte boundary)
+		DirectX::XMFLOAT4   Specular;
+		//----------------------------------- (16 byte boundary)
+		float               SpecularPower;
+		// Add some padding complete the 16 byte boundary.
+		float                 Padding[3];
+		//----------------------------------- (16 byte boundary)
+	}; // Total:                                80 bytes (5 * 16)
+
+	struct Light
+	{
+		XMFLOAT4      Position;               // 16 bytes
+		//----------------------------------- (16 byte boundary)
+		XMFLOAT4      Direction;              // 16 bytes
+		//----------------------------------- (16 byte boundary)
+		XMFLOAT4      Color;                  // 16 bytes
+		//----------------------------------- (16 byte boundary)
+		float       SpotAngle;              // 4 bytes
+		float       ConstantAttenuation;    // 4 bytes
+		float       LinearAttenuation;      // 4 bytes
+		float       QuadraticAttenuation;   // 4 bytes
+		//----------------------------------- (16 byte boundary)
+		int         LightType;              // 4 bytes
+		int        Enabled;                // 4 bytes
+		int        Padding[2];                // 8 bytes
+		//----------------------------------- (16 byte boundary)
+	};  // Total:                           // 80 bytes (5 * 16 byte boundary)
+
 	// Constant buffer used to send MVP matrices to the vertex shader.
 	struct ShaderCBuffer
 	{
@@ -48,7 +91,9 @@ namespace RiplGame {
 	};
 
 	struct LightCBuffer {
+		//XMFLOAT4 eyePosition;
 		XMFLOAT4 ambientColour;
+		//Light Lights[MAX_LIGHTS];           // 80 * 8 = 640 bytes
 	};
 
 }
