@@ -27,6 +27,7 @@ struct PixelShaderInput
 	float4 pos : SV_POSITION;
 	float4 norm : NORMAL;
 	float4 color : COLOR0;
+	float4 posWS : TEXCOORD0;
 };
 
 
@@ -39,6 +40,9 @@ PixelShaderInput main(VertexShaderInput input)
 	float4 normal = float4(input.norm, 0);
 	float4 color = float4(input.color, 1.0f);
 
+	// Save the world position of the vertex
+	output.posWS = mul(pos, model);
+	
 	// Transform the vertex position into projected space.
 	pos = mul(pos, model);
 	pos = mul(pos, view);

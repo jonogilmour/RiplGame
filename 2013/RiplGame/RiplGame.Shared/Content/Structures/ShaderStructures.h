@@ -2,20 +2,16 @@
 
 #include "pch.h"
 
+#define MAX_LIGHTS 8
+
 using namespace DirectX;
 namespace RiplGame {
 
-	struct Material
+	enum LightType
 	{
-		Material() { Ka = Kd = Ks = A = 0; }
-		Material(float ka, float kd, float ks, float a) :
-			Ka(ka),
-			Kd(kd),
-			Ks(ks),
-			A(a)
-		{}
-
-		float Ka, Kd, Ks, A;
+		DirectionalLight = 0,
+		PointLight = 1,
+		SpotLight = 2
 	};
 
 	struct _Material
@@ -55,7 +51,7 @@ namespace RiplGame {
 		float       LinearAttenuation;      // 4 bytes
 		float       QuadraticAttenuation;   // 4 bytes
 		//----------------------------------- (16 byte boundary)
-		int         LightType;              // 4 bytes
+		unsigned int         LightType;              // 4 bytes
 		int        Enabled;                // 4 bytes
 		int        Padding[2];                // 8 bytes
 		//----------------------------------- (16 byte boundary)
@@ -74,14 +70,13 @@ namespace RiplGame {
 	};
 
 	struct MaterialCBuffer {
-		struct Material material;
+		struct _Material material;
 	};
 
 	struct LightCBuffer {
-		//XMFLOAT4 eyePosition;
-		XMFLOAT4 ambientColour;
-		XMFLOAT4 lightColour; //move this into the light structure
-		//Light Lights[MAX_LIGHTS];           // 80 * 8 = 640 bytes
+		XMFLOAT4 EyePosition;
+		XMFLOAT4 GlobalAmbientColour;
+		Light Lights[MAX_LIGHTS];           // 80 * 8 = 640 bytes
 	};
 
 }

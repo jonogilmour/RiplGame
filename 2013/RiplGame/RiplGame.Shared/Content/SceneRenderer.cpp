@@ -32,10 +32,28 @@ void SceneRenderer::Update(DX::StepTimer const& timer)
 	XMVECTOR at = XMLoadFloat3(&m_controller->get_LookAt());
 	XMVECTOR up = XMLoadFloat3(&m_controller->get_UpAxis());
 
+	// Store the eye position
+	XMStoreFloat4(&m_constantBufferData_Light.EyePosition, eye);
+
 	// Setup the constant buffer
-	m_constantBufferData_Light.ambientColour = XMFLOAT4(0.1f, 0.1f, 0.1f, 1.0f);
-	m_constantBufferData_Light.lightColour = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	XMStoreFloat4x4(&m_constantBufferData_View.view, XMMatrixTranspose(XMMatrixLookAtLH(eye, at, up)));
+
+	// Do lights (directional first)
+	Light light;
+	light.Enabled = 1;
+	light.LightType = DirectionalLight;
+	light.Color = XMFLOAT4(1,1,1,1);
+	light.SpotAngle = XMConvertToRadians(45.0f);
+	light.ConstantAttenuation = 1.0f;
+	light.LinearAttenuation = 0.08f;
+	light.QuadraticAttenuation = 0.0f;
+	light.Position = XMFLOAT4(0, 10, 0, 1);
+	XMVECTOR LightDirection = XMVectorSet(0, -1, 0, 0.0f);
+	LightDirection = XMVector3Normalize(LightDirection);
+	XMStoreFloat4(&light.Direction, LightDirection);
+
+	// Store the light
+	m_constantBufferData_Light.Lights[0] = light;
 }
 
 // Renders one frame using the vertex and pixel shaders.
@@ -172,7 +190,7 @@ void SceneRenderer::Render()
 		// First, set the model matrix to render the static object and update the constant buffer
 		XMStoreFloat4x4(&m_constantBufferData_Model.model, XMMatrixTranspose(XMMatrixIdentity()));
 
-		m_constantBufferData_Material.material = Material(6.0f, 3.0f, 3.0f, 5.0f);
+		m_constantBufferData_Material.material = _Material();
 
 		context->UpdateSubresource(
 			m_constantBuffer_Material.Get(),
@@ -208,7 +226,8 @@ void SceneRenderer::Render()
 		if (dynamicObject_Transforms.size() > 0) {
 			memcpy(&m_constantBufferData_Model.model, &dynamicObject_Transforms[x], sizeof(XMFLOAT4X4));
 		}
-		m_constantBufferData_Material.material = Material(1.0f, 1.0f, 1.0f, 10.0f);
+
+		m_constantBufferData_Material.material = _Material();
 	
 		context->UpdateSubresource(
 			m_constantBuffer_Material.Get(),
@@ -452,7 +471,10 @@ void SceneRenderer::CreateDeviceDependentResources()
 			&indexBufferData,
 			&m_indexBuffer
 			)
-			);
+		);
+
+		// Ambient light colour is always constant, so update it once
+		m_constantBufferData_Light.GlobalAmbientColour = XMFLOAT4(0.1f, 0.1f, 0.1f, 1.0f);
 	});
 
 	// Once the cube is loaded, the object is ready to be rendered.
