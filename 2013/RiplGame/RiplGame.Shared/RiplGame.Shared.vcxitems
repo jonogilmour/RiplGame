@@ -18,6 +18,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Content\CommonFunctions.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Content\MoveLookController.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Content\Objects\World\Landscape.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Content\Objects\World\Water.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Content\SceneRenderer.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)HeightMap.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MoveObject.cpp" />
@@ -25,6 +26,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Content\CommonFunctions.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Content\MoveLookController.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Content\Objects\World\Landscape.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Content\Objects\World\Water.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Content\Structures\ShaderStructures.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Collision.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)HeightMap.h" />

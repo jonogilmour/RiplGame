@@ -2,6 +2,7 @@
 #include "pch.h"
 #include "SceneRenderer.h"
 #include "Content\Objects\World\Landscape.h"
+#include "Content\Objects\World\Water.h"
 #include "MoveObject.h"
 
 // Namespaces just spare us from having to write "RiplGame." before everything
@@ -49,19 +50,36 @@ void SceneRenderer::Update(DX::StepTimer const& timer)
 	// Do lights (directional first)
 	Light light;
 	light.Enabled = 1;
-	light.LightType = PointLight;
+	light.LightType = DirectionalLight;
 	light.Color = XMFLOAT4(1,1,1,1);
 	light.SpotAngle = XMConvertToRadians(45.0f);
 	light.ConstantAttenuation = 1.0f;
 	light.LinearAttenuation = 0.08f;
 	light.QuadraticAttenuation = 0.0f;
-	light.Position = CubePos;
+	light.Position = XMFLOAT4(0,0,0,1);
 	XMVECTOR LightDirection = XMVectorSet(0, -1, 0, 0.0f);
 	LightDirection = XMVector3Normalize(LightDirection);
 	XMStoreFloat4(&light.Direction, LightDirection);
 
 	// Store the light
 	m_constantBufferData_Light.Lights[0] = light;
+
+	// Do lights (spot)
+	Light light2;
+	light2.Enabled = 1;
+	light2.LightType = SpotLight;
+	light2.Color = XMFLOAT4(0.5f, 1, 0.5f, 1);
+	light2.SpotAngle = XMConvertToRadians(45.0f);
+	light2.ConstantAttenuation = 1.0f;
+	light2.LinearAttenuation = 0.08f;
+	light2.QuadraticAttenuation = 0.0f;
+	light2.Position = CubePos;
+	LightDirection = XMVectorSet(0, -1, 0, 0.0f);
+	LightDirection = XMVector3Normalize(LightDirection);
+	XMStoreFloat4(&light2.Direction, LightDirection);
+
+	// Store the light
+	m_constantBufferData_Light.Lights[1] = light2;
 }
 
 // Renders one frame using the vertex and pixel shaders.
@@ -379,16 +397,20 @@ void SceneRenderer::CreateDeviceDependentResources()
 	auto createLandscapeTask = (createPSTask && createVSTask).then([this]() {
 
 		// make it same as bitmap
-		//Landscape landscape(10, 10);
-		Landscape landscape(96, 96);
+		float landscapeSize = 96;
+		Landscape landscape(landscapeSize, landscapeSize);
+		Water water(landscapeSize, landscapeSize);
 		MoveObject moveObject(0.5f,0.5f,0.5f);
 
 		// This creates the data (vertices) to put into the vertex buffer, and zeroes it
 		D3D11_SUBRESOURCE_DATA vertexBufferData = { 0 };
 		std::vector<VertexPositionNormalColour> vertices;
 
-		vertices.reserve(landscape.getVertexCount() + moveObject.getVertexCount()); // preallocate memory
+		unsigned int vertexNumber = landscape.getVertexCount() + moveObject.getVertexCount() + water.getVertexCount();
+
+		vertices.reserve(vertexNumber); // preallocate memory
 		vertices.insert(vertices.end(), landscape.vertices.begin(), landscape.vertices.end());
+		vertices.insert(vertices.end(), water.vertices.begin(), water.vertices.end());
 		vertices.insert(vertices.end(), moveObject.vertices.begin(), moveObject.vertices.end());
 
 		// pSysMem is a pointer to the data to put in
@@ -401,7 +423,7 @@ void SceneRenderer::CreateDeviceDependentResources()
 		// Here we actually create the vertex buffer. It's length is the size of the vertex array
 		// Note this isn't a function, it's an initialiser for a variable called vertexBufferDesc
 
-		int vertexCount = (landscape.getVertexCount() + moveObject.getVertexCount())*sizeof(VertexPositionNormalColour);
+		int vertexCount = (vertexNumber)*sizeof(VertexPositionNormalColour);
 		CD3D11_BUFFER_DESC vertexBufferDesc(vertexCount, D3D11_BIND_VERTEX_BUFFER);
 		// And here we send it to the device like we did with the shaders
 		DX::ThrowIfFailed(
@@ -437,22 +459,32 @@ void SceneRenderer::CreateDeviceDependentResources()
 
 		XMFLOAT4X4 tempMatrix;
 		XMStoreFloat4x4(&tempMatrix, XMMatrixIdentity());
+		int currentVertexCount = 0; // Counter for current length of vertex array
 
 		//STATIC OBJECTS
 		// Insert the landscape
 		staticObject_StartIndexOffset.push_back(indices.size());
-		staticObject_StartVertexOffset.push_back(0);
+		staticObject_StartVertexOffset.push_back(currentVertexCount);
 		staticObject_IndexCount.push_back(landscape.getIndexCount());
 		indices.insert(indices.end(), landscape.indices.begin(), landscape.indices.end());
 		staticObject_Transforms.push_back(tempMatrix);
+		currentVertexCount += landscape.getVertexCount();
+		// Insert the water
+		staticObject_StartIndexOffset.push_back(indices.size());
+		staticObject_StartVertexOffset.push_back(currentVertexCount);
+		staticObject_IndexCount.push_back(water.getIndexCount());
+		indices.insert(indices.end(), water.indices.begin(), water.indices.end());
+		staticObject_Transforms.push_back(tempMatrix);
+		currentVertexCount += water.getVertexCount();
 
 		//DYNAMIC OBJECTS
 		// Insert the moving object
 		dynamicObject_StartIndexOffset.push_back(indices.size());
-		dynamicObject_StartVertexOffset.push_back(landscape.getVertexCount());
+		dynamicObject_StartVertexOffset.push_back(currentVertexCount);
 		dynamicObject_IndexCount.push_back(moveObject.getIndexCount());
 		indices.insert(indices.end(), moveObject.indices.begin(), moveObject.indices.end());
 		dynamicObject_Transforms.push_back(tempMatrix);
+		currentVertexCount += moveObject.getVertexCount();
 		
 		////////////////////////
 		/* MODEL INDICES DONE */
@@ -460,7 +492,7 @@ void SceneRenderer::CreateDeviceDependentResources()
 
 
 		// Store the length of the index array
-		m_indexCount = landscape.getIndexCount() + moveObject.getIndexCount();
+		m_indexCount = landscape.getIndexCount() + moveObject.getIndexCount()  + water.getIndexCount();
 
 		// Do the same thing as we did for the vertex buffer to set the index buffer
 		// First zero it

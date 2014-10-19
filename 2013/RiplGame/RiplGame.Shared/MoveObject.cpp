@@ -8,15 +8,15 @@ using namespace Windows::Foundation;
 
 MoveObject::MoveObject(float sideLengthZ, float sideLengthX, float sideLengthY) {
 	fillIndices();
-	fillVertices(sideLengthZ, sideLengthX, sideLengthY, XMFLOAT3(0.4f, 0.4f, 0.2f));
+	fillVertices(sideLengthZ, sideLengthX, sideLengthY, XMFLOAT4(0.4f, 0.4f, 0.2f, 1.0f));
 
 
 }
 
-void MoveObject::fillVertices(float sideLengthZ, float sideLengthX, float sideLengthY, XMFLOAT3 colour)
+void MoveObject::fillVertices(float sideLengthZ, float sideLengthX, float sideLengthY, XMFLOAT4 colour)
 {
 	XMFLOAT3 vNormal = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	XMFLOAT3 vColour = colour;
+	XMFLOAT4 vColour = colour;
 
 	vertexCount = 24;
 

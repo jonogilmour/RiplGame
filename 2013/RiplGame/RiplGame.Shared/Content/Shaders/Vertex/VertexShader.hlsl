@@ -18,7 +18,7 @@ struct VertexShaderInput
 {
 	float3 pos : POSITION;
 	float3 norm : NORMAL;
-	float3 color : COLOR0;
+	float4 color : COLOR0;
 };
 
 // Per-pixel color data passed through the pixel shader.
@@ -38,7 +38,6 @@ PixelShaderInput main(VertexShaderInput input)
 	PixelShaderInput output;
 	float4 pos = float4(input.pos, 1.0f);
 	float4 normal = float4(input.norm, 0);
-	float4 color = float4(input.color, 1.0f);
 
 	// Save the world position of the vertex
 	output.posWS = mul(pos, model);
@@ -53,7 +52,7 @@ PixelShaderInput main(VertexShaderInput input)
 	normal = mul(normal, model);
 	output.norm = normal;
 
-	output.color = color;
+	output.color = input.color;
 
 	return output;
 }

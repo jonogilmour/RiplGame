@@ -35,7 +35,7 @@ namespace RiplGame
 		uint32 startIndexOffset;
 		uint32 startVertexOffset;
 
-		void fillVertices(unsigned short sideLengthZ, unsigned short sideLengthX, XMFLOAT3 colour);
+		void fillVertices(unsigned short sideLengthZ, unsigned short sideLengthX, XMFLOAT4 colour);
 		void fillIndices(unsigned short sideLengthZ, unsigned short sideLengthX);
 	};
 }

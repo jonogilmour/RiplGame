@@ -30,12 +30,12 @@ namespace RiplGame {
 		VertexPositionNormalColour(
 			XMFLOAT3 p,
 			XMFLOAT3 n,
-			XMFLOAT3 c)
+			XMFLOAT4 c)
 			: pos(p), normal(n), color(c){}
 
 		XMFLOAT3 pos;
 		XMFLOAT3 normal;
-		XMFLOAT3 color;
+		XMFLOAT4 color;
 	};
 
 	// A textured vertex with a position and normal vector

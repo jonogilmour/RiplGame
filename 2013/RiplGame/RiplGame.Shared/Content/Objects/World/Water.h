@@ -6,10 +6,11 @@
 
 namespace RiplGame
 {
-	class MoveObject
+	// A simple rectangular plane
+	class Water
 	{
 	public:
-		MoveObject::MoveObject(float sideLengthZ, float sideLengthX, float sideLengthY);
+		Water(unsigned short sideLengthZ, unsigned short sideLengthX);
 		uint32 getIndexCount();
 		uint32 getVertexCount();
 		uint32 getStartIndexOffset();
@@ -28,15 +29,14 @@ namespace RiplGame
 		Microsoft::WRL::ComPtr<ID3D11PixelShader>	pixelShader;
 		Microsoft::WRL::ComPtr<ID3D11Buffer>		constantBuffer;
 
-
-
 		// System resources for cube geometry.
 		uint32	indexCount;
 		uint32	vertexCount;
 		uint32 startIndexOffset;
 		uint32 startVertexOffset;
-		void MoveObject::fillVertices(float sideLengthZ, float sideLengthX, float sideLengthY, XMFLOAT4 colour);
-		void MoveObject::fillIndices();
 
+		void fillVertices(unsigned short sideLengthZ, unsigned short sideLengthX, XMFLOAT4 colour);
+		void fillIndices(unsigned short sideLengthZ, unsigned short sideLengthX);
 	};
 }
+
