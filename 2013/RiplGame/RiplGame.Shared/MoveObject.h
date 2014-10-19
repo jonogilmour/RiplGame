@@ -31,7 +31,6 @@ namespace RiplGame
 
 
 		// System resources for cube geometry.
-		ShaderCBuffer	constantBufferData;
 		uint32	indexCount;
 		uint32	vertexCount;
 		uint32 startIndexOffset;

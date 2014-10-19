@@ -30,7 +30,6 @@ namespace RiplGame
 		Microsoft::WRL::ComPtr<ID3D11Buffer>		constantBuffer;
 
 		// System resources for cube geometry.
-		ShaderCBuffer	constantBufferData;
 		uint32	indexCount;
 		uint32	vertexCount;
 		uint32 startIndexOffset;

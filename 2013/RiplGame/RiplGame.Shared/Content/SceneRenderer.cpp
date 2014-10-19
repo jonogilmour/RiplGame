@@ -34,9 +34,7 @@ void SceneRenderer::Update(DX::StepTimer const& timer)
 
 	// Setup the constant buffer
 	m_constantBufferData_Light.ambientColour = XMFLOAT4(0.1f, 0.1f, 0.1f, 1.0f);
-	m_constantBufferData.lightVector = XMFLOAT4(0, -0.0001f, 0, 0);
-	m_constantBufferData_Light.lightColour = XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f);
-	XMStoreFloat4(&m_constantBufferData.eyeVector, eye);
+	m_constantBufferData_Light.lightColour = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	XMStoreFloat4x4(&m_constantBufferData_View.view, XMMatrixTranspose(XMMatrixLookAtLH(eye, at, up)));
 }
 
@@ -59,14 +57,6 @@ void SceneRenderer::Render()
 	// A constant buffer is just a set of data that all shaders will need to refer to, like a common data set
 	// The constant buffer is filled with data beforehand, see the parts above where the view/projection matrices were made
 	// notice that they are put into the constant buffer because every shader needs to know about these matrices
-	context->UpdateSubresource(
-		m_constantBuffer.Get(),
-		0,
-		NULL,
-		&m_constantBufferData,
-		0,
-		0
-		);
 	context->UpdateSubresource(
 		m_constantBuffer_View.Get(),
 		0,
@@ -134,11 +124,6 @@ void SceneRenderer::Render()
 	// Try it out, change the 0 below to a 1, then try running the program. Nothing will come up because the MVP matrices have not been saved
 	// Then, try changing the register value in the vertex shader to b1, then run. It should work now, because you've mapped the buffers correctly
 	context->VSSetConstantBuffers(
-		0,
-		1,
-		m_constantBuffer.GetAddressOf()
-		);
-	context->VSSetConstantBuffers(
 		1,
 		1,
 		m_constantBuffer_View.GetAddressOf()
@@ -163,11 +148,6 @@ void SceneRenderer::Render()
 
 	// Send the same constant buffer to the pixel shader
 	context->PSSetConstantBuffers(
-		0,
-		1,
-		m_constantBuffer.GetAddressOf()
-		);
-	context->PSSetConstantBuffers(
 		4,
 		1,
 		m_constantBuffer_Material.GetAddressOf()
@@ -178,14 +158,6 @@ void SceneRenderer::Render()
 		m_constantBuffer_Light.GetAddressOf()
 		);
 
-	context->UpdateSubresource(
-		m_constantBuffer.Get(),
-		0,
-		NULL,
-		&m_constantBufferData,
-		0,
-		0
-		);
 	context->UpdateSubresource(
 		m_constantBuffer_Light.Get(),
 		0,
@@ -242,7 +214,7 @@ void SceneRenderer::Render()
 			m_constantBuffer_Material.Get(),
 			0,
 			NULL,
-			&m_constantBufferData,
+			&m_constantBufferData_Material,
 			0,
 			0
 			);
@@ -333,15 +305,6 @@ void SceneRenderer::CreateDeviceDependentResources()
 			);
 		// Make a constant buffer, filled with the information about the model, view, and projection matrices stored in constantBufferDesc
 		// This constant buffer is then saved in m_constantBuffer
-		CD3D11_BUFFER_DESC constantBufferDesc(sizeof(ShaderCBuffer), D3D11_BIND_CONSTANT_BUFFER);
-		DX::ThrowIfFailed(
-			m_deviceResources->GetD3DDevice()->CreateBuffer(
-			&constantBufferDesc,
-			nullptr,
-			&m_constantBuffer
-			)
-			);
-
 		CD3D11_BUFFER_DESC constantBufferDesc_Model(sizeof(ModelCBuffer), D3D11_BIND_CONSTANT_BUFFER);
 		DX::ThrowIfFailed(
 			m_deviceResources->GetD3DDevice()->CreateBuffer(
@@ -506,7 +469,6 @@ void SceneRenderer::ReleaseDeviceDependentResources()
 	m_vertexShader.Reset();
 	m_inputLayout.Reset();
 	m_pixelShader.Reset();
-	m_constantBuffer.Reset();
 	m_vertexBuffer.Reset();
 	m_indexBuffer.Reset();
 }

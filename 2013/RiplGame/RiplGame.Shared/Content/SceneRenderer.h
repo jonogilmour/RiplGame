@@ -41,7 +41,6 @@ namespace RiplGame
 		Microsoft::WRL::ComPtr<ID3D11Buffer> m_indexBuffer;
 		Microsoft::WRL::ComPtr<ID3D11VertexShader> m_vertexShader;
 		Microsoft::WRL::ComPtr<ID3D11PixelShader> m_pixelShader;
-		Microsoft::WRL::ComPtr<ID3D11Buffer> m_constantBuffer;
 		Microsoft::WRL::ComPtr<ID3D11Buffer> m_constantBuffer_Model;
 		Microsoft::WRL::ComPtr<ID3D11Buffer> m_constantBuffer_View;
 		Microsoft::WRL::ComPtr<ID3D11Buffer> m_constantBuffer_Proj;
@@ -49,7 +48,6 @@ namespace RiplGame
 		Microsoft::WRL::ComPtr<ID3D11Buffer> m_constantBuffer_Light;
 
 		uint32 m_indexCount;
-		ShaderCBuffer m_constantBufferData;
 		ModelCBuffer m_constantBufferData_Model;
 		ViewCBuffer m_constantBufferData_View;
 		ProjCBuffer m_constantBufferData_Proj;

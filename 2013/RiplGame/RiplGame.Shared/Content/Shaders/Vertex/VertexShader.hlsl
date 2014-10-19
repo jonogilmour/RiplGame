@@ -1,13 +1,3 @@
-cbuffer ShaderCBuffer : register(b0)
-{
-	// Position of the camera
-	float4 eyeVector;
-
-	// Directional Light
-	float4 lightVector;
-	//float4 lightColour;
-};
-
 cbuffer viewMatrix : register(b1)
 {
 	matrix view;
@@ -37,8 +27,6 @@ struct PixelShaderInput
 	float4 pos : SV_POSITION;
 	float4 norm : NORMAL;
 	float4 color : COLOR0;
-	float4 hvector : TEXCOORD0;
-	float4 vvector : TEXCOORD1;
 };
 
 
@@ -51,9 +39,6 @@ PixelShaderInput main(VertexShaderInput input)
 	float4 normal = float4(input.norm, 0);
 	float4 color = float4(input.color, 1.0f);
 
-	float4 viewVector = normalize(eyeVector - pos); // the camera eye vector
-	float4 halfVector = normalize(-lightVector + viewVector); // the vector halfway between view and normal
-
 	// Transform the vertex position into projected space.
 	pos = mul(pos, model);
 	pos = mul(pos, view);
@@ -63,9 +48,6 @@ PixelShaderInput main(VertexShaderInput input)
 	// Translate the normal
 	normal = mul(normal, model);
 	output.norm = normal;
-
-	output.vvector = viewVector;
-	output.hvector = halfVector;
 
 	output.color = color;
 

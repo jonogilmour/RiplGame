@@ -59,27 +59,12 @@ cbuffer LightProperties : register(b5)
 	Light Lights[MAX_LIGHTS];           // 80 * 8 = 640 bytes
 };  // Total:                           // 672 bytes (42 * 16 byte boundary)
 
-
-
-//  REPLACE THIS
-cbuffer ShaderCBuffer : register(b0)
-{
-	// Position of the camera
-	float4 eyeVector;
-
-	// Directional Light
-	float4 lightVector;
-	//float4 lightColour;
-};
-
 // Per-pixel color data passed through the pixel shader. CHANGE THIS
 struct PixelShaderInput
 {
 	float4 pos : SV_POSITION;
 	float4 norm : NORMAL;
 	float4 color : COLOR0;
-	float4 hvector : TEXCOORD0;
-	float4 vvector : TEXCOORD1;
 };
 /*
 float4 DoDiffuse(Light light, float3 L, float3 N)
@@ -107,23 +92,8 @@ float DoAttenuation( Light light, float d )
 }
 */
 
-// Does blinn-phong lighting (more efficient) REPLACE THIS
-float4 calcLightingBP(Material m, float4 ambient_colour, float4 light_colour, float4 surface_normal, float4 view_vector, float4 halfway_vector, float4 light_vector)
-{
-	float specular_shine = 0.9f;
-
-	float4 Ia = m.Ka * ambient_colour;
-	float4 Id = m.Kd * saturate(dot(surface_normal, light_vector));
-	float4 Is = m.Ks * pow(saturate(dot(surface_normal, halfway_vector)), m.A);
-
-	return Ia + (Id + Is) * light_colour;
-}
-
 // A pass-through function for the (interpolated) color data. CHANGE THIS
 float4 main(PixelShaderInput input) : SV_TARGET
 {
-	input.norm = normalize(input.norm);
-	input.hvector = normalize(input.hvector);
-
-	return calcLightingBP(material, ambientColour, lightColour, input.norm, input.vvector, input.hvector, -lightVector) * input.color;
+	return input.color;
 }
