@@ -27,6 +27,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Collision.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)RippleMove.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Content\Objects\World\Water.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Ray.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)pch.cpp" />
@@ -45,6 +46,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Collision.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)RippleMove.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Content\Objects\World\Water.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Ray.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="$(MSBuildThisFileDirectory)Content\Shaders\Pixel\PixelShader.hlsl">

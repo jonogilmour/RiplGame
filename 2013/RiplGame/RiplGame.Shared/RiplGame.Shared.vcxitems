@@ -22,6 +22,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Content\SceneRenderer.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)HeightMap.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MoveObject.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Ray.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)RippleMove.cpp" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Content\CommonFunctions.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Content\MoveLookController.h" />
@@ -31,6 +32,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Collision.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)HeightMap.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MoveObject.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Ray.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)RiplGameMain.h" />
     <ClCompile Include="$(MSBuildThisFileDirectory)RiplGameMain.cpp" />
     <ClInclude Include="$(MSBuildThisFileDirectory)pch.h" />
