@@ -7,7 +7,7 @@ void MoveLookController::Initialize(_In_ CoreWindow^ window)
 {
 
 	// opt in to recieve touch/mouse events
-	
+
 
 	window->PointerPressed +=
 		ref new TypedEventHandler<CoreWindow^, PointerEventArgs^>(this, &MoveLookController::OnPointerPressed);
@@ -121,11 +121,13 @@ void MoveLookController::OnKeyDown(
 	// test movement to dest_position
 	if (Key == VirtualKey::M){
 		dest_position = XMFLOAT3(0, 5.0f, 0);	// temporary destination location for testing
-		dest_lookat = XMFLOAT3(0, 3, 0);				// temporary look at location for testing
+		dest_lookat = XMFLOAT3(3.0f, 3.0f, 3.0f);				// temporary look at location for testing
+
+		XMFLOAT2 target_orientation = computeTargetOrientation();
+		float target_pitch = target_orientation.x;
+		float target_yaw = target_orientation.y;
 
 		m_point = true;
-		if (equal(m_position, dest_position))
-			m_point = false;
 	}
 
 	// OBJECT
@@ -141,7 +143,7 @@ void MoveLookController::OnKeyDown(
 		obj_left = true;
 	if (Key == VirtualKey::Right)		// right
 		obj_rght = true;
-		
+
 }
 
 void MoveLookController::OnKeyUp(
@@ -283,21 +285,36 @@ void MoveLookController::moveTo(XMFLOAT3 center){
 	m_position.z = center.z;
 }
 
-XMFLOAT3 MoveLookController::computeLookAtVector() {
-	/*return XMFLOAT3(
-	(float)(dest_lookat.x - m_lookat.x) / (sqrt(pow(dest_lookat.x, 2.0) + pow(m_lookat.x, 2.0))),
-	(float)(dest_lookat.y - m_lookat.y) / (sqrt(pow(dest_lookat.y, 2.0) + pow(m_lookat.y, 2.0))),
-	(float)(dest_lookat.z - m_lookat.z) / (sqrt(pow(dest_lookat.z, 2.0) + pow(m_lookat.z, 2.0)))
-	);*/
-	return XMFLOAT3(
-		(float)(dest_lookat.x - m_lookat.x),
-		(float)(dest_lookat.y - m_lookat.y),
-		(float)(dest_lookat.z - m_lookat.z)
+//**
+XMFLOAT2 MoveLookController::computeTargetOrientation() {
+
+	//dest_position = XMFLOAT3(0, 5.0f, 0);
+	//dest_lookat = XMFLOAT3(0, 3, 0);
+
+	XMFLOAT3 v1 = XMFLOAT3((dest_lookat.x - m_position.x), (dest_lookat.y - m_position.y), (dest_lookat.z - m_position.z));
+	float target_pitch = asin(fabs(v1.y / sqrt(pow(v1.x, 2) + pow(v1.y, 2) + pow(v1.z, 2))));
+	float target_yaw = asin(fabs(v1.z / sqrt(pow(v1.x, 2) + pow(v1.y, 2) + pow(v1.z, 2))));
+
+	m_pitch = (float)__max(-XM_PI / 2.0f, m_pitch);
+	m_pitch = (float)__min(+XM_PI / 2.0f, m_pitch);
+
+	if (m_yaw >  XM_PI)
+	{
+		m_yaw -= XM_PI * 2.0f;
+	}
+	else if (m_yaw < -XM_PI)
+	{
+		m_yaw += XM_PI * 2.0f;
+	}
+
+	return XMFLOAT2(
+		(float)(target_pitch),
+		(float)(target_yaw)
 		);
 }
 
 bool MoveLookController::equal(XMFLOAT3 curr, XMFLOAT3 dest){
-	float range = 0.1;
+	float range = 0.05;
 
 	if (curr.x <= dest.x + range && curr.x >= dest.x - range
 		&& curr.y <= dest.y + range && curr.y >= dest.y - range
@@ -359,17 +376,46 @@ void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4*
 	// Move camera to a specific location
 	if (m_point) {				// if keypressed and current position is not destination position
 		XMFLOAT3 dir_vector = computeDirectionVector();
-		//lookat_vector = computeLookAtVector();
+		XMFLOAT3 dir = computeDirection();
 
-		m_moveCommand.x += (dir_vector.x * timeDelta * MOVEMENT_GAIN);
-		m_moveCommand.y += (dir_vector.y * timeDelta * MOVEMENT_GAIN);
-		m_moveCommand.z += (dir_vector.z * timeDelta * MOVEMENT_GAIN);
+		bool dir_completed = false;
+		bool pitch_completed = false;
+		bool yaw_completed = false;
 
-		if (equal(m_position, dest_position))
+		if (!equal(m_position, dest_position)) {
+			m_moveCommand.x += (dir_vector.x * timeDelta * MOVEMENT_GAIN);
+			m_moveCommand.y += (dir_vector.y * timeDelta * MOVEMENT_GAIN);
+			m_moveCommand.z += (dir_vector.z * timeDelta * MOVEMENT_GAIN);
+		}
+		else {
+			dir_completed = true;
+		}
+
+		if (m_pitch >= target_pitch + 0.02){
+			m_pitch -= 0.01;
+		}
+		else if (m_pitch <= target_pitch - 0.02){
+			m_pitch += 0.01;
+		}
+		else {
+			pitch_completed = true;
+		}
+
+		if (m_yaw >= target_yaw + 0.02){
+			m_yaw -= 0.01;
+		}
+		else if (m_yaw <= target_yaw - 0.02){
+			m_yaw += 0.01;
+		}
+		else {
+			yaw_completed = true;
+		}
+
+		if (dir_completed && pitch_completed && yaw_completed)
 			m_point = false;
 	}
 
-	// make sure that 45  degree cases are not faster
+	// make sure that 45 degree cases are not faster
 	XMFLOAT3 command = m_moveCommand;
 	if (fabsf(command.x) > 0.1f || fabsf(command.z) > 0.1f || fabsf(command.y) > 0.1f)
 		normalizeF3(&command);
@@ -377,8 +423,8 @@ void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4*
 	// integrate
 	m_position = XMFLOAT3(m_position.x + command.x, m_position.y + command.y, m_position.z + command.z);
 	// Sample collision for origin
-	spheresphereCollision(&m_position, 0.5, XMFLOAT3(0,0,0), 0.5);
-	m_lookat = XMFLOAT3(m_position.x + dir.x + lookat_vector.x, m_position.y + dir.y + lookat_vector.y, m_position.z + dir.z + lookat_vector.z);
+	spheresphereCollision(&m_position, 0.5, XMFLOAT3(0, 0, 0), 0.5);
+	m_lookat = XMFLOAT3(m_position.x + dir.x, m_position.y + dir.y, m_position.z + dir.z);
 	m_upaxis = up_axis;
 
 
@@ -420,14 +466,14 @@ void raycalc(Size size, int x, int y, XMFLOAT3 &p1, XMFLOAT3 &p2)
 	//using http://www.mvps.org/directx/articles/rayproj.htm
 	float nearVal = 0.1f;
 	float farVal = 100.0f;
-	float fovVal = 70.0f/90.0f;
+	float fovVal = 70.0f / 90.0f;
 	float heightVal = size.Height;
 	float widthVal = size.Width;
 	float half = 0.5f;
 	float heightDiv = heightVal*half;
 	float widthDiv = widthVal*half;
 	float aspectRatio = size.Width / size.Height;
-	
+
 	float dx = tanf(fovVal*half)*(x / widthDiv - 1.0f) / aspectRatio;
 	float dy = tanf(fovVal*half)*(1.0f - y / heightDiv);
 
@@ -435,9 +481,4 @@ void raycalc(Size size, int x, int y, XMFLOAT3 &p1, XMFLOAT3 &p2)
 	//XMFLOAT3 p2(dx*farVal, dy*farVal, farVal);
 	//xmfloat4x4
 	//load xmfloat4x4
-}
-
-Ray Getray()
-{
-
 }
