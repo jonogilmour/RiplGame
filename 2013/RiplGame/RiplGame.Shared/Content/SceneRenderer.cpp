@@ -47,7 +47,7 @@ void SceneRenderer::Update(DX::StepTimer const& timer)
 	// Setup the constant buffer
 	XMStoreFloat4x4(&m_constantBufferData_View.view, XMMatrixTranspose(XMMatrixLookAtLH(eye, at, up)));
 
-	// Do lights (directional first)
+	// Do lights (directional)
 	Light light;
 	light.Enabled = 1;
 	light.LightType = DirectionalLight;
@@ -62,24 +62,24 @@ void SceneRenderer::Update(DX::StepTimer const& timer)
 	XMStoreFloat4(&light.Direction, LightDirection);
 
 	// Store the light
-	m_constantBufferData_Light.Lights[0] = light;
+	//m_constantBufferData_Light.Lights[0] = light;
 
-	// Do lights (spot)
+	// Do lights (point)
 	Light light2;
 	light2.Enabled = 1;
-	light2.LightType = SpotLight;
-	light2.Color = XMFLOAT4(0.5f, 1, 0.5f, 1);
+	light2.LightType = PointLight;
+	light2.Color = XMFLOAT4(1, 1, 1, 1);
 	light2.SpotAngle = XMConvertToRadians(45.0f);
-	light2.ConstantAttenuation = 1.0f;
-	light2.LinearAttenuation = 0.08f;
-	light2.QuadraticAttenuation = 0.0f;
+	light2.ConstantAttenuation = 0.0f;
+	light2.LinearAttenuation = 0.3f;
+	light2.QuadraticAttenuation = 0.1f;
 	light2.Position = CubePos;
 	LightDirection = XMVectorSet(0, -1, 0, 0.0f);
 	LightDirection = XMVector3Normalize(LightDirection);
 	XMStoreFloat4(&light2.Direction, LightDirection);
 
 	// Store the light
-	m_constantBufferData_Light.Lights[1] = light2;
+	m_constantBufferData_Light.Lights[0] = light2;
 }
 
 // Renders one frame using the vertex and pixel shaders.

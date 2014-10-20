@@ -89,7 +89,7 @@ LightingResult DoPointLight(Light light, float3 V, float4 P, float3 N)
 	LightingResult result;
 
 	float3 L = (light.Position - P).xyz;
-		float distance = length(L);
+	float distance = length(L);
 	L = L / distance;
 
 	float attenuation = DoAttenuation(light, distance);
@@ -106,7 +106,7 @@ LightingResult DoDirectionalLight(Light light, float3 V, float4 P, float3 N)
 
 	float3 L = -light.Direction.xyz;
 
-		result.Diffuse = DoDiffuse(light, L, N);
+	result.Diffuse = DoDiffuse(light, L, N);
 	result.Specular = DoSpecular(light, V, L, N);
 
 	return result;
