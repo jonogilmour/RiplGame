@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Content\CommonFunctions.h"
 #include "Collision.h"
-#include "Ray.h"
+
 
 void MoveLookController::Initialize(_In_ CoreWindow^ window)
 {
@@ -332,7 +332,7 @@ XMFLOAT3 MoveLookController::computeDirectionVector(){
 }
 
 
-void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4* moveObjectTransform, Size outputSize)
+void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4* moveObjectTransform, Size outputSize, XMFLOAT4X4 view, XMFLOAT4X4 proj)
 {
 	deltaTime = timeDelta;
 	XMFLOAT3 dir = computeDirection();
@@ -461,7 +461,7 @@ void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4*
 		// If true, apply F3 to MOT
 	}
 }
-void raycalc(Size size, int x, int y, XMFLOAT3 &p1, XMFLOAT3 &p2)
+void rayCalc(Size size, int x, int y)
 {
 	//using http://www.mvps.org/directx/articles/rayproj.htm
 	float nearVal = 0.1f;
@@ -481,4 +481,8 @@ void raycalc(Size size, int x, int y, XMFLOAT3 &p1, XMFLOAT3 &p2)
 	//XMFLOAT3 p2(dx*farVal, dy*farVal, farVal);
 	//xmfloat4x4
 	//load xmfloat4x4
+}
+void getPickingRay(float x,float y, Size size, Ray* ray)
+{
+
 }

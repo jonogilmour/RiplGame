@@ -1,7 +1,7 @@
 #pragma once
 
 #include "pch.h"
-
+#include "Ray.h"
 #define ROTATION_GAIN 0.2f	// sensitivity adjustment for look controller
 #define MOVEMENT_GAIN 6.0f		// sensitivity adjustment for move controller
 #define OBJ_MOVEMENT_GAIN 2.0f
@@ -80,6 +80,8 @@ namespace RiplGame {
 
 		// set up the Controls that this controller supports
 		void Initialize(_In_ Windows::UI::Core::CoreWindow^ window);
+		void rayCalc(Size size, int x, int y);
+		void getPickingRay(float x, float y, Size size, Ray* ray);
 
 	internal:
 		// accessor to set position of controller
@@ -96,7 +98,7 @@ namespace RiplGame {
 
 		XMFLOAT3 get_UpAxis();
 
-		void Update(Windows::UI::Core::CoreWindow^ window, float timeDelta, XMFLOAT4X4* moveObjectTransform, Size outputSize);
+		void Update(Windows::UI::Core::CoreWindow^ window, float timeDelta, XMFLOAT4X4* moveObjectTransform, Size outputSize, XMFLOAT4X4 proj);
 
 		XMFLOAT3 computeRAxis();
 		XMFLOAT3 computeDirection();

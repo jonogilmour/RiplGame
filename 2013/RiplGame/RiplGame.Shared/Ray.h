@@ -3,13 +3,15 @@
 #include "pch.h"
 #include "Content\Structures\VertexStructures.h"
 #include "Content\Structures\ShaderStructures.h"
+using namespace RiplGame;
+
 namespace RiplGame
 {
 	class Ray
 	{
-	public:
+	internal:
 		Ray();
-
-	private:
+		XMFLOAT3 position;
+		XMFLOAT3 direction;
 	};
 }
