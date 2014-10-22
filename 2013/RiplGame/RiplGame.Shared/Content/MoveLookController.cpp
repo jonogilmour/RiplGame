@@ -382,30 +382,32 @@ void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4*
 		bool pitch_completed = false;
 		bool yaw_completed = false;
 
+		float speed = 2;
+
 		if (!equal(m_position, dest_position)) {
-			m_moveCommand.x += (dir_vector.x * timeDelta * MOVEMENT_GAIN);
-			m_moveCommand.y += (dir_vector.y * timeDelta * MOVEMENT_GAIN);
-			m_moveCommand.z += (dir_vector.z * timeDelta * MOVEMENT_GAIN);
+			m_moveCommand.x += (dir_vector.x * timeDelta * speed);
+			m_moveCommand.y += (dir_vector.y * timeDelta * speed);
+			m_moveCommand.z += (dir_vector.z * timeDelta * speed);
 		}
 		else {
 			dir_completed = true;
 		}
 
 		if (m_pitch >= target_pitch + 0.02){
-			m_pitch -= 0.01;
+			m_pitch -= ((m_pitch - target_pitch)* timeDelta * speed);
 		}
 		else if (m_pitch <= target_pitch - 0.02){
-			m_pitch += 0.01;
+			m_pitch += ((target_pitch - m_pitch) * timeDelta * speed);
 		}
 		else {
 			pitch_completed = true;
 		}
 
 		if (m_yaw >= target_yaw + 0.02){
-			m_yaw -= 0.01;
+			m_yaw -= ((m_yaw - target_yaw)* timeDelta * speed);
 		}
 		else if (m_yaw <= target_yaw - 0.02){
-			m_yaw += 0.01;
+			m_yaw += ((target_yaw - m_yaw) * timeDelta * speed);
 		}
 		else {
 			yaw_completed = true;
