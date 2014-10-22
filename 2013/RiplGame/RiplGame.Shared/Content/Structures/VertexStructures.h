@@ -52,4 +52,9 @@ namespace RiplGame {
 		XMFLOAT3 normal;
 		XMFLOAT2 texCoord;
 	};
+
+	struct Ray {
+		XMFLOAT3 position;
+		XMFLOAT3 direction;
+	}
 }
