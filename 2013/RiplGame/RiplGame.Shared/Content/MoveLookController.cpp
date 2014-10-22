@@ -463,28 +463,26 @@ void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4*
 		// If true, apply F3 to MOT
 	}
 }
-void rayCalc(Size size, int x, int y)
+void rayCalc(Size size, int x, int y, XMFLOAT4X4 view, XMFLOAT4X4 proj)
 {
-	//using http://www.mvps.org/directx/articles/rayproj.htm
-	float nearVal = 0.1f;
-	float farVal = 100.0f;
-	float fovVal = 70.0f / 90.0f;
-	float heightVal = size.Height;
-	float widthVal = size.Width;
-	float half = 0.5f;
-	float heightDiv = heightVal*half;
-	float widthDiv = widthVal*half;
-	float aspectRatio = size.Width / size.Height;
-
-	float dx = tanf(fovVal*half)*(x / widthDiv - 1.0f) / aspectRatio;
-	float dy = tanf(fovVal*half)*(1.0f - y / heightDiv);
+	float height = size.Height;
+	float width = size.Width;
+	XMFLOAT4X4 p = proj;
+	XMFLOAT4X4 v = view;
+	float vx = (2.0f * x / width - 1.0f) / p._11;
+	float vy = (-2.0f * y / height + 1.0f) / p._22;
+	XMFLOAT3 positionRay;
+	XMFLOAT3 directionRay(vx,vy,1.0f);
+	
+	XMMATRIX invView = XMLoadFloat4x4(&v);
+	XMVECTOR posConv = XMLoadFloat3(&positionRay); 
+	XMVECTOR dirConv = XMLoadFloat3(&directionRay);
+	XMVECTOR posRayResult = XMVector3TransformCoord(posConv,invView);
+	XMVECTOR dirRayResult = XMVector3TransformCoord(dirConv,invView);
+	XMVECTOR dirRayResult = XMVector3Normalize(dirRayResult);
 
 	//XMFLOAT3 p1(dx*nearVal, dy*nearVal, nearVal);
 	//XMFLOAT3 p2(dx*farVal, dy*farVal, farVal);
 	//xmfloat4x4
 	//load xmfloat4x4
 }
-//void getPickingRay(float x,float y, Size size, Ray* ray)
-//{
-
-//}
