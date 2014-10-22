@@ -332,6 +332,7 @@ XMFLOAT3 MoveLookController::computeDirectionVector(){
 }
 
 
+
 void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4* moveObjectTransform, Size outputSize, XMFLOAT4X4 view, XMFLOAT4X4 proj)
 {
 	deltaTime = timeDelta;
