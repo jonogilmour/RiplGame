@@ -19,12 +19,7 @@
 XMFLOAT4 moveCharacter(XMFLOAT3 center1, float radius1, XMFLOAT3* center2, float radius2, float startingVelocity)
 {
 
-	//static XMFLOAT4 prevVector = (0.0f, 0.0f, 0.0f, 0.0f);
-	static XMFLOAT4 prevVector;
-	prevVector.x = 0.0f;
-	prevVector.y = 0.0f;
-	prevVector.z = 0.0f;
-	prevVector.w = 0.0f;
+	static XMFLOAT4 prevVector = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
 
 	//The speed and max_distance will need testing to make it perfect.
 	// Placeholder values
