@@ -1,6 +1,7 @@
 #pragma once
 
 #include "pch.h"
+#include "Content\Structures\VertexStructures.h"
 
 using namespace DirectX;
 namespace RiplGame {
