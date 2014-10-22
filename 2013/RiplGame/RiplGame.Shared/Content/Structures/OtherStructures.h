@@ -4,8 +4,9 @@
 
 using namespace DirectX;
 namespace RiplGame {
-	struct Ray {
-		XMFLOAT3 position;
-		XMFLOAT3 direction;
+	//STANLEY
+	struct water_storage{
+		std::vector<unsigned short> indices;
+		std::vector<VertexPositionNormalColour> vertices;
 	};
 }

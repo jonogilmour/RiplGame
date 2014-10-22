@@ -464,6 +464,7 @@ void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4*
 		// If true, apply F3 to MOT
 	}
 }
+
 void rayCalc(Size size, int x, int y, XMFLOAT4X4 view, XMFLOAT4X4 proj)
 {
 	float height = size.Height;
