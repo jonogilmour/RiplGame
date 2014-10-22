@@ -29,11 +29,11 @@ void SceneRenderer::Update(DX::StepTimer const& timer)
 
 	Size outputSize = m_deviceResources->GetOutputSize();
 	if (!(dynamicObject_Transforms.size() < 1))	{
-		m_controller->Update(CoreWindow::GetForCurrentThread(), timer.GetElapsedSeconds(), &dynamicObject_Transforms[0], outputSize);
+		m_controller->Update(CoreWindow::GetForCurrentThread(), timer.GetElapsedSeconds(), &dynamicObject_Transforms[0], outputSize, m_constantBufferData_View.view, m_constantBufferData_Proj.projection);
 		CubePos = XMFLOAT4(dynamicObject_Transforms[0]._14, dynamicObject_Transforms[0]._24+1, dynamicObject_Transforms[0]._34, 1);
 	}
 	else {
-		m_controller->Update(CoreWindow::GetForCurrentThread(), timer.GetElapsedSeconds(), nullptr, outputSize);
+		m_controller->Update(CoreWindow::GetForCurrentThread(), timer.GetElapsedSeconds(), nullptr, outputSize, m_constantBufferData_View.view, m_constantBufferData_Proj.projection);
 		CubePos = XMFLOAT4(0, 0, 0, 1);
 	}
 

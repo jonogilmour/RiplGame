@@ -332,6 +332,7 @@ XMFLOAT3 MoveLookController::computeDirectionVector(){
 }
 
 
+
 void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4* moveObjectTransform, Size outputSize, XMFLOAT4X4 view, XMFLOAT4X4 proj)
 {
 	deltaTime = timeDelta;
@@ -382,30 +383,32 @@ void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4*
 		bool pitch_completed = false;
 		bool yaw_completed = false;
 
+		float speed = 2;
+
 		if (!equal(m_position, dest_position)) {
-			m_moveCommand.x += (dir_vector.x * timeDelta * MOVEMENT_GAIN);
-			m_moveCommand.y += (dir_vector.y * timeDelta * MOVEMENT_GAIN);
-			m_moveCommand.z += (dir_vector.z * timeDelta * MOVEMENT_GAIN);
+			m_moveCommand.x += (dir_vector.x * timeDelta * speed);
+			m_moveCommand.y += (dir_vector.y * timeDelta * speed);
+			m_moveCommand.z += (dir_vector.z * timeDelta * speed);
 		}
 		else {
 			dir_completed = true;
 		}
 
 		if (m_pitch >= target_pitch + 0.02){
-			m_pitch -= 0.01;
+			m_pitch -= ((m_pitch - target_pitch)* timeDelta * speed);
 		}
 		else if (m_pitch <= target_pitch - 0.02){
-			m_pitch += 0.01;
+			m_pitch += ((target_pitch - m_pitch) * timeDelta * speed);
 		}
 		else {
 			pitch_completed = true;
 		}
 
 		if (m_yaw >= target_yaw + 0.02){
-			m_yaw -= 0.01;
+			m_yaw -= ((m_yaw - target_yaw)* timeDelta * speed);
 		}
 		else if (m_yaw <= target_yaw - 0.02){
-			m_yaw += 0.01;
+			m_yaw += ((target_yaw - m_yaw) * timeDelta * speed);
 		}
 		else {
 			yaw_completed = true;
@@ -461,28 +464,30 @@ void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4*
 		// If true, apply F3 to MOT
 	}
 }
-void rayCalc(Size size, int x, int y)
+void rayCalc(Size size, int x, int y, XMFLOAT4X4 view, XMFLOAT4X4 proj)
 {
-	//using http://www.mvps.org/directx/articles/rayproj.htm
-	float nearVal = 0.1f;
-	float farVal = 100.0f;
-	float fovVal = 70.0f / 90.0f;
-	float heightVal = size.Height;
-	float widthVal = size.Width;
-	float half = 0.5f;
-	float heightDiv = heightVal*half;
-	float widthDiv = widthVal*half;
-	float aspectRatio = size.Width / size.Height;
+	float height = size.Height;
+	float width = size.Width;
+	XMFLOAT4X4 p = proj;
+	XMFLOAT4X4 v = view;
+	float vx = (2.0f * x / width - 1.0f) / p._11;
+	float vy = (-2.0f * y / height + 1.0f) / p._22;
+	XMFLOAT3 positionRay;
+	XMFLOAT3 directionRay(vx,vy,1.0f);
+	
+	XMMATRIX invView = XMMatrixInverse(nullptr,XMLoadFloat4x4(&v));
+	XMVECTOR posConv = XMLoadFloat3(&positionRay); 
+	XMVECTOR dirConv = XMLoadFloat3(&directionRay);
+	XMVECTOR posRayResult = XMVector3TransformCoord(posConv,invView);
+	XMVECTOR dirRayTemp = XMVector3TransformCoord(dirConv,invView);
+	XMVECTOR dirRayResult = XMVector3Normalize(dirRayTemp);
+	XMMATRIX invWorldMatrix = XMMatrixInverse(nullptr, XMMatrixTranspose(XMMatrixIdentity()));
 
-	float dx = tanf(fovVal*half)*(x / widthDiv - 1.0f) / aspectRatio;
-	float dy = tanf(fovVal*half)*(1.0f - y / heightDiv);
-
+	XMVECTOR finalPosCalc = XMVector3TransformCoord(posRayResult, invWorldMatrix);
+	XMVECTOR finalDirTemp = XMVector3TransformCoord(dirRayResult, invWorldMatrix);
+	XMVECTOR finalDirCalc = XMVector3Normalize(finalDirTemp);
 	//XMFLOAT3 p1(dx*nearVal, dy*nearVal, nearVal);
 	//XMFLOAT3 p2(dx*farVal, dy*farVal, farVal);
 	//xmfloat4x4
 	//load xmfloat4x4
-}
-void getPickingRay(float x,float y, Size size, Ray* ray)
-{
-
 }
