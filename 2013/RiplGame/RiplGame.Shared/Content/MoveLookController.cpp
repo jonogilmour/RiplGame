@@ -37,7 +37,7 @@ void MoveLookController::Initialize(_In_ CoreWindow^ window)
 	SetOrientation(-(XM_PI / 4.0f), 0);				// look down slightly ahead when the app starts
 	SetPosition(XMFLOAT3(0, 10.0f, -10.0f));
 
-	tapped = false
+	tapped = false;
 }
 
 void MoveLookController::OnPointerPressed(
@@ -466,14 +466,15 @@ void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4*
 	*/
 }
 
-void rayCalc(Size size, int x, int y, XMFLOAT4X4 view, XMFLOAT4X4 proj)
+XMFLOAT2 rayCalc(Size size, XMFLOAT2 position, XMFLOAT4X4 view, XMFLOAT4X4 proj, struct water_storage water)
 {
+	//takes in size(height,width), touch x and y, view matrix, proj, and water struct. outputs co ords of touch in xmfloat2
 	float height = size.Height;
 	float width = size.Width;
 	XMFLOAT4X4 p = proj;
 	XMFLOAT4X4 v = view;
-	float vx = (2.0f * x / width - 1.0f) / p._11;
-	float vy = (-2.0f * y / height + 1.0f) / p._22;
+	float vx = (2.0f * position.x / width - 1.0f) / p._11;
+	float vy = (-2.0f * position.y / height + 1.0f) / p._22;
 	XMFLOAT3 positionRay;
 	XMFLOAT3 directionRay(vx,vy,1.0f);
 	
@@ -488,8 +489,20 @@ void rayCalc(Size size, int x, int y, XMFLOAT4X4 view, XMFLOAT4X4 proj)
 	XMVECTOR finalPosCalc = XMVector3TransformCoord(posRayResult, invWorldMatrix);
 	XMVECTOR finalDirTemp = XMVector3TransformCoord(dirRayResult, invWorldMatrix);
 	XMVECTOR finalDirCalc = XMVector3Normalize(finalDirTemp);
-	//XMFLOAT3 p1(dx*nearVal, dy*nearVal, nearVal);
-	//XMFLOAT3 p2(dx*farVal, dy*farVal, farVal);
-	//xmfloat4x4
-	//load xmfloat4x4
+	for (int i = 0; i <  water.indices.size()/3;i++)
+	{
+		XMVECTOR v0 = XMLoadFloat3(&water.vertices[water.indices[i * 3]].pos);
+		XMVECTOR v1 = XMLoadFloat3(&water.vertices[water.indices[i * 3 + 1]].pos);
+		XMVECTOR v2 = XMLoadFloat3(&water.vertices[water.indices[i * 3 + 2]].pos);
+		float dist;
+		bool result = Intersects(finalPosCalc,finalDirCalc,v0,v1,v2,dist);
+		if (result == true)
+		{
+			FLOAT returnX = (water.vertices[water.indices[i * 3]].pos.x + water.vertices[water.indices[i * 3 + 2]].pos.x) / 2;
+			FLOAT returnY = (water.vertices[water.indices[i * 3]].pos.y + water.vertices[water.indices[i * 3 + 1]].pos.y) / 2;
+			XMFLOAT2  coord(returnX, returnY);
+			return coord;
+		}
+	}
+	
 }

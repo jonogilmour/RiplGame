@@ -12,6 +12,7 @@ using namespace Windows::UI::Core;
 using namespace Windows::System;
 using namespace Windows::Foundation;
 using namespace Windows::Devices::Input;
+using namespace DirectX::TriangleTests;
 
 namespace RiplGame {
 	ref class MoveLookController
@@ -121,6 +122,6 @@ namespace RiplGame {
 		XMFLOAT3 computeLookAtVector();
 		XMFLOAT2 computeTargetOrientation();
 
-		void getPickingRay(float x, float y, Size size, Ray* ray);
+		//void getPickingRay(float x, float y, Size size, Ray* ray);
 	};  // class MoveLookController
 }

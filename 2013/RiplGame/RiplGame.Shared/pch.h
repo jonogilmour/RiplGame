@@ -19,7 +19,7 @@
 #include <iostream>
 #include <tuple>
 #include <algorithm>
-
+#include <DirectXCollision.h>
 
 #include "App.xaml.h"
 #include "Common\DirectXHelper.h"
