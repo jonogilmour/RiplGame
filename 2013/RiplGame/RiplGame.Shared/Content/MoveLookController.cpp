@@ -484,7 +484,7 @@ void rayCalc(Size size, int x, int y)
 	//xmfloat4x4
 	//load xmfloat4x4
 }
-void getPickingRay(float x,float y, Size size, Ray* ray)
-{
+//void getPickingRay(float x,float y, Size size, Ray* ray)
+//{
 
-}
+//}
