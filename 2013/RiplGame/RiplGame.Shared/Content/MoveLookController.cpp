@@ -480,8 +480,11 @@ void rayCalc(Size size, int x, int y, XMFLOAT4X4 view, XMFLOAT4X4 proj)
 	XMVECTOR posRayResult = XMVector3TransformCoord(posConv,invView);
 	XMVECTOR dirRayTemp = XMVector3TransformCoord(dirConv,invView);
 	XMVECTOR dirRayResult = XMVector3Normalize(dirRayTemp);
-	XMMATRIX worldMatrix = XMMatrixInverse(nullptr, XMMatrixTranspose(XMMatrixIdentity()));
+	XMMATRIX invWorldMatrix = XMMatrixInverse(nullptr, XMMatrixTranspose(XMMatrixIdentity()));
 
+	XMVECTOR finalPosCalc = XMVector3TransformCoord(posRayResult, invWorldMatrix);
+	XMVECTOR finalDirTemp = XMVector3TransformCoord(dirRayResult, invWorldMatrix);
+	XMVECTOR finalDirCalc = XMVector3Normalize(finalDirTemp);
 	//XMFLOAT3 p1(dx*nearVal, dy*nearVal, nearVal);
 	//XMFLOAT3 p2(dx*farVal, dy*farVal, farVal);
 	//xmfloat4x4
