@@ -46,6 +46,11 @@ namespace RiplGame {
 		float target_pitch, target_yaw;
 		bool m_point, reached_dest;
 
+		//Ray Tracing STANLEY
+		bool tapped;
+		XMFLOAT2 tapPosition;
+		XMFLOAT2 ripplePosition;
+
 
 	public:
 

@@ -4,7 +4,6 @@
 #include "Content\Objects\World\Landscape.h"
 #include "Content\Objects\World\Water.h"
 #include "MoveObject.h"
-#include "Content\Structures\OtherStructures.h"
 
 // Namespaces just spare us from having to write "RiplGame." before everything
 using namespace RiplGame;
@@ -396,9 +395,6 @@ void SceneRenderer::CreateDeviceDependentResources()
 	// Once both shaders are loaded, create the mesh.
 	// Notice how we are &&ing the two tasks, which means we wait for both to completely finish, then we do...
 	auto createLandscapeTask = (createPSTask && createVSTask).then([this]() {
-		//STANLEY
-		struct water_storage ws;
-
 		// make it same as bitmap
 		float landscapeSize = 96;
 		Landscape landscape(landscapeSize, landscapeSize);

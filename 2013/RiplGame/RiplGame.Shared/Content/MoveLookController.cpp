@@ -36,6 +36,8 @@ void MoveLookController::Initialize(_In_ CoreWindow^ window)
 
 	SetOrientation(-(XM_PI / 4.0f), 0);				// look down slightly ahead when the app starts
 	SetPosition(XMFLOAT3(0, 10.0f, -10.0f));
+
+	tapped = false
 }
 
 void MoveLookController::OnPointerPressed(
@@ -44,26 +46,10 @@ void MoveLookController::OnPointerPressed(
 {
 	// get the current pointer position
 	uint32 pointerID = args->CurrentPoint->PointerId;
-	XMFLOAT2 position = XMFLOAT2(args->CurrentPoint->Position.X, args->CurrentPoint->Position.Y);
 
-	auto device = args->CurrentPoint->PointerDevice;
-	auto deviceType = device->PointerDeviceType;
-
-	// check  if this pointer is in the move control
-	// Change the values  to percentages of the preferred screen resolution.
-	// You can set the x value to <preferred resolution> * <percentage of width>
-	// for example, ( position.x < (screenResolution.x * 0.15) )
-
-	if (deviceType != PointerDeviceType::Mouse) {
-		// Touch
-		m_moveFirstDown = position;					// save location of initial contact
-		m_movePointerPosition = position;
-	}
-	else {
-		// Mouse
-		m_lookLastPoint = position;							// save point for later move
-		m_lookLastDelta.x = m_lookLastDelta.y = 0;			// these are for smoothing
-	}
+	// STANLEY
+	//tapped = true
+	//tapPosition = XMFLOAT2(args->CurrentPoint->Position.X, args->CurrentPoint->Position.Y);
 }
 
 void MoveLookController::OnPointerMoved(
@@ -463,6 +449,21 @@ void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4*
 		// Detect collisions, which may alter F3
 		// If true, apply F3 to MOT
 	}
+
+	//STANLEY
+	/*
+	
+	bool intersected = false;
+
+	if(tapped) {
+		intersected = rayCalc(size, tapPosition.x, tapPosition.y, view, proj, &ripplePosition);
+	}
+	
+	if(intersected) {
+		placeRipple(ripplePosition.x, ripplePosition.y);
+	}
+
+	*/
 }
 
 void rayCalc(Size size, int x, int y, XMFLOAT4X4 view, XMFLOAT4X4 proj)

@@ -3,6 +3,7 @@
 #include "pch.h"
 #include "Content\Structures\ShaderStructures.h"
 #include "Content\MoveLookController.h"
+#include "Content\Structures\OtherStructures.h"
 
 using namespace RiplGame;
 
@@ -55,7 +56,8 @@ namespace RiplGame
 		LightCBuffer m_constantBufferData_Light;
 		MoveLookController^ m_controller;
 
-		
+		// Water plane stuff for STANLEY
+		struct water_storage ws;
 	};
 }
 
