@@ -9,6 +9,10 @@ using namespace RiplGame;
 namespace RiplGame
 {
 	// This sample renderer instantiates a basic rendering pipeline.
+	struct water_storage{
+		unsigned short int index[3072];
+		//VertexPositionNormalColour vertArr;
+	};
 	class SceneRenderer
 	{
 	public:
