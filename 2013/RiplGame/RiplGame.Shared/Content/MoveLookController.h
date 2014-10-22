@@ -1,12 +1,9 @@
 #pragma once
 
 #include "pch.h"
-<<<<<<< HEAD
 #include "Content\Structures\OtherStructures.h"
-
-=======
 //#include "Ray.h"
->>>>>>> origin/master
+
 #define ROTATION_GAIN 0.2f	// sensitivity adjustment for look controller
 #define MOVEMENT_GAIN 6.0f		// sensitivity adjustment for move controller
 #define OBJ_MOVEMENT_GAIN 2.0f

@@ -1,82 +1,44 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClInclude Include="$(MSBuildThisFileDirectory)pch.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Common\DirectXHelper.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Common\StepTimer.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Common\DeviceResources.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Content\SceneRenderer.h">
-      <Filter>Content</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Content\Structures\VertexStructures.h">
-      <Filter>Content</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Content\Structures\ShaderStructures.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Content\Objects\World\Landscape.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Content\MoveLookController.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)RiplGameMain.h" />
+    <FxCompile Include="$(MSBuildThisFileDirectory)Content\Shaders\Pixel\PixelShader.hlsl" />
+    <FxCompile Include="$(MSBuildThisFileDirectory)Content\Shaders\Vertex\VertexShader.hlsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Collision.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Content\CommonFunctions.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Content\MoveLookController.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Content\Objects\World\Landscape.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Content\Objects\World\Water.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Content\SceneRenderer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)HeightMap.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MoveObject.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)RippleMove.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)RiplGameMain.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)pch.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Common\DeviceResources.cpp" />
+  </ItemGroup>
+  <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)Content\CommonFunctions.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)MoveObject.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)HeightMap.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Collision.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)RippleMove.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Content\MoveLookController.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Content\Objects\World\Landscape.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Content\Objects\World\Water.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Content\Structures\OtherStructures.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Content\Structures\ShaderStructures.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Collision.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)HeightMap.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MoveObject.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)RiplGameMain.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)pch.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Common\DeviceResources.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Common\DirectXHelper.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Common\StepTimer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Content\SceneRenderer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Content\Structures\VertexStructures.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)RippleMove.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="$(MSBuildThisFileDirectory)pch.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Common\DeviceResources.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Content\SceneRenderer.cpp">
-      <Filter>Content</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Content\Objects\World\Landscape.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Content\MoveLookController.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)RiplGameMain.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Content\CommonFunctions.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)MoveObject.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)HeightMap.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Collision.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)RippleMove.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Content\Objects\World\Water.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="$(MSBuildThisFileDirectory)Content\Shaders\Pixel\PixelShader.hlsl">
-      <Filter>Content\Shaders\Pixel</Filter>
-    </FxCompile>
-    <FxCompile Include="$(MSBuildThisFileDirectory)Content\Shaders\Vertex\VertexShader.hlsl">
-      <Filter>Content\Shaders\Vertex</Filter>
-    </FxCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Filter Include="Common">
-      <UniqueIdentifier>{899b8cc5-1bd4-4883-8fd8-21514a226753}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Content">
-      <UniqueIdentifier>{d8802389-5e1a-452f-99d2-d768c524892f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Content\SampleContent">
-      <UniqueIdentifier>{a93389de-94a3-4d0d-8e8d-d398d2c1a840}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Content\Shaders">
-      <UniqueIdentifier>{5b19fc6c-2f97-41e1-bb8b-9d49d3825902}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Content\Shaders\Pixel">
-      <UniqueIdentifier>{45c3272d-5eef-4469-baf9-7202d3afc71e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Content\Shaders\Vertex">
-      <UniqueIdentifier>{336120ba-d843-44c4-9b73-d93122d4b155}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="$(MSBuildThisFileDirectory)heightmap_small.bmp" />
     <Image Include="$(MSBuildThisFileDirectory)heightmap_medium.bmp" />
+    <Image Include="$(MSBuildThisFileDirectory)heightmap_small.bmp" />
   </ItemGroup>
 </Project>
