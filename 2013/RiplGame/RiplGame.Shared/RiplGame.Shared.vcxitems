@@ -30,6 +30,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Content\Structures\OtherStructures.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Content\Structures\ShaderStructures.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Collision.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)GameInfo.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)HeightMap.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MoveObject.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)RiplGameMain.h" />

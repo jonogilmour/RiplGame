@@ -236,7 +236,7 @@ void SceneRenderer::Render()
 	/* Shaders and buffers set. Begin draw calls */
 	// 1st - draw static objects
 	// 2nd - draw dynamic objects
-	for (int x = 0; x < staticObject_IndexCount.size(); x++) {
+	for (unsigned int x = 0; x < staticObject_IndexCount.size(); x++) {
 		// First, set the model matrix to render the static object and update the constant buffer
 		XMStoreFloat4x4(&m_constantBufferData_Model.model, XMMatrixTranspose(XMMatrixIdentity()));
 
@@ -277,7 +277,7 @@ void SceneRenderer::Render()
 	// Loops through all dynamic objects
 	// changed to only draw the number of objects relative to this life aka draw num_cubes = life_number
 	//for (int x = 0; x < dynamicObject_IndexCount.size(); x++) {
-	for (int x = 0; x < life_number; x++) {
+	for (int x = 0; x < current_game_info.current_life; x++) {
 
 		// First, set the model matrix to render the static object and update the constant buffer
 		// make sure actually a transform object in existence
@@ -325,8 +325,6 @@ void SceneRenderer::Render()
 */
 void SceneRenderer::CreateDeviceDependentResources()
 {
-	// setup which life the player is on
-	life_number = 1;
 
 	// Setup the keyboard/mouse controller
 	m_controller = ref new MoveLookController();
@@ -440,7 +438,7 @@ void SceneRenderer::CreateDeviceDependentResources()
 	// Notice how we are &&ing the two tasks, which means we wait for both to completely finish, then we do...
 	auto createLandscapeTask = (createPSTask && createVSTask).then([this]() {
 		// make it same as bitmap
-		float landscapeSize = 96;
+		unsigned short landscapeSize = 96;
 		Landscape landscape(landscapeSize, landscapeSize);
 		Water water(landscapeSize, landscapeSize);
 
@@ -653,7 +651,7 @@ void SceneRenderer::CreateWindowSizeDependentResources()
 // this INCLUDES the very first cube
 // num_cubes = number of lives allowed, 1 cube per life
 void SceneRenderer::MakeCubes(){
-	int num_cubes = LIVES;
+	int num_cubes = current_game_info.max_lives;
 	if (num_cubes <= 1) {
 		return; // don't add any cubes
 	}

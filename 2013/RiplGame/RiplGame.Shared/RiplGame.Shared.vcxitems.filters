@@ -36,6 +36,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Content\SceneRenderer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Content\Structures\VertexStructures.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)RippleMove.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)GameInfo.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="$(MSBuildThisFileDirectory)heightmap_medium.bmp" />
