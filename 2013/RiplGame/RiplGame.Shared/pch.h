@@ -26,3 +26,4 @@
 #include "Common\DeviceResources.h"
 #include "Common\StepTimer.h"
 #include "heightmap.h"
+#include "GameInfo.h"

@@ -13,11 +13,13 @@ using namespace Concurrency;
 RiplGameMain::RiplGameMain(const std::shared_ptr<DX::DeviceResources>& deviceResources) :
 	m_deviceResources(deviceResources), m_pointerLocationX(0.0f)
 {
+	GameInfo current_game_info = { 1, 2 };
+
 	// Register to be notified if the Device is lost or recreated
 	m_deviceResources->RegisterDeviceNotify(this);
 
 	// give the scene renderer the current life number
-	m_sceneRenderer = std::unique_ptr<SceneRenderer>(new SceneRenderer(m_deviceResources, GetLifeNumber()));
+	m_sceneRenderer = std::unique_ptr<SceneRenderer>(new SceneRenderer(m_deviceResources));
 
 	// TODO: Change the timer settings if you want something other than the default variable timestep mode.
 	// e.g. for 60 FPS fixed timestep update logic, call:
@@ -145,15 +147,4 @@ void RiplGameMain::OnDeviceRestored()
 {
 	m_sceneRenderer->CreateDeviceDependentResources();
 	CreateWindowSizeDependentResources();
-}
-
-// Player has used up one life
-// Increment the counter
-void RiplGameMain::IncreaseLifeNumber() {
-	life_number += 1;
-}
-
-// Return life number
-int RiplGameMain::GetLifeNumber() {
-	return life_number;
 }

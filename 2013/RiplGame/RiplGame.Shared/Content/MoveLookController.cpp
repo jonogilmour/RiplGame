@@ -127,13 +127,18 @@ void MoveLookController::OnKeyDown(
 		obj_fwd = true;
 	if (Key == VirtualKey::Down){		// back
 		obj_back = true;
-		//SceneRenderer::IncreaseLifeNumber();
 	}
 	if (Key == VirtualKey::Left)		// left
 		obj_left = true;
 	if (Key == VirtualKey::Right)		// right
 		obj_rght = true;
 
+	// MAKE NEW BOX
+	if (Key == VirtualKey::B) {
+		if (current_game_info.current_life < current_game_info.max_lives) {
+			current_game_info.current_life += 1;
+		}
+	}
 }
 
 void MoveLookController::OnKeyUp(
@@ -304,7 +309,7 @@ XMFLOAT2 MoveLookController::computeTargetOrientation() {
 }
 
 bool MoveLookController::equal(XMFLOAT3 curr, XMFLOAT3 dest){
-	float range = 0.05;
+	float range = 0.05f;
 
 	if (curr.x <= dest.x + range && curr.x >= dest.x - range
 		&& curr.y <= dest.y + range && curr.y >= dest.y - range
@@ -354,7 +359,7 @@ bool MoveLookController::raycalc(Size size, XMFLOAT2 position, XMFLOAT4X4 view, 
 	XMFLOAT3 directionTemp(XMVectorGetX(finalDirCalc), XMVectorGetY(finalDirCalc), XMVectorGetZ(finalDirCalc));
 	//
 
-	for (int i = 0; i < ws->indices.size() / 3; i++)
+	for (unsigned int i = 0; i < ws->indices.size() / 3; i++)
 	{
 		XMVECTOR v0 = XMLoadFloat3(&ws->vertices[ws->indices[i * 3]].pos);
 		XMVECTOR v1 = XMLoadFloat3(&ws->vertices[ws->indices[i * 3 + 1]].pos);
@@ -482,8 +487,13 @@ void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4*
 
 	// make sure that 45 degree cases are not faster
 	XMFLOAT3 command = m_moveCommand;
-	if (fabsf(command.x) > 0.1f || fabsf(command.z) > 0.1f || fabsf(command.y) > 0.1f)
+	
+	//if (fabsf(command.x) > 0.1f || fabsf(command.z) > 0.1f || fabsf(command.y) > 0.1f)
 		normalizeF3(&command);
+		command.x = command.x / DIV_CAMERA_SPEED;
+		command.y = command.y / DIV_CAMERA_SPEED;
+		command.z = command.z / DIV_CAMERA_SPEED;
+	
 
 	// integrate
 	m_position = XMFLOAT3(m_position.x + command.x, m_position.y + command.y, m_position.z + command.z);
@@ -516,7 +526,7 @@ void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4*
 			moveObjectTransform->_24 += (timeDelta * OBJ_MOVEMENT_GAIN);
 		}
 		if (obj_down) {
-			moveObjectTransform->_24 -= (timeDelta * MOVEMENT_GAIN);
+			moveObjectTransform->_24 -= (timeDelta * OBJ_MOVEMENT_GAIN);
 		}
 
 		// Save new centre point
