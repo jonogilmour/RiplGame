@@ -35,7 +35,7 @@ void MoveLookController::Initialize(_In_ CoreWindow^ window)
 	deltaTime = 0;
 
 	SetOrientation(-(XM_PI / 4.0f), 0);				// look down slightly ahead when the app starts
-	SetPosition(XMFLOAT3(0, 10.0f, -10.0f));
+	SetPosition(XMFLOAT3(0, 10.0f, 0));
 
 	tapped = false;
 }
@@ -127,7 +127,7 @@ void MoveLookController::OnKeyDown(
 		obj_fwd = true;
 	if (Key == VirtualKey::Down){		// back
 		obj_back = true;
-		SceneRenderer::IncreaseLifeNumber();
+		//SceneRenderer::IncreaseLifeNumber();
 	}
 	if (Key == VirtualKey::Left)		// left
 		obj_left = true;
@@ -372,20 +372,27 @@ bool MoveLookController::raycalc(Size size, XMFLOAT2 position, XMFLOAT4X4 view, 
 	return false;
 }
 
-void MoveLookController::pickRay(Size screenSize, XMFLOAT2 position,XMFLOAT4X4 view, XMFLOAT4X4 proj, XMVECTOR* pos, XMVECTOR* dir)
+void MoveLookController::pickRay(Size screenSize, XMFLOAT2 mouse, XMFLOAT4X4 view, XMFLOAT4X4 proj, XMVECTOR* pos, XMVECTOR* dir)
 {
-	float vx = (2.0f * position.x / screenSize.Width - 1.0f) / proj._11;
-	float vy = (-2.0f * position.y / screenSize.Height + 1.0f) / proj._22;
+	XMMATRIX projectionMatrix = XMLoadFloat4x4(&proj);
+	XMMATRIX viewMatrix = XMLoadFloat4x4(&view);
 
-	XMMATRIX invView = XMMatrixInverse(nullptr, XMLoadFloat4x4(&view));
-	XMVECTOR rayPosition = XMLoadFloat3(&XMFLOAT3(0.0f,0.0f,0.0f));
-	XMVECTOR rayDirection = XMLoadFloat3(&XMFLOAT3(vx,vy,1.0f));
+	XMVECTOR CursorScreenSpace = XMVectorSet(mouse.x, mouse.y, 1.0f, 0.0f);
 
-	rayPosition = XMVector3TransformCoord(rayPosition, invView);
-	rayDirection = XMVector3Normalize(XMVector3TransformNormal(rayDirection, invView));
+	XMVECTOR CursorObjectSpace = XMVector3Unproject(CursorScreenSpace, 0, 0, screenSize.Width, screenSize.Height, 0.0f, 1.0f,
+		projectionMatrix, viewMatrix, XMMatrixIdentity());
 
-	*pos = rayPosition;
-	*dir = rayDirection;
+	XMVECTOR RayOrigin = XMVectorSet(view._41, view._42, view._43, 0);
+	XMVECTOR RayDir = CursorObjectSpace - RayOrigin;
+	RayDir = XMVector3Normalize(RayDir);
+	
+	*dir = RayDir;
+	*pos = RayOrigin;
+
+	float x = XMVectorGetX(*dir);
+	float y = XMVectorGetY(*dir);
+	float z = XMVectorGetZ(*dir);
+	int u = 1;
 }
 
 void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4* moveObjectTransform, Size outputSize, XMFLOAT4X4 view, XMFLOAT4X4 proj, struct water_storage* ws)
