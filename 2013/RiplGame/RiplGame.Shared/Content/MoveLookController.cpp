@@ -387,8 +387,8 @@ void pickRay(Size size, XMFLOAT2 position,XMFLOAT4X4 view, XMFLOAT4X4 proj,XMVEC
 	XMVECTOR posRayResult = XMVector3TransformCoord(posConv, invView);
 	XMVECTOR dirRayTemp = XMVector3TransformNormal(dirConv, invView);
 	XMVECTOR dirRayResult = XMVector3Normalize(dirRayTemp);
-	pos = posRayResult;
-	dir = dirRayResult;
+	*pos = posRayResult;
+	*dir = dirRayResult;
 }
 
 void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4* moveObjectTransform, Size outputSize, XMFLOAT4X4 view, XMFLOAT4X4 proj, struct water_storage* ws)
