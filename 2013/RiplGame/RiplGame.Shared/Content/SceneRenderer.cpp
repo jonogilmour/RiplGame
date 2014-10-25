@@ -5,7 +5,7 @@
 #include "Content\Objects\World\Water.h"
 #include "MoveObject.h"
 
-#define NUM_CUBES 2
+#define LIVES 2 // also max cubes in game
 
 // Namespaces just spare us from having to write "RiplGame." before everything
 using namespace RiplGame;
@@ -275,7 +275,9 @@ void SceneRenderer::Render()
 	}
 	
 	// Loops through all dynamic objects
-	for (int x = 0; x < dynamicObject_IndexCount.size(); x++) {
+	// changed to only draw the number of objects relative to this life aka draw num_cubes = life_number
+	//for (int x = 0; x < dynamicObject_IndexCount.size(); x++) {
+	for (int x = 0; x < life_number; x++) {
 
 		// First, set the model matrix to render the static object and update the constant buffer
 		// make sure actually a transform object in existence
@@ -323,6 +325,9 @@ void SceneRenderer::Render()
 */
 void SceneRenderer::CreateDeviceDependentResources()
 {
+	// setup which life the player is on
+	life_number = 1;
+
 	// Setup the keyboard/mouse controller
 	m_controller = ref new MoveLookController();
 	m_controller->Initialize(CoreWindow::GetForCurrentThread());
@@ -546,7 +551,7 @@ void SceneRenderer::CreateDeviceDependentResources()
 		currentVertexCount += moveObject.getVertexCount();
 		
 		// Make all the other cubes
-		MakeCubes(NUM_CUBES);
+		MakeCubes();
 
 		////////////////////////
 		/* MODEL INDICES DONE */
@@ -647,7 +652,8 @@ void SceneRenderer::CreateWindowSizeDependentResources()
 // takes in the number of cubes to create
 // this INCLUDES the very first cube
 // num_cubes = number of lives allowed, 1 cube per life
-void SceneRenderer::MakeCubes(int num_cubes){
+void SceneRenderer::MakeCubes(){
+	int num_cubes = LIVES;
 	if (num_cubes <= 1) {
 		return; // don't add any cubes
 	}

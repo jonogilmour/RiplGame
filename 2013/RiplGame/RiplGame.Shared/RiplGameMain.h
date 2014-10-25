@@ -4,12 +4,14 @@
 #include "Common\DeviceResources.h"
 #include "Content\SceneRenderer.h"
 
+
 // Renders Direct2D and 3D content on the screen.
 namespace RiplGame
 {
 	class RiplGameMain : public DX::IDeviceNotify
 	{
 	public:
+		
 		RiplGameMain(const std::shared_ptr<DX::DeviceResources>& deviceResources);
 		~RiplGameMain();
 		void CreateWindowSizeDependentResources();

@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Content\CommonFunctions.h"
 #include "Collision.h"
-
+#include "SceneRenderer.h"
 
 void MoveLookController::Initialize(_In_ CoreWindow^ window)
 {
@@ -125,8 +125,10 @@ void MoveLookController::OnKeyDown(
 		obj_up = true;
 	if (Key == VirtualKey::Up)		// forward
 		obj_fwd = true;
-	if (Key == VirtualKey::Down)		// back
+	if (Key == VirtualKey::Down){		// back
 		obj_back = true;
+		SceneRenderer::IncreaseLifeNumber();
+	}
 	if (Key == VirtualKey::Left)		// left
 		obj_left = true;
 	if (Key == VirtualKey::Right)		// right
