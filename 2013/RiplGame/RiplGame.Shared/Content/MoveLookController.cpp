@@ -335,13 +335,13 @@ bool MoveLookController::raycalc(Size size, XMFLOAT2 position, XMFLOAT4X4 view, 
 	XMVECTOR dirConv = XMLoadFloat3(&directionRay);
 
 	XMVECTOR posRayResult = XMVector3TransformCoord(posConv, invView);
-	XMVECTOR dirRayTemp = XMVector3TransformCoord(dirConv, invView);
+	XMVECTOR dirRayTemp = XMVector3TransformNormal(dirConv, invView);
 	XMVECTOR dirRayResult = XMVector3Normalize(dirRayTemp);
 
 
 	XMMATRIX invWorldMatrix = XMMatrixInverse(nullptr, XMMatrixTranspose(XMMatrixIdentity()));
 	XMVECTOR finalPosCalc = XMVector3TransformCoord(posRayResult, invWorldMatrix);
-	XMVECTOR finalDirTemp = XMVector3TransformCoord(dirRayResult, invWorldMatrix);
+	XMVECTOR finalDirTemp = XMVector3TransformNormal(dirRayResult, invWorldMatrix);
 	XMVECTOR finalDirCalc = XMVector3Normalize(finalDirTemp);
 
 	// Set a breakpoint after these to see the contents of the above vectors
@@ -356,6 +356,7 @@ bool MoveLookController::raycalc(Size size, XMFLOAT2 position, XMFLOAT4X4 view, 
 		XMVECTOR v2 = XMLoadFloat3(&ws->vertices[ws->indices[i * 3 + 2]].pos);
 		float dist;
 		bool doesIntersect = Intersects(finalPosCalc, finalDirCalc, v0, v1, v2, dist);
+		printf("%b",doesIntersect);
 		if (doesIntersect)
 		{
 			ripplePosition->x = (ws->vertices[ws->indices[i * 3]].pos.x + ws->vertices[ws->indices[i * 3 + 2]].pos.x) / 2;
@@ -365,6 +366,11 @@ bool MoveLookController::raycalc(Size size, XMFLOAT2 position, XMFLOAT4X4 view, 
 	}
 	return false;
 }
+
+//void pickRay();
+//{
+
+//}
 
 void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4* moveObjectTransform, Size outputSize, XMFLOAT4X4 view, XMFLOAT4X4 proj, struct water_storage* ws)
 {
