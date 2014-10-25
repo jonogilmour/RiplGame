@@ -322,7 +322,7 @@ XMFLOAT3 MoveLookController::computeDirectionVector(){
 bool MoveLookController::raycalc(Size size, XMFLOAT2 position, XMFLOAT4X4 view, XMFLOAT4X4 proj, XMFLOAT2* ripplePosition, struct water_storage* ws)
 {
 	//takes in size(height,width), touch x and y, view matrix, proj, and water struct. outputs co ords of touch in xmfloat2
-	float height = size.Height;
+/*	float height = size.Height;
 	float width = size.Width;
 	XMFLOAT4X4 p = proj;
 	XMFLOAT4X4 v = view;
@@ -336,7 +336,10 @@ bool MoveLookController::raycalc(Size size, XMFLOAT2 position, XMFLOAT4X4 view, 
 
 	XMVECTOR posRayResult = XMVector3TransformCoord(posConv, invView);
 	XMVECTOR dirRayTemp = XMVector3TransformNormal(dirConv, invView);
-	XMVECTOR dirRayResult = XMVector3Normalize(dirRayTemp);
+	XMVECTOR dirRayResult = XMVector3Normalize(dirRayTemp);*/
+	XMVECTOR posRayResult;
+	XMVECTOR dirRayResult;
+	pickRay(size, position, view, proj, &posRayResult,&dirRayResult);
 
 
 	XMMATRIX invWorldMatrix = XMMatrixInverse(nullptr, XMMatrixTranspose(XMMatrixIdentity()));
@@ -367,10 +370,26 @@ bool MoveLookController::raycalc(Size size, XMFLOAT2 position, XMFLOAT4X4 view, 
 	return false;
 }
 
-//void pickRay();
-//{
+void pickRay(Size size, XMFLOAT2 position,XMFLOAT4X4 view, XMFLOAT4X4 proj,XMVECTOR* pos, XMVECTOR* dir)
+{
+	float height = size.Height;
+	float width = size.Width;
+	XMFLOAT4X4 p = proj;
+	XMFLOAT4X4 v = view;
+	float vx = (2.0f * position.x / width - 1.0f) / p._11;
+	float vy = (-2.0f * position.y / height + 1.0f) / p._22;
+	XMFLOAT3 positionRay;
+	XMFLOAT3 directionRay(vx, vy, 1.0f);
+	XMMATRIX invView = XMMatrixInverse(nullptr, XMLoadFloat4x4(&v));
+	XMVECTOR posConv = XMLoadFloat3(&positionRay);
+	XMVECTOR dirConv = XMLoadFloat3(&directionRay);
 
-//}
+	XMVECTOR posRayResult = XMVector3TransformCoord(posConv, invView);
+	XMVECTOR dirRayTemp = XMVector3TransformNormal(dirConv, invView);
+	XMVECTOR dirRayResult = XMVector3Normalize(dirRayTemp);
+	pos = posRayResult;
+	dir = dirRayResult;
+}
 
 void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4* moveObjectTransform, Size outputSize, XMFLOAT4X4 view, XMFLOAT4X4 proj, struct water_storage* ws)
 {
