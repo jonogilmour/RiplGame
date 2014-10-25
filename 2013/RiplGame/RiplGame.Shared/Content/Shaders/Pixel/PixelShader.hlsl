@@ -17,7 +17,7 @@ struct _Material
 	float4  Specular;       // 16 bytes
 	//----------------------------------- (16 byte boundary)
 	float   SpecularPower;  // 4 bytes
-	float3  Padding;        // 8 bytes
+	float3  Padding;        // 12 bytes
 	//----------------------------------- (16 byte boundary)
 };  // Total:               // 80 bytes ( 5 * 16 )
 
@@ -180,8 +180,8 @@ LightingResult ComputeLighting(float4 P, float3 N)
 // Per-pixel color data passed through the pixel shader. CHANGE THIS
 struct PixelShaderInput
 {
-	float4 pos : SV_POSITION;
-	float4 norm : NORMAL;
+	float4 pos   : SV_POSITION;
+	float4 norm  : NORMAL;
 	float4 color : COLOR0;
 	float4 posWS : TEXCOORD0;
 };
@@ -192,11 +192,11 @@ float4 main(PixelShaderInput input) : SV_TARGET
 	LightingResult lit = ComputeLighting(input.posWS, normalize(input.norm));
 
 	float4 emissive = Material.Emissive;
-		float4 ambient = Material.Ambient * GlobalAmbientColour;
-		float4 diffuse = Material.Diffuse * lit.Diffuse;
-		float4 specular = Material.Specular * lit.Specular;
+	float4 ambient  = Material.Ambient * GlobalAmbientColour;
+	float4 diffuse  = Material.Diffuse * lit.Diffuse;
+	float4 specular = Material.Specular * lit.Specular;
 
-		float4 finalColor = (emissive + ambient + diffuse + specular) * input.color;
+	float4 finalColor = (emissive + ambient + diffuse + specular) * input.color;
 
-		return input.color;// finalColor;
+	return input.color; // finalColor;
 }

@@ -28,24 +28,36 @@ void SceneRenderer::Update(DX::StepTimer const& timer)
 	XMFLOAT4 CubePos;
 
 	Size outputSize = m_deviceResources->GetOutputSize();
+	// check if not 1st tick
+	// cube is at position 0 in dynamicObject
+	// dynamicObject_Transforms is the world matrix
+	// to move ANY object at all, take each vertex * worldMatrix and it moves the entire object
+	// view moves world around camera
+	// projection distorts all vertices so that it looks normal - like an eye would see (FOV, aspect ratio etc.) - created in WindowSize... - projectionMatrix is always constant
+	// ws - water storage
+	// controller update - movement of camera and objects
 	if (!(dynamicObject_Transforms.size() < 1))	{
 		m_controller->Update(CoreWindow::GetForCurrentThread(), timer.GetElapsedSeconds(), &dynamicObject_Transforms[0], outputSize, m_constantBufferData_View.view, m_constantBufferData_Proj.projection, &ws);
 		CubePos = XMFLOAT4(dynamicObject_Transforms[0]._14, dynamicObject_Transforms[0]._24+1, dynamicObject_Transforms[0]._34, 1);
 	}
-	else {
+	else { // runs very time
 		m_controller->Update(CoreWindow::GetForCurrentThread(), timer.GetElapsedSeconds(), nullptr, outputSize, m_constantBufferData_View.view, m_constantBufferData_Proj.projection, &ws);
 		CubePos = XMFLOAT4(0, 0, 0, 1);
 	}
 
-	XMVECTOR eye = XMLoadFloat3(&m_controller->get_Position());
-	XMVECTOR at = XMLoadFloat3(&m_controller->get_LookAt());
-	XMVECTOR up = XMLoadFloat3(&m_controller->get_UpAxis());
+	// camera stuff
+	XMVECTOR eye = XMLoadFloat3(&m_controller->get_Position()); // position of camera in world
+	XMVECTOR at  = XMLoadFloat3(&m_controller->get_LookAt());   // what point is the camera looking at
+	XMVECTOR up  = XMLoadFloat3(&m_controller->get_UpAxis());   // which direction is up, important for getting things in correct perspective
 
 	// Store the eye position
+	// convert eye to XMFLOAT4
 	XMStoreFloat4(&m_constantBufferData_Light.EyePosition, eye);
 
 	// Setup the constant buffer
 	XMStoreFloat4x4(&m_constantBufferData_View.view, XMMatrixTranspose(XMMatrixLookAtLH(eye, at, up)));
+
+	// Set up lights
 
 	// Do lights (directional)
 	Light light;
@@ -85,7 +97,7 @@ void SceneRenderer::Update(DX::StepTimer const& timer)
 // Renders one frame using the vertex and pixel shaders.
 void SceneRenderer::Render()
 {
-	//REMEMBER: Asynchronous means it continues in the background and doesn't block
+	// REMEMBER: Asynchronous means it continues in the background and doesn't block
 
 	// Loading is asynchronous. Only draw geometry after it's loaded.
 	if (!m_loadingComplete)
@@ -95,21 +107,23 @@ void SceneRenderer::Render()
 
 	// auto keyword infers the type of the variable
 	// The context just grabs the settings of the graphics device
+	// Gives functions access to shaders and buffers
 	auto context = m_deviceResources->GetD3DDeviceContext();
 
 	// Prepare the constant buffer to send it to the graphics device.
 	// A constant buffer is just a set of data that all shaders will need to refer to, like a common data set
 	// The constant buffer is filled with data beforehand, see the parts above where the view/projection matrices were made
 	// notice that they are put into the constant buffer because every shader needs to know about these matrices
-	context->UpdateSubresource(
-		m_constantBuffer_View.Get(),
+	// Update graphics card with this data
+	context->UpdateSubresource( // view update
+		m_constantBuffer_View.Get(), // structure given to shader to communicate
 		0,
 		NULL,
 		&m_constantBufferData_View,
 		0,
 		0
 		);
-	context->UpdateSubresource(
+	context->UpdateSubresource( // projection update
 		m_constantBuffer_Proj.Get(),
 		0,
 		NULL,
@@ -122,15 +136,17 @@ void SceneRenderer::Render()
 	// This just stores the index and vertex buffers to be sent to the graphics card
 	UINT stride = sizeof(VertexPositionNormalColour);
 	UINT offset = 0;
-	// Vertexbuffer
+	// Vertexbuffer set
+	// vertices of every object
 	context->IASetVertexBuffers(
 		0,
 		1,
 		m_vertexBuffer.GetAddressOf(),
-		&stride,
+		&stride, // how many bytes are in each vertex
 		&offset
 		);
-	// Indexbuffer
+	// Indexbuffer set
+	// indices of every object
 	context->IASetIndexBuffer(
 		m_indexBuffer.Get(),
 		DXGI_FORMAT_R16_UINT, // Each index is one 16-bit unsigned integer (short).
@@ -167,6 +183,10 @@ void SceneRenderer::Render()
 	// set the first argument in VSSetConstantBuffers to 1.
 	// Try it out, change the 0 below to a 1, then try running the program. Nothing will come up because the MVP matrices have not been saved
 	// Then, try changing the register value in the vertex shader to b1, then run. It should work now, because you've mapped the buffers correctly
+	// Vertex Shader Set Constant Buffers, different for vertex and pixel shader
+	// vertex shader - does all vertices in scene. can set different shaders to customize the looks of objects
+	//				 - where the multiplication of matrices happen
+	// pixel shader - works per pixel, all the vertices in the world go from 3D space and translated into flat image for screen
 	context->VSSetConstantBuffers(
 		1,
 		1,
@@ -212,12 +232,18 @@ void SceneRenderer::Render()
 		);
 
 	/* Shaders and buffers set. Begin draw calls */
+	// 1st - draw static objects
+	// 2nd - draw dynamic objects
 	for (int x = 0; x < staticObject_IndexCount.size(); x++) {
 		// First, set the model matrix to render the static object and update the constant buffer
 		XMStoreFloat4x4(&m_constantBufferData_Model.model, XMMatrixTranspose(XMMatrixIdentity()));
 
+		// _Material set in ShaderStructures.h
+		// send material to shader
 		m_constantBufferData_Material.material = _Material();
 
+		// send model matrix to shader
+		// do matrix calculations in GPU
 		context->UpdateSubresource(
 			m_constantBuffer_Material.Get(),
 			0,
@@ -235,20 +261,24 @@ void SceneRenderer::Render()
 			0
 			);
 
-		// Draw the object
+		// Draw the static object
 		context->DrawIndexed(
 			staticObject_IndexCount[x],
 			staticObject_StartIndexOffset[x],
 			staticObject_StartVertexOffset[x]
 			);
 
-		// Reset model matrix
+		// Reset model matrix back to identity
 		XMStoreFloat4x4(&m_constantBufferData_Model.model, XMMatrixTranspose(XMMatrixIdentity()));
 	}
 
+	// Loops through all dynamic objects
 	for (int x = 0; x < dynamicObject_IndexCount.size(); x++) {
 
 		// First, set the model matrix to render the static object and update the constant buffer
+		// make sure actually a transform object in existence
+		// dynamicObject_Transforms stores model matrix for all dynamic object
+		// model matrix set size position and rotation of object
 		if (dynamicObject_Transforms.size() > 0) {
 			memcpy(&m_constantBufferData_Model.model, &dynamicObject_Transforms[x], sizeof(XMFLOAT4X4));
 		}
@@ -272,25 +302,29 @@ void SceneRenderer::Render()
 			0
 			);
 
-		// Draw the object
+		// Draw the dynamic object
 		context->DrawIndexed(
-			dynamicObject_IndexCount[x],
-			dynamicObject_StartIndexOffset[x],
-			dynamicObject_StartVertexOffset[x]
+			dynamicObject_IndexCount[x],		// number of indices this object has (e.g. triangle has 3 indices, square has 6)
+			dynamicObject_StartIndexOffset[x],	// first position of this object located at this position in the big index array
+			dynamicObject_StartVertexOffset[x]	// first position of this object located at this position in the big vertex array
 			);
 
-		// Reset model matrix
+		// Reset model matrix back to identity
 		XMStoreFloat4x4(&m_constantBufferData_Model.model, XMMatrixTranspose(XMMatrixIdentity()));
 	}
 }
 
+/*  REALLY COMPLEX
+	Do different things for PC, Tablet, Phone.
+	Only called once, sets up resources at start.
+*/
 void SceneRenderer::CreateDeviceDependentResources()
 {
 	// Setup the keyboard/mouse controller
 	m_controller = ref new MoveLookController();
 	m_controller->Initialize(CoreWindow::GetForCurrentThread());
 
-	//REMEMBER: Asynchronous means it continues in the background and doesn't block
+	// REMEMBER: Asynchronous means it continues in the background and doesn't block
 	// Load shaders asynchronously on separate threads, so they can both be loaded at the same time
 	// Note that these .cso files are generates from the .hlsl shader files on the right, they're like the
 	// shader byte-code
@@ -299,6 +333,7 @@ void SceneRenderer::CreateDeviceDependentResources()
 
 	// After the vertex shader file is loaded, create the shader and input layout.
 	// The ".then" syntax means "wait for X to finish doing its thing, then execute the following code"
+	// ".then" makes an additional thread
 	auto createVSTask = loadVSTask.then([this](const std::vector<byte>& fileData) {
 		// fileData contains the results of loadVStask, ie the shader code
 		// This creates the vertex shader. Throwiffailed because without a vertex shader we cant do SHIT
@@ -317,6 +352,7 @@ void SceneRenderer::CreateDeviceDependentResources()
 		// The 5th arg refers to the offset within the vertex structure where this field resides. The "position" 
 		// is the first field in the struct (so offset = 0), and the "normal" field is 12 bytes along (being a 3x4 byte float), 
 		// and so on.
+		// XMFLOAT3 12 bytes long, use 0-11 as position value, 12-23 as normal, 24-35 as color
 		static const D3D11_INPUT_ELEMENT_DESC vertexDesc[] =
 		{
 			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
@@ -334,7 +370,7 @@ void SceneRenderer::CreateDeviceDependentResources()
 			&m_inputLayout
 			)
 			);
-	});
+	}); // vertex shader completed loading
 
 	// After the pixel shader file is loaded, create the shader and constant buffer.
 	// Again, we wait until the pixel shader file is completely loaded in, then...
@@ -390,7 +426,7 @@ void SceneRenderer::CreateDeviceDependentResources()
 			&m_constantBuffer_Light
 			)
 			);
-	});
+	}); // pixel shader done loading
 
 	// Once both shaders are loaded, create the mesh.
 	// Notice how we are &&ing the two tasks, which means we wait for both to completely finish, then we do...
@@ -399,23 +435,28 @@ void SceneRenderer::CreateDeviceDependentResources()
 		float landscapeSize = 96;
 		Landscape landscape(landscapeSize, landscapeSize);
 		Water water(landscapeSize, landscapeSize);
+
+		// this is our cube
 		MoveObject moveObject(0.5f,0.5f,0.5f);
 
-		//Setup water plane storage for ray tracing STANLEY
+		// Setup water plane storage for ray tracing STANLEY
 		ws.vertices.insert(ws.vertices.end(), water.vertices.begin(), water.vertices.end());
 		ws.indices.insert(ws.indices.end(), water.indices.begin(), water.indices.end());
 
 		// This creates the data (vertices) to put into the vertex buffer, and zeroes it
 		D3D11_SUBRESOURCE_DATA vertexBufferData = { 0 };
-		std::vector<VertexPositionNormalColour> vertices;
+		std::vector<VertexPositionNormalColour> vertices; // stores every single objects vertices, then load it into GPU
 
+		// total number of vertices for allocating memory
 		unsigned int vertexNumber = landscape.getVertexCount() + moveObject.getVertexCount() + water.getVertexCount();
 
+		// put all our vertices together
 		vertices.reserve(vertexNumber); // preallocate memory
 		vertices.insert(vertices.end(), landscape.vertices.begin(), landscape.vertices.end());
 		vertices.insert(vertices.end(), water.vertices.begin(), water.vertices.end());
 		vertices.insert(vertices.end(), moveObject.vertices.begin(), moveObject.vertices.end());
 
+		// the data for vertexBufferData is in the vertices array
 		// pSysMem is a pointer to the data to put in
 		vertexBufferData.pSysMem = &(vertices[0]);
 		// This is only used for textures, so make it 0 as we arent using textures here
@@ -432,8 +473,8 @@ void SceneRenderer::CreateDeviceDependentResources()
 		DX::ThrowIfFailed(
 			m_deviceResources->GetD3DDevice()->CreateBuffer(
 			&vertexBufferDesc,
-			&vertexBufferData,
-			&m_vertexBuffer
+			&vertexBufferData, // big list of verices
+			&m_vertexBuffer    // create buffer, and store that buffer in m_vertexBuffer
 			)
 			);
 
@@ -471,14 +512,18 @@ void SceneRenderer::CreateDeviceDependentResources()
 
 		int currentVertexCount = 0; // Counter for current length of vertex array
 
-		//STATIC OBJECTS
+		// STATIC OBJECTS
+
 		// Insert the landscape
 		staticObject_StartIndexOffset.push_back(indices.size());
 		staticObject_StartVertexOffset.push_back(currentVertexCount);
 		staticObject_IndexCount.push_back(landscape.getIndexCount());
+		// insert at next available position, all indices from begin-end for landscape
 		indices.insert(indices.end(), landscape.indices.begin(), landscape.indices.end());
+		// sets initial position
 		staticObject_Transforms.push_back(tempMatrix);
 		currentVertexCount += landscape.getVertexCount();
+
 		// Insert the water
 		staticObject_StartIndexOffset.push_back(indices.size());
 		staticObject_StartVertexOffset.push_back(currentVertexCount);
@@ -487,7 +532,8 @@ void SceneRenderer::CreateDeviceDependentResources()
 		staticObject_Transforms.push_back(tempMatrix);
 		currentVertexCount += water.getVertexCount();
 
-		//DYNAMIC OBJECTS
+		// DYNAMIC OBJECTS
+
 		// Insert the moving object
 		dynamicObject_StartIndexOffset.push_back(indices.size());
 		dynamicObject_StartVertexOffset.push_back(currentVertexCount);
@@ -571,10 +617,10 @@ void SceneRenderer::CreateWindowSizeDependentResources()
 	// This sample makes use of a right-handed coordinate system using row-major matrices.
 	// Construct the projection matrix as per usual
 	XMMATRIX perspectiveMatrix = XMMatrixPerspectiveFovLH(
-		fovAngleY,
+		fovAngleY, // vertical FOV
 		aspectRatio,
-		0.01f,
-		100.0f
+		0.01f, // near clipping plane
+		100.0f // far clipping plane
 		);
 
 	// Orientation is the orientation of a monitor, ie landscape or portrait

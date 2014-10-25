@@ -48,7 +48,7 @@ namespace RiplGame
 		Microsoft::WRL::ComPtr<ID3D11Buffer> m_constantBuffer_Material;
 		Microsoft::WRL::ComPtr<ID3D11Buffer> m_constantBuffer_Light;
 
-		uint32 m_indexCount;
+		uint32 m_indexCount; // total size of index buffer
 		ModelCBuffer m_constantBufferData_Model;
 		ViewCBuffer m_constantBufferData_View;
 		ProjCBuffer m_constantBufferData_Proj;

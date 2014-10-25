@@ -1,3 +1,5 @@
+// cbuffer = constant buffer
+
 cbuffer viewMatrix : register(b1)
 {
 	matrix view;
@@ -22,6 +24,7 @@ struct VertexShaderInput
 };
 
 // Per-pixel color data passed through the pixel shader.
+// same as VertexShaderOutput, takes output of vertex shader
 struct PixelShaderInput
 {
 	float4 pos : SV_POSITION;
@@ -54,5 +57,5 @@ PixelShaderInput main(VertexShaderInput input)
 
 	output.color = input.color;
 
-	return output;
+	return output; // return output to pixel shader
 }
