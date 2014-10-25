@@ -38,7 +38,7 @@
 //-------------------------------------End of Camera collision test code --------------------------------------------------
 
 
-//The functions for the actual collision detection between two sphere like objects.
+// The functions for the actual collision detection between two sphere like objects.
 float pointdistance(XMFLOAT3 c1, XMFLOAT3 c2)
 {
 	XMFLOAT3 vec(c2.x - c1.x, c2.y - c1.y, c2.z - c1.z);
@@ -48,10 +48,10 @@ float pointdistance(XMFLOAT3 c1, XMFLOAT3 c2)
 bool spheresphereCollision(XMFLOAT3* center1, float r1, XMFLOAT3 center2, float r2)
 {
 	float dist = pointdistance(*center1, center2);
-	//Compare the distance
+	// Compare the distance
 	if (dist <= (r1 + r2) * (r1 + r2)) {
-		//If they is a collision, there will be a overlapping value, we will want to move one of the objects back
-		//by the overlap value before the next render.
+		// If they is a collision, there will be a overlapping value, we will want to move one of the objects back
+		// by the overlap value before the next render.
 		float overlap = sqrt(dist) - (r1 + r2);
 		XMFLOAT3 vector(center2.x - center1->x, center2.y - center1->y, center2.z - center1->z);
 		
