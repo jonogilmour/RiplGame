@@ -39,7 +39,7 @@
 
 
 // The functions for the actual collision detection between two sphere like objects.
-float pointdistance(XMFLOAT3 c1, XMFLOAT3 c2)
+float pointDistance(XMFLOAT3 c1, XMFLOAT3 c2)
 {
 	XMFLOAT3 vec(c2.x - c1.x, c2.y - c1.y, c2.z - c1.z);
 	return (vec.x*vec.x + vec.y*vec.y + vec.z*vec.z);
@@ -47,7 +47,7 @@ float pointdistance(XMFLOAT3 c1, XMFLOAT3 c2)
 
 bool spheresphereCollision(XMFLOAT3* center1, float r1, XMFLOAT3 center2, float r2)
 {
-	float dist = pointdistance(*center1, center2);
+	float dist = pointDistance(*center1, center2);
 	// Compare the distance
 	if (dist <= (r1 + r2) * (r1 + r2)) {
 		// If they is a collision, there will be a overlapping value, we will want to move one of the objects back
