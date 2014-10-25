@@ -480,8 +480,13 @@ void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4*
 
 	// make sure that 45 degree cases are not faster
 	XMFLOAT3 command = m_moveCommand;
-	if (fabsf(command.x) > 0.1f || fabsf(command.z) > 0.1f || fabsf(command.y) > 0.1f)
+	
+	//if (fabsf(command.x) > 0.1f || fabsf(command.z) > 0.1f || fabsf(command.y) > 0.1f)
 		normalizeF3(&command);
+		command.x = command.x / DIV_CAMERA_SPEED;
+		command.y = command.y / DIV_CAMERA_SPEED;
+		command.z = command.z / DIV_CAMERA_SPEED;
+	
 
 	// integrate
 	m_position = XMFLOAT3(m_position.x + command.x, m_position.y + command.y, m_position.z + command.z);
@@ -514,7 +519,7 @@ void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4*
 			moveObjectTransform->_24 += (timeDelta * OBJ_MOVEMENT_GAIN);
 		}
 		if (obj_down) {
-			moveObjectTransform->_24 -= (timeDelta * MOVEMENT_GAIN);
+			moveObjectTransform->_24 -= (timeDelta * OBJ_MOVEMENT_GAIN);
 		}
 
 		// Save new centre point
