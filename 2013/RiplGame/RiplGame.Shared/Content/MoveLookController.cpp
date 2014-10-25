@@ -354,8 +354,8 @@ bool MoveLookController::raycalc(Size size, XMFLOAT2 position, XMFLOAT4X4 view, 
 		XMVECTOR v1 = XMLoadFloat3(&ws->vertices[ws->indices[i * 3 + 1]].pos);
 		XMVECTOR v2 = XMLoadFloat3(&ws->vertices[ws->indices[i * 3 + 2]].pos);
 		float dist;
-		bool result = Intersects(finalPosCalc, finalDirCalc, v0, v1, v2, dist);
-		if (result == true)
+		bool doesIntersect = Intersects(finalPosCalc, finalDirCalc, v0, v1, v2, dist);
+		if (doesIntersect)
 		{
 			ripplePosition->x = (ws->vertices[ws->indices[i * 3]].pos.x + ws->vertices[ws->indices[i * 3 + 2]].pos.x) / 2;
 			ripplePosition->x = (ws->vertices[ws->indices[i * 3]].pos.y + ws->vertices[ws->indices[i * 3 + 1]].pos.y) / 2;
