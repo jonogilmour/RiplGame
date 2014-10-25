@@ -52,6 +52,7 @@ namespace RiplGame {
 		XMFLOAT2 tapPosition;
 		XMFLOAT2 ripplePosition;
 
+		void pickRay(Size size, XMFLOAT2 position, XMFLOAT4X4 view, XMFLOAT4X4 proj, XMVECTOR* pos, XMVECTOR* dir);
 
 	public:
 
@@ -115,7 +116,6 @@ namespace RiplGame {
 
 		void moveTo(XMFLOAT3 center);
 		bool raycalc(Size size, XMFLOAT2 position, XMFLOAT4X4 view, XMFLOAT4X4 proj, XMFLOAT2* ripplePosition, struct water_storage* ws);
-		void pickRay(Size size, XMFLOAT2 position, XMFLOAT4X4 view, XMFLOAT4X4 proj, XMVECTOR* pos, XMVECTOR* dir);
 		//void getPickingRay(float x, float y, Size size, Ray* ray);
 
 		bool equal(XMFLOAT3 pos1, XMFLOAT3 pos2);

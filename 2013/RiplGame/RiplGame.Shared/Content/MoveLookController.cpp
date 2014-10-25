@@ -370,7 +370,7 @@ bool MoveLookController::raycalc(Size size, XMFLOAT2 position, XMFLOAT4X4 view, 
 	return false;
 }
 
-void pickRay(Size size, XMFLOAT2 position,XMFLOAT4X4 view, XMFLOAT4X4 proj,XMVECTOR* pos, XMVECTOR* dir)
+void MoveLookController::pickRay(Size size, XMFLOAT2 position,XMFLOAT4X4 view, XMFLOAT4X4 proj,XMVECTOR* pos, XMVECTOR* dir)
 {
 	float height = size.Height;
 	float width = size.Width;
