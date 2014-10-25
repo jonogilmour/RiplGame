@@ -192,11 +192,11 @@ float4 main(PixelShaderInput input) : SV_TARGET
 	LightingResult lit = ComputeLighting(input.posWS, normalize(input.norm));
 
 	float4 emissive = Material.Emissive;
-	float4 ambient = Material.Ambient * GlobalAmbientColour;
-	float4 diffuse = Material.Diffuse * lit.Diffuse;
-	float4 specular = Material.Specular * lit.Specular;
+		float4 ambient = Material.Ambient * GlobalAmbientColour;
+		float4 diffuse = Material.Diffuse * lit.Diffuse;
+		float4 specular = Material.Specular * lit.Specular;
 
-	float4 finalColor = (emissive + ambient + diffuse + specular) * input.color;
+		float4 finalColor = (emissive + ambient + diffuse + specular) * input.color;
 
-	return finalColor;
+		return input.color;// finalColor;
 }

@@ -106,7 +106,7 @@ namespace RiplGame {
 
 		XMFLOAT3 get_UpAxis();
 
-		void Update(Windows::UI::Core::CoreWindow^ window, float timeDelta, XMFLOAT4X4* moveObjectTransform, Size outputSize, XMFLOAT4X4 proj, XMFLOAT4X4 view);
+		void Update(Windows::UI::Core::CoreWindow^ window, float timeDelta, XMFLOAT4X4* moveObjectTransform, Size outputSize, XMFLOAT4X4 proj, XMFLOAT4X4 view, struct water_storage* ws);
 
 		XMFLOAT3 computeRAxis();
 		XMFLOAT3 computeDirection();
@@ -114,7 +114,7 @@ namespace RiplGame {
 		XMFLOAT3 camPosition();
 
 		void moveTo(XMFLOAT3 center);
-		void raycalc(Size size, int x, int y, XMFLOAT3 &p1, XMFLOAT3 &p2);
+		bool raycalc(Size size, XMFLOAT2 position, XMFLOAT4X4 view, XMFLOAT4X4 proj, XMFLOAT2* ripplePosition, struct water_storage* ws);
 		//void getPickingRay(float x, float y, Size size, Ray* ray);
 
 		bool equal(XMFLOAT3 pos1, XMFLOAT3 pos2);

@@ -44,12 +44,14 @@ void MoveLookController::OnPointerPressed(
 	_In_ CoreWindow^ sender,
 	_In_ PointerEventArgs^ args)
 {
+	OutputDebugString(L"TAP ON\n");
+
 	// get the current pointer position
 	uint32 pointerID = args->CurrentPoint->PointerId;
 
 	// STANLEY
-	//tapped = true
-	//tapPosition = XMFLOAT2(args->CurrentPoint->Position.X, args->CurrentPoint->Position.Y);
+	tapped = true;
+	tapPosition = XMFLOAT2(args->CurrentPoint->Position.X, args->CurrentPoint->Position.Y);
 }
 
 void MoveLookController::OnPointerMoved(
@@ -317,9 +319,53 @@ XMFLOAT3 MoveLookController::computeDirectionVector(){
 		);
 }
 
+bool MoveLookController::raycalc(Size size, XMFLOAT2 position, XMFLOAT4X4 view, XMFLOAT4X4 proj, XMFLOAT2* ripplePosition, struct water_storage* ws)
+{
+	//takes in size(height,width), touch x and y, view matrix, proj, and water struct. outputs co ords of touch in xmfloat2
+	float height = size.Height;
+	float width = size.Width;
+	XMFLOAT4X4 p = proj;
+	XMFLOAT4X4 v = view;
+	float vx = (2.0f * position.x / width - 1.0f) / p._11;
+	float vy = (-2.0f * position.y / height + 1.0f) / p._22;
+	XMFLOAT3 positionRay;
+	XMFLOAT3 directionRay(vx, vy, 1.0f);
 
+	XMMATRIX invView = XMMatrixInverse(nullptr, XMLoadFloat4x4(&v));
+	XMVECTOR posConv = XMLoadFloat3(&positionRay);
+	XMVECTOR dirConv = XMLoadFloat3(&directionRay);
+	XMVECTOR posRayResult = XMVector3TransformCoord(posConv, invView);
+	XMVECTOR dirRayTemp = XMVector3TransformCoord(dirConv, invView);
+	XMVECTOR dirRayResult = XMVector3Normalize(dirRayTemp);
+	XMMATRIX invWorldMatrix = XMMatrixInverse(nullptr, XMMatrixTranspose(XMMatrixIdentity()));
 
-void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4* moveObjectTransform, Size outputSize, XMFLOAT4X4 view, XMFLOAT4X4 proj)
+	XMVECTOR finalPosCalc = XMVector3TransformCoord(posRayResult, invWorldMatrix);
+	XMVECTOR finalDirTemp = XMVector3TransformCoord(dirRayResult, invWorldMatrix);
+	XMVECTOR finalDirCalc = XMVector3Normalize(finalDirTemp);
+
+	// Set a breakpoint after these to see the contents of the above vectors
+	XMFLOAT3 positionTemp(XMVectorGetX(finalPosCalc), XMVectorGetY(finalPosCalc), XMVectorGetZ(finalPosCalc));
+	XMFLOAT3 directionTemp(XMVectorGetX(finalDirCalc), XMVectorGetY(finalDirCalc), XMVectorGetZ(finalDirCalc));
+	//
+
+	for (int i = 0; i < ws->indices.size() / 3; i++)
+	{
+		XMVECTOR v0 = XMLoadFloat3(&ws->vertices[ws->indices[i * 3]].pos);
+		XMVECTOR v1 = XMLoadFloat3(&ws->vertices[ws->indices[i * 3 + 1]].pos);
+		XMVECTOR v2 = XMLoadFloat3(&ws->vertices[ws->indices[i * 3 + 2]].pos);
+		float dist;
+		bool result = Intersects(finalPosCalc, finalDirCalc, v0, v1, v2, dist);
+		if (result == true)
+		{
+			ripplePosition->x = (ws->vertices[ws->indices[i * 3]].pos.x + ws->vertices[ws->indices[i * 3 + 2]].pos.x) / 2;
+			ripplePosition->x = (ws->vertices[ws->indices[i * 3]].pos.y + ws->vertices[ws->indices[i * 3 + 1]].pos.y) / 2;
+			return true;
+		}
+	}
+	return false;
+}
+
+void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4* moveObjectTransform, Size outputSize, XMFLOAT4X4 view, XMFLOAT4X4 proj, struct water_storage* ws)
 {
 	deltaTime = timeDelta;
 	XMFLOAT3 dir = computeDirection();
@@ -450,59 +496,23 @@ void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4*
 		// If true, apply F3 to MOT
 	}
 
-	//STANLEY
-	/*
+
 	
 	bool intersected = false;
 
-	if(tapped) {
-		intersected = rayCalc(size, tapPosition.x, tapPosition.y, view, proj, &ripplePosition);
+	if (tapped) {
+		OutputDebugString(L"RAY CALCING\n");
+		intersected = raycalc(outputSize, tapPosition, view, proj, &ripplePosition, ws);
+		tapped = false;
 	}
 	
 	if(intersected) {
-		placeRipple(ripplePosition.x, ripplePosition.y);
+		OutputDebugString(L"INTERSECTION FOUND\n");
+		//placeRipple(ripplePosition.x, ripplePosition.y);
+		moveObjectTransform->_14 = ripplePosition.x;
+		moveObjectTransform->_34 = ripplePosition.y;
 	}
 
-	*/
 }
 
-XMFLOAT2 rayCalc(Size size, XMFLOAT2 position, XMFLOAT4X4 view, XMFLOAT4X4 proj, struct water_storage water)
-{
-	//takes in size(height,width), touch x and y, view matrix, proj, and water struct. outputs co ords of touch in xmfloat2
-	float height = size.Height;
-	float width = size.Width;
-	XMFLOAT4X4 p = proj;
-	XMFLOAT4X4 v = view;
-	float vx = (2.0f * position.x / width - 1.0f) / p._11;
-	float vy = (-2.0f * position.y / height + 1.0f) / p._22;
-	XMFLOAT3 positionRay;
-	XMFLOAT3 directionRay(vx,vy,1.0f);
-	
-	XMMATRIX invView = XMMatrixInverse(nullptr,XMLoadFloat4x4(&v));
-	XMVECTOR posConv = XMLoadFloat3(&positionRay); 
-	XMVECTOR dirConv = XMLoadFloat3(&directionRay);
-	XMVECTOR posRayResult = XMVector3TransformCoord(posConv,invView);
-	XMVECTOR dirRayTemp = XMVector3TransformCoord(dirConv,invView);
-	XMVECTOR dirRayResult = XMVector3Normalize(dirRayTemp);
-	XMMATRIX invWorldMatrix = XMMatrixInverse(nullptr, XMMatrixTranspose(XMMatrixIdentity()));
 
-	XMVECTOR finalPosCalc = XMVector3TransformCoord(posRayResult, invWorldMatrix);
-	XMVECTOR finalDirTemp = XMVector3TransformCoord(dirRayResult, invWorldMatrix);
-	XMVECTOR finalDirCalc = XMVector3Normalize(finalDirTemp);
-	for (int i = 0; i <  water.indices.size()/3;i++)
-	{
-		XMVECTOR v0 = XMLoadFloat3(&water.vertices[water.indices[i * 3]].pos);
-		XMVECTOR v1 = XMLoadFloat3(&water.vertices[water.indices[i * 3 + 1]].pos);
-		XMVECTOR v2 = XMLoadFloat3(&water.vertices[water.indices[i * 3 + 2]].pos);
-		float dist;
-		bool result = Intersects(finalPosCalc,finalDirCalc,v0,v1,v2,dist);
-		if (result == true)
-		{
-			FLOAT returnX = (water.vertices[water.indices[i * 3]].pos.x + water.vertices[water.indices[i * 3 + 2]].pos.x) / 2;
-			FLOAT returnY = (water.vertices[water.indices[i * 3]].pos.y + water.vertices[water.indices[i * 3 + 1]].pos.y) / 2;
-			XMFLOAT2  coord(returnX, returnY);
-			return coord;
-		}
-	}
-	
-}
