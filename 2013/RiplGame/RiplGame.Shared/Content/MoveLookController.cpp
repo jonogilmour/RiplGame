@@ -330,15 +330,16 @@ bool MoveLookController::raycalc(Size size, XMFLOAT2 position, XMFLOAT4X4 view, 
 	float vy = (-2.0f * position.y / height + 1.0f) / p._22;
 	XMFLOAT3 positionRay;
 	XMFLOAT3 directionRay(vx, vy, 1.0f);
-
 	XMMATRIX invView = XMMatrixInverse(nullptr, XMLoadFloat4x4(&v));
 	XMVECTOR posConv = XMLoadFloat3(&positionRay);
 	XMVECTOR dirConv = XMLoadFloat3(&directionRay);
+
 	XMVECTOR posRayResult = XMVector3TransformCoord(posConv, invView);
 	XMVECTOR dirRayTemp = XMVector3TransformCoord(dirConv, invView);
 	XMVECTOR dirRayResult = XMVector3Normalize(dirRayTemp);
-	XMMATRIX invWorldMatrix = XMMatrixInverse(nullptr, XMMatrixTranspose(XMMatrixIdentity()));
 
+
+	XMMATRIX invWorldMatrix = XMMatrixInverse(nullptr, XMMatrixTranspose(XMMatrixIdentity()));
 	XMVECTOR finalPosCalc = XMVector3TransformCoord(posRayResult, invWorldMatrix);
 	XMVECTOR finalDirTemp = XMVector3TransformCoord(dirRayResult, invWorldMatrix);
 	XMVECTOR finalDirCalc = XMVector3Normalize(finalDirTemp);
@@ -358,7 +359,7 @@ bool MoveLookController::raycalc(Size size, XMFLOAT2 position, XMFLOAT4X4 view, 
 		if (doesIntersect)
 		{
 			ripplePosition->x = (ws->vertices[ws->indices[i * 3]].pos.x + ws->vertices[ws->indices[i * 3 + 2]].pos.x) / 2;
-			ripplePosition->x = (ws->vertices[ws->indices[i * 3]].pos.y + ws->vertices[ws->indices[i * 3 + 1]].pos.y) / 2;
+			ripplePosition->y = (ws->vertices[ws->indices[i * 3]].pos.y + ws->vertices[ws->indices[i * 3 + 1]].pos.y) / 2;
 			return true;
 		}
 	}
