@@ -14,6 +14,7 @@ namespace RiplGame
 	{
 	public:
 		SceneRenderer(const std::shared_ptr<DX::DeviceResources>& deviceResources);
+		void SceneRenderer::MakeCubes(int num_cubes);
 		void CreateDeviceDependentResources();
 		void CreateWindowSizeDependentResources();
 		void ReleaseDeviceDependentResources();

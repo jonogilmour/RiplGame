@@ -5,6 +5,8 @@
 #include "Content\Objects\World\Water.h"
 #include "MoveObject.h"
 
+#define NUM_CUBES 2
+
 // Namespaces just spare us from having to write "RiplGame." before everything
 using namespace RiplGame;
 using namespace DirectX;
@@ -271,7 +273,7 @@ void SceneRenderer::Render()
 		// Reset model matrix back to identity
 		XMStoreFloat4x4(&m_constantBufferData_Model.model, XMMatrixTranspose(XMMatrixIdentity()));
 	}
-
+	
 	// Loops through all dynamic objects
 	for (int x = 0; x < dynamicObject_IndexCount.size(); x++) {
 
@@ -312,6 +314,7 @@ void SceneRenderer::Render()
 		// Reset model matrix back to identity
 		XMStoreFloat4x4(&m_constantBufferData_Model.model, XMMatrixTranspose(XMMatrixIdentity()));
 	}
+	
 }
 
 /*  REALLY COMPLEX
@@ -542,6 +545,9 @@ void SceneRenderer::CreateDeviceDependentResources()
 		dynamicObject_Transforms.push_back(objectPosition);
 		currentVertexCount += moveObject.getVertexCount();
 		
+		// Make all the other cubes
+		MakeCubes(NUM_CUBES);
+
 		////////////////////////
 		/* MODEL INDICES DONE */
 		////////////////////////
@@ -637,3 +643,23 @@ void SceneRenderer::CreateWindowSizeDependentResources()
 	//By the end of this method, we have the view and proj matrices saved into the constant buffer
 	//Just need the model/world matrix and we are good to go (see Rotate() for this)
 }
+
+// takes in the number of cubes to create
+// this INCLUDES the very first cube
+// num_cubes = number of lives allowed, 1 cube per life
+void SceneRenderer::MakeCubes(int num_cubes){
+	if (num_cubes <= 1) {
+		return; // don't add any cubes
+	}
+	else { // add 1 or more cubes
+		num_cubes -= 1;
+		// make the cubes
+		// we know that the first cube is stored in dynamicObject_Transforms[0]
+		for (int x = 0; x < num_cubes; x++) {
+			dynamicObject_Transforms.push_back(dynamicObject_Transforms[0]);
+			dynamicObject_IndexCount.push_back(dynamicObject_IndexCount[0]);
+			dynamicObject_StartIndexOffset.push_back(dynamicObject_StartIndexOffset[0]);
+			dynamicObject_StartVertexOffset.push_back(dynamicObject_StartVertexOffset[0]);
+		}
+	}
+};
