@@ -372,23 +372,20 @@ bool MoveLookController::raycalc(Size size, XMFLOAT2 position, XMFLOAT4X4 view, 
 	return false;
 }
 
-void MoveLookController::pickRay(Size size, XMFLOAT2 position,XMFLOAT4X4 view, XMFLOAT4X4 proj,XMVECTOR* pos, XMVECTOR* dir)
+void MoveLookController::pickRay(Size screenSize, XMFLOAT2 position,XMFLOAT4X4 view, XMFLOAT4X4 proj, XMVECTOR* pos, XMVECTOR* dir)
 {
-	float height = size.Height;
-	float width = size.Width;
-	XMFLOAT4X4 p = proj;
-	XMFLOAT4X4 v = view;
-	float vx = (2.0f * position.x / width - 1.0f) / p._11;
-	float vy = (-2.0f * position.y / height + 1.0f) / p._22;
-	XMMATRIX invView = XMMatrixInverse(nullptr, XMLoadFloat4x4(&v));
-	XMVECTOR posConv = XMLoadFloat3(&XMFLOAT3(0.0f,0.0f,0.0f));
-	XMVECTOR dirConv = XMLoadFloat3(&XMFLOAT3(vx,vy,1.0f));
+	float vx = (2.0f * position.x / screenSize.Width - 1.0f) / proj._11;
+	float vy = (-2.0f * position.y / screenSize.Height + 1.0f) / proj._22;
 
-	XMVECTOR posRayResult = XMVector3TransformCoord(posConv, invView);
-	XMVECTOR dirRayTemp = XMVector3TransformNormal(dirConv, invView);
-	XMVECTOR dirRayResult = XMVector3Normalize(dirRayTemp);
-	*pos = posRayResult;
-	*dir = dirRayResult;
+	XMMATRIX invView = XMMatrixInverse(nullptr, XMLoadFloat4x4(&view));
+	XMVECTOR rayPosition = XMLoadFloat3(&XMFLOAT3(0.0f,0.0f,0.0f));
+	XMVECTOR rayDirection = XMLoadFloat3(&XMFLOAT3(vx,vy,1.0f));
+
+	rayPosition = XMVector3TransformCoord(rayPosition, invView);
+	rayDirection = XMVector3Normalize(XMVector3TransformNormal(rayDirection, invView));
+
+	*pos = rayPosition;
+	*dir = rayDirection;
 }
 
 void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4* moveObjectTransform, Size outputSize, XMFLOAT4X4 view, XMFLOAT4X4 proj, struct water_storage* ws)
