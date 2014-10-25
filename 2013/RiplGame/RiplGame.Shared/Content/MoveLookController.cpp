@@ -380,11 +380,9 @@ void MoveLookController::pickRay(Size size, XMFLOAT2 position,XMFLOAT4X4 view, X
 	XMFLOAT4X4 v = view;
 	float vx = (2.0f * position.x / width - 1.0f) / p._11;
 	float vy = (-2.0f * position.y / height + 1.0f) / p._22;
-	XMFLOAT3 positionRay(0.0f,0.0,0.0f);
-	XMFLOAT3 directionRay(vx, vy, 1.0f);
 	XMMATRIX invView = XMMatrixInverse(nullptr, XMLoadFloat4x4(&v));
-	XMVECTOR posConv = XMLoadFloat3(&positionRay);
-	XMVECTOR dirConv = XMLoadFloat3(&directionRay);
+	XMVECTOR posConv = XMLoadFloat3(&XMFLOAT3(0.0f,0.0f,0.0f));
+	XMVECTOR dirConv = XMLoadFloat3(&XMFLOAT3(vx,vy,1.0f));
 
 	XMVECTOR posRayResult = XMVector3TransformCoord(posConv, invView);
 	XMVECTOR dirRayTemp = XMVector3TransformNormal(dirConv, invView);
