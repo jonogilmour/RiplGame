@@ -12,10 +12,12 @@
 #include "App.xaml.h"
 #include "BasicPage.xaml.h"
 #include "DirectXPage.xaml.h"
+#include "Help.xaml.h"
 
 #include "App.g.hpp"
 #include "BasicPage.g.hpp"
 #include "DirectXPage.g.hpp"
+#include "Help.g.hpp"
 
 ::Platform::Collections::Vector<::Windows::UI::Xaml::Markup::IXamlMetadataProvider^>^ ::XamlTypeInfo::InfoProvider::XamlTypeInfoProvider::OtherProviders::get()
 {
@@ -139,6 +141,21 @@
         return userType;
     }
 
+    if (typeName == L"RiplGame.Help")
+    {
+        ::XamlTypeInfo::InfoProvider::XamlUserType^ userType = ref new ::XamlTypeInfo::InfoProvider::XamlUserType(this, typeName, GetXamlTypeByName(L"Windows.UI.Xaml.Controls.Page"));
+        userType->KindOfType = ::Windows::UI::Xaml::Interop::TypeKind::Custom;
+        userType->Activator =
+            []() -> Platform::Object^ 
+            {
+                return ref new ::RiplGame::Help(); 
+            };
+        userType->AddMemberName(L"NavigationHelper");
+        userType->AddMemberName(L"DefaultViewModel");
+        userType->SetIsLocalType();
+        return userType;
+    }
+
     if (typeName == L"RiplGame.Common.RelayCommand")
     {
         ::XamlTypeInfo::InfoProvider::XamlUserType^ userType = ref new ::XamlTypeInfo::InfoProvider::XamlUserType(this, typeName, GetXamlTypeByName(L"Object"));
@@ -174,6 +191,34 @@
             [](Object^ instance) -> Object^
             {
                 auto that = (::RiplGame::BasicPage^)instance;
+                return that->DefaultViewModel;
+            };
+
+        xamlMember->SetIsReadOnly();
+        return xamlMember;
+    }
+
+    if (longMemberName == L"RiplGame.Help.NavigationHelper")
+    {
+        ::XamlTypeInfo::InfoProvider::XamlMember^ xamlMember = ref new ::XamlTypeInfo::InfoProvider::XamlMember(this, L"NavigationHelper", L"RiplGame.Common.NavigationHelper");
+        xamlMember->Getter =
+            [](Object^ instance) -> Object^
+            {
+                auto that = (::RiplGame::Help^)instance;
+                return that->NavigationHelper;
+            };
+
+        xamlMember->SetIsReadOnly();
+        return xamlMember;
+    }
+
+    if (longMemberName == L"RiplGame.Help.DefaultViewModel")
+    {
+        ::XamlTypeInfo::InfoProvider::XamlMember^ xamlMember = ref new ::XamlTypeInfo::InfoProvider::XamlMember(this, L"DefaultViewModel", L"Windows.Foundation.Collections.IObservableMap`2<String, Object>");
+        xamlMember->Getter =
+            [](Object^ instance) -> Object^
+            {
+                auto that = (::RiplGame::Help^)instance;
                 return that->DefaultViewModel;
             };
 

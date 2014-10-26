@@ -6,6 +6,7 @@
 #include "pch.h"
 #include "DirectXPage.xaml.h"
 #include "BasicPage.xaml.h"
+#include "Help.xaml.h"
 
 using namespace RiplGame;
 
@@ -251,5 +252,8 @@ void RiplGame::DirectXPage::Button_Click_1(Platform::Object^ sender, Windows::UI
 
 void RiplGame::DirectXPage::Button_Click_2(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
-	if (!GameStarted) {}
+	if (this->Frame != nullptr && !GameStarted) 
+	{
+		Frame->Navigate(TypeName(Help::typeid));
+	}
 }
