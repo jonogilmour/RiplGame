@@ -38,7 +38,6 @@ void MoveLookController::Initialize(_In_ CoreWindow^ window)
 	SetOrientation(-(XM_PI / 4.0f), 0);				// look down slightly ahead when the app starts
 	SetPosition(XMFLOAT3(0, 10.0f, 0));
 
-	tapped = false;
 	acc = Windows::Devices::Sensors::Accelerometer::GetDefault();
 }
 
@@ -50,10 +49,6 @@ void MoveLookController::OnPointerPressed(
 
 	// get the current pointer position
 	uint32 pointerID = args->CurrentPoint->PointerId;
-
-	// STANLEY
-	tapped = true;
-	tapPosition = XMFLOAT2(args->CurrentPoint->Position.X, args->CurrentPoint->Position.Y);
 }
 
 void MoveLookController::OnPointerMoved(
