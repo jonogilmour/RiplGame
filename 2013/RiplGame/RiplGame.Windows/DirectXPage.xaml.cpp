@@ -233,7 +233,7 @@ void DirectXPage::OnNavigatedTo(NavigationEventArgs^ e)
 
 void RiplGame::DirectXPage::Button_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
-
+	this->canvas->Opacity = 0;
 }
 
 

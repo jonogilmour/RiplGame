@@ -28,6 +28,8 @@ void ::RiplGame::DirectXPage::InitializeComponent()
     swapChainPanel = safe_cast<::Windows::UI::Xaml::Controls::SwapChainPanel^>(static_cast<Windows::UI::Xaml::IFrameworkElement^>(this)->FindName(L"swapChainPanel"));
     // Get the Grid named 'LayoutRoot'
     LayoutRoot = safe_cast<::Windows::UI::Xaml::Controls::Grid^>(static_cast<Windows::UI::Xaml::IFrameworkElement^>(this)->FindName(L"LayoutRoot"));
+    // Get the Canvas named 'canvas'
+    canvas = safe_cast<::Windows::UI::Xaml::Controls::Canvas^>(static_cast<Windows::UI::Xaml::IFrameworkElement^>(this)->FindName(L"canvas"));
     // Get the TextBlock named 'txtX'
     txtX = safe_cast<::Windows::UI::Xaml::Controls::TextBlock^>(static_cast<Windows::UI::Xaml::IFrameworkElement^>(this)->FindName(L"txtX"));
     // Get the TextBlock named 'txtY'

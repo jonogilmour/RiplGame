@@ -84,34 +84,6 @@ void App::OnLaunched(Windows::ApplicationModel::Activation::LaunchActivatedEvent
 		// Ensure the current window is active
 		Window::Current->Activate();
 	}
-
-
-
-
-
-
-
-	/*
-#if _DEBUG
-	if (IsDebuggerPresent())
-	{
-		DebugSettings->EnableFrameRateCounter = false;
-	}
-#endif
-
-	if (m_directXPage == nullptr)
-	{
-		m_directXPage = ref new DirectXPage();
-	}
-
-	if (e->PreviousExecutionState == ApplicationExecutionState::Terminated)
-	{
-		m_directXPage->LoadInternalState(ApplicationData::Current->LocalSettings->Values);
-	}
-
-	// Place the page in the current window and ensure that it is active.
-	Window::Current->Content = m_directXPage;
-	Window::Current->Activate();*/
 }
 
 /// <summary>
