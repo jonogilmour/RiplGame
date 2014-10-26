@@ -15,6 +15,7 @@ using namespace Windows::Foundation;
 using namespace Windows::Devices::Input;
 using namespace DirectX::TriangleTests;
 
+
 namespace RiplGame {
 	ref class MoveLookController
 	{
@@ -53,6 +54,11 @@ namespace RiplGame {
 		bool tapped;
 		XMFLOAT2 tapPosition;
 		XMFLOAT2 ripplePosition;
+
+		//void ReadingChanged(Windows::Devices::Sensors::Accelerometer^ sender, Windows::Devices::Sensors::AccelerometerReadingChangedEventArgs^ e);
+		Windows::Devices::Sensors::Accelerometer^ acc;
+		Windows::Foundation::EventRegistrationToken listenerToken;
+
 
 	public:
 
