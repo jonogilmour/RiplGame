@@ -342,8 +342,11 @@ void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4*
 	if (acc != nullptr) {
 		auto reading = acc->GetCurrentReading();
 		auto txtX = reading->AccelerationX;
+		m_moveCommand.x + txtX;
 		auto txtY = reading->AccelerationY;
 		auto txtZ = reading->AccelerationZ;
+		m_moveCommand.z + txtZ;
+
 	}
 
 
@@ -449,19 +452,26 @@ void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4*
 	XMFLOAT3 centre;
 
 	// OBJECT MOVEMENT
-	if (moveObjectTransform != nullptr) {
-
+	if (moveObjectTransform != nullptr&&acc != nullptr) {
+		
+		auto reading = acc->GetCurrentReading();
+		auto txtX = reading->AccelerationX;
+		auto txtZ = reading->AccelerationZ;
 		if (obj_fwd) {
-			moveObjectTransform->_34 += (timeDelta * OBJ_MOVEMENT_GAIN);
+			//moveObjectTransform->_34 += (timeDelta * OBJ_MOVEMENT_GAIN);
+			moveObjectTransform->_34 + txtZ;
 		}
 		if (obj_back) {
-			moveObjectTransform->_34 -= (timeDelta * OBJ_MOVEMENT_GAIN);
+			//moveObjectTransform->_34 -= (timeDelta * OBJ_MOVEMENT_GAIN);
+			moveObjectTransform->_34 + txtZ;
 		}
 		if (obj_left){
-			moveObjectTransform->_14 -= (timeDelta * OBJ_MOVEMENT_GAIN);
+			//moveObjectTransform->_14 -= (timeDelta * OBJ_MOVEMENT_GAIN);
+			moveObjectTransform->_14 + txtX;
 		}
 		if (obj_rght) {
-			moveObjectTransform->_14 += (timeDelta * OBJ_MOVEMENT_GAIN);
+			//moveObjectTransform->_14 += (timeDelta * OBJ_MOVEMENT_GAIN);
+			moveObjectTransform->_14 + txtX;
 		}
 		if (obj_up) {
 			moveObjectTransform->_24 += (timeDelta * OBJ_MOVEMENT_GAIN);
