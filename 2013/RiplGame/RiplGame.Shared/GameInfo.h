@@ -9,4 +9,4 @@ typedef struct GameInfo {
 	int max_lives;
 } GameInfo;
 
-extern GameInfo current_game_info = { 1, 2 };
+extern GameInfo current_game_info = { 0, 2 };

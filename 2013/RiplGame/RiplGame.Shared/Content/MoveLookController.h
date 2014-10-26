@@ -49,6 +49,7 @@ namespace RiplGame {
 		float target_pitch, target_yaw;
 		bool m_point, reached_dest;
 		bool m_followBlock; // should the camera follow the block
+		bool shouldLookAt;
 
 
 		//void ReadingChanged(Windows::Devices::Sensors::Accelerometer^ sender, Windows::Devices::Sensors::AccelerometerReadingChangedEventArgs^ e);
@@ -95,6 +96,8 @@ namespace RiplGame {
 		
 
 	internal:
+		void moveCameraToLocation(XMFLOAT3 position, XMFLOAT3 lookAt, bool shouldLook);
+
 		// accessor to set position of controller
 		void SetPosition(_In_ XMFLOAT3 pos);
 

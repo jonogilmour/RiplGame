@@ -39,6 +39,8 @@ void MoveLookController::Initialize(_In_ CoreWindow^ window)
 	SetPosition(XMFLOAT3(-20, 13, -28));
 
 	acc = Windows::Devices::Sensors::Accelerometer::GetDefault();
+
+	shouldLookAt = false;
 }
 
 void MoveLookController::OnPointerPressed(
@@ -332,61 +334,67 @@ XMFLOAT3 MoveLookController::computeDirectionVector(){
 		);
 }
 
+void MoveLookController::moveCameraToLocation(XMFLOAT3 position, XMFLOAT3 lookAt, bool shouldLook) {
+	dest_position = position;
+	shouldLookAt = shouldLook;
+	if (shouldLookAt) dest_lookat = lookAt;
+	m_point = true;
+}
+
 void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4* moveObjectTransform, Size outputSize, XMFLOAT4X4 view, XMFLOAT4X4 proj, std::list<XMFLOAT3>* wallList)
 {
-	
-
-
 	deltaTime = timeDelta;
 	XMFLOAT3 dir = computeDirection();
 	XMFLOAT3 r_axis = computeRAxis();
 	XMFLOAT3 up_axis = computeUpAxis(r_axis, dir);
 
-	if (acc != nullptr) {
-		auto reading = acc->GetCurrentReading();
+	if (!m_point) {
+		if (acc != nullptr) {
+			auto reading = acc->GetCurrentReading();
 
-		auto txtX = reading->AccelerationX;
-		m_moveCommand.x += txtX * timeDelta * MOVEMENT_GAIN;
-		moveObjectTransform->_14 += txtX * timeDelta * MOVEMENT_GAIN;
+			auto txtX = reading->AccelerationX;
+			m_moveCommand.x += txtX * timeDelta * MOVEMENT_GAIN;
+			moveObjectTransform->_14 += txtX * timeDelta * MOVEMENT_GAIN;
 
-		auto txtZ = reading->AccelerationZ;
-		m_moveCommand.z += txtZ * timeDelta * MOVEMENT_GAIN;
-		moveObjectTransform->_34 += txtZ * timeDelta * MOVEMENT_GAIN;
+			auto txtZ = reading->AccelerationZ;
+			m_moveCommand.z += txtZ * timeDelta * MOVEMENT_GAIN;
+			moveObjectTransform->_34 += txtZ * timeDelta * MOVEMENT_GAIN;
+		}
+
+		// poll our state bits set by the keyboard input events
+		if (m_forward) {
+			m_moveCommand.x += (dir.x * timeDelta * MOVEMENT_GAIN);
+			m_moveCommand.y += (dir.y * timeDelta * MOVEMENT_GAIN);
+			m_moveCommand.z += (dir.z * timeDelta * MOVEMENT_GAIN);
+		}
+		if (m_back) {
+			m_moveCommand.x -= (dir.x * timeDelta * MOVEMENT_GAIN);
+			m_moveCommand.y -= (dir.y * timeDelta * MOVEMENT_GAIN);
+			m_moveCommand.z -= (dir.z * timeDelta * MOVEMENT_GAIN);
+		}
+		if (m_left){
+			m_moveCommand.x -= (r_axis.x * timeDelta * MOVEMENT_GAIN);
+			m_moveCommand.y -= (r_axis.y * timeDelta * MOVEMENT_GAIN);
+			m_moveCommand.z -= (r_axis.z * timeDelta * MOVEMENT_GAIN);
+		}
+		if (m_right) {
+			m_moveCommand.x += (r_axis.x * timeDelta * MOVEMENT_GAIN);
+			m_moveCommand.y += (r_axis.y * timeDelta * MOVEMENT_GAIN);
+			m_moveCommand.z += (r_axis.z * timeDelta * MOVEMENT_GAIN);
+		}
+		if (m_up) {
+			m_moveCommand.x += (up_axis.x * timeDelta * MOVEMENT_GAIN);
+			m_moveCommand.y += (up_axis.y * timeDelta * MOVEMENT_GAIN);
+			m_moveCommand.z += (up_axis.z * timeDelta * MOVEMENT_GAIN);
+		}
+		if (m_down) {
+			m_moveCommand.x -= (up_axis.x * timeDelta * MOVEMENT_GAIN);
+			m_moveCommand.y -= (up_axis.y * timeDelta * MOVEMENT_GAIN);
+			m_moveCommand.z -= (up_axis.z * timeDelta * MOVEMENT_GAIN);
+		}
 	}
 
-	// poll our state bits set by the keyboard input events
-	if (m_forward) {
-		m_moveCommand.x += (dir.x * timeDelta * MOVEMENT_GAIN);
-		m_moveCommand.y += (dir.y * timeDelta * MOVEMENT_GAIN);
-		m_moveCommand.z += (dir.z * timeDelta * MOVEMENT_GAIN);
-	}
-	if (m_back) {
-		m_moveCommand.x -= (dir.x * timeDelta * MOVEMENT_GAIN);
-		m_moveCommand.y -= (dir.y * timeDelta * MOVEMENT_GAIN);
-		m_moveCommand.z -= (dir.z * timeDelta * MOVEMENT_GAIN);
-	}
-	if (m_left){
-		m_moveCommand.x -= (r_axis.x * timeDelta * MOVEMENT_GAIN);
-		m_moveCommand.y -= (r_axis.y * timeDelta * MOVEMENT_GAIN);
-		m_moveCommand.z -= (r_axis.z * timeDelta * MOVEMENT_GAIN);
-	}
-	if (m_right) {
-		m_moveCommand.x += (r_axis.x * timeDelta * MOVEMENT_GAIN);
-		m_moveCommand.y += (r_axis.y * timeDelta * MOVEMENT_GAIN);
-		m_moveCommand.z += (r_axis.z * timeDelta * MOVEMENT_GAIN);
-	}
-	if (m_up) {
-		m_moveCommand.x += (up_axis.x * timeDelta * MOVEMENT_GAIN);
-		m_moveCommand.y += (up_axis.y * timeDelta * MOVEMENT_GAIN);
-		m_moveCommand.z += (up_axis.z * timeDelta * MOVEMENT_GAIN);
-	}
-	if (m_down) {
-		m_moveCommand.x -= (up_axis.x * timeDelta * MOVEMENT_GAIN);
-		m_moveCommand.y -= (up_axis.y * timeDelta * MOVEMENT_GAIN);
-		m_moveCommand.z -= (up_axis.z * timeDelta * MOVEMENT_GAIN);
-	}
-
-	 if (m_point) { // Move camera to a specific location. if keypressed and current position is not destination position 
+	else { // Move camera to a specific location. if keypressed and current position is not destination position 
 		XMFLOAT3 dir_vector = computeDirectionVector();
 		XMFLOAT3 dir = computeDirection();
 
@@ -404,19 +412,29 @@ void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4*
 			dir_completed = true;
 		}
 
-		if (m_pitch >= target_pitch + 0.02) {
-			m_pitch -= ((m_pitch - target_pitch) * timeDelta * speed);
-		} else if (m_pitch <= target_pitch - 0.02) {
-			m_pitch += ((target_pitch - m_pitch) * timeDelta * speed);
-		} else {
-			pitch_completed = true;
-		}
+		if (shouldLookAt) {
+			if (m_pitch >= target_pitch + 0.02) {
+				m_pitch -= ((m_pitch - target_pitch) * timeDelta * speed);
+			}
+			else if (m_pitch <= target_pitch - 0.02) {
+				m_pitch += ((target_pitch - m_pitch) * timeDelta * speed);
+			}
+			else {
+				pitch_completed = true;
+			}
 
-		if (m_yaw >= target_yaw + 0.02) {
-			m_yaw -= ((m_yaw - target_yaw) * timeDelta * speed);
-		} else if (m_yaw <= target_yaw - 0.02) {
-			m_yaw += ((target_yaw - m_yaw) * timeDelta * speed);
-		} else {
+			if (m_yaw >= target_yaw + 0.02) {
+				m_yaw -= ((m_yaw - target_yaw) * timeDelta * speed);
+			}
+			else if (m_yaw <= target_yaw - 0.02) {
+				m_yaw += ((target_yaw - m_yaw) * timeDelta * speed);
+			}
+			else {
+				yaw_completed = true;
+			}
+		}
+		else {
+			pitch_completed = true;
 			yaw_completed = true;
 		}
 
@@ -427,19 +445,12 @@ void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4*
 
 	// make sure that 45 degree cases are not faster
 	XMFLOAT3 command = m_moveCommand;
-	
-	//if (fabsf(command.x) > 0.1f || fabsf(command.z) > 0.1f || fabsf(command.y) > 0.1f)
+	if (fabsf(command.x) > 0.1f || fabsf(command.z) > 0.1f || fabsf(command.y) > 0.1f)
 		normalizeF3(&command);
-		command.x = command.x / DIV_CAMERA_SPEED;
-		command.y = command.y / DIV_CAMERA_SPEED;
-		command.z = command.z / DIV_CAMERA_SPEED;
 	
-
 	// integrate
 	m_position = XMFLOAT3(m_position.x + command.x, m_position.y + command.y, m_position.z + command.z);
 
-	// Sample collision for origin
-	spheresphereCollision(&m_position, 0.5, XMFLOAT3(0, 0, 0), 0.5);
 	m_lookat = XMFLOAT3(m_position.x + dir.x, m_position.y + dir.y, m_position.z + dir.z);
 	m_upaxis = up_axis;
 
@@ -449,8 +460,8 @@ void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4*
 	XMFLOAT3 centre;
 
 	// OBJECT MOVEMENT
-	if (moveObjectTransform != nullptr) {
-
+	if (moveObjectTransform != nullptr && !m_point) {
+		OutputDebugString(L"MOVING");
 		if (obj_fwd) {
 			moveObjectTransform->_34 += (timeDelta * OBJ_MOVEMENT_GAIN);
 		}
@@ -474,11 +485,7 @@ void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4*
 
 		centre = XMFLOAT3(moveObjectTransform->_14, moveObjectTransform->_24, moveObjectTransform->_34);
 
-		wallCollision(&centre, 0.5, wallList);
-
-		moveObjectTransform->_14 = centre.x;
-		moveObjectTransform->_24 = centre.y;
-		moveObjectTransform->_34 = centre.z;
+		
 
 		// Save new coordinates into F3
 		// Detect collisions, which may alter F3

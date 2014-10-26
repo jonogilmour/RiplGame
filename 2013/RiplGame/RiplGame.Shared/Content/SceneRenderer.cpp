@@ -40,10 +40,10 @@ void SceneRenderer::Update(DX::StepTimer const& timer)
 	// ws - water storage
 	// controller update - movement of camera and objects
 	if (!(dynamicObject_Transforms.size() < 1))	{
-		m_controller->Update(CoreWindow::GetForCurrentThread(), timer.GetElapsedSeconds(), &dynamicObject_Transforms[0], outputSize, m_constantBufferData_View.view, m_constantBufferData_Proj.projection, &wallList);
-		CubePos = XMFLOAT4(dynamicObject_Transforms[0]._14, dynamicObject_Transforms[0]._24+1, dynamicObject_Transforms[0]._34, 1);
+		m_controller->Update(CoreWindow::GetForCurrentThread(), timer.GetElapsedSeconds(), &dynamicObject_Transforms[current_game_info.current_life], outputSize, m_constantBufferData_View.view, m_constantBufferData_Proj.projection, &wallList);
+		CubePos = XMFLOAT4(dynamicObject_Transforms[current_game_info.current_life]._14, dynamicObject_Transforms[current_game_info.current_life]._24, dynamicObject_Transforms[current_game_info.current_life]._34, 1);
 	}
-	else { // runs very time
+	else {
 		m_controller->Update(CoreWindow::GetForCurrentThread(), timer.GetElapsedSeconds(), nullptr, outputSize, m_constantBufferData_View.view, m_constantBufferData_Proj.projection, &wallList);
 		CubePos = XMFLOAT4(0, 0, 0, 1);
 	}
@@ -95,6 +95,28 @@ void SceneRenderer::Update(DX::StepTimer const& timer)
 
 	// Store the light
 	m_constantBufferData_Light.Lights[0] = light2;
+	
+	// Do wall collisions for the object and increment
+	XMFLOAT3 cubeCentre(CubePos.x, CubePos.y, CubePos.z);
+	if (wallCollision(&cubeCentre, 0.5, &wallList)) {
+		// Cube has hit a wall. Freeze it and spawn a new one at the base point
+		current_game_info.current_life++;
+		if (current_game_info.current_life > LIVES) {
+			// Ran out of lives
+			// GAME.END
+
+			// fatal error for now!
+			int x = 0;
+			int y = 1 / x;
+		}
+
+		// Add previous cube to collisions list
+		wallList.push_back(cubeCentre);
+
+		XMFLOAT3 targetPosition(-20, 13, -28);
+		// Still have lives left, spawn a new cube and move camera to start
+		m_controller->moveCameraToLocation(targetPosition, XMFLOAT3(0, 0, 0), false);
+	}
 }
 
 // Renders one frame using the vertex and pixel shaders.
@@ -278,7 +300,7 @@ void SceneRenderer::Render()
 	// Loops through all dynamic objects
 	// changed to only draw the number of objects relative to this life aka draw num_cubes = life_number
 	//for (int x = 0; x < dynamicObject_IndexCount.size(); x++) {
-	for (int x = 0; x < current_game_info.current_life; x++) {
+	for (int x = 0; x < current_game_info.current_life + 1; x++) {
 
 		// First, set the model matrix to render the static object and update the constant buffer
 		// make sure actually a transform object in existence
@@ -649,11 +671,11 @@ void SceneRenderer::CreateWindowSizeDependentResources()
 // num_cubes = number of lives allowed, 1 cube per life
 void SceneRenderer::MakeCubes(){
 	int num_cubes = current_game_info.max_lives;
+
 	if (num_cubes <= 1) {
 		return; // don't add any cubes
 	}
 	else { // add 1 or more cubes
-		num_cubes -= 1;
 		// make the cubes
 		// we know that the first cube is stored in dynamicObject_Transforms[0]
 		for (int x = 0; x < num_cubes; x++) {
