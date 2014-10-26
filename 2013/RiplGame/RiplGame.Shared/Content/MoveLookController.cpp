@@ -339,7 +339,12 @@ XMFLOAT3 MoveLookController::computeDirectionVector(){
 
 void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4* moveObjectTransform, Size outputSize, XMFLOAT4X4 view, XMFLOAT4X4 proj, std::list<XMFLOAT3>* wallList)
 {
-	if (acc != nullptr)	auto reading = acc->GetCurrentReading();
+	if (acc != nullptr) {
+		auto reading = acc->GetCurrentReading();
+		auto xAccel = reading->AccelerationX;
+		auto yAccel = reading->AccelerationY;
+		auto zAccel = reading->AccelerationZ;
+	}
 
 
 	deltaTime = timeDelta;
