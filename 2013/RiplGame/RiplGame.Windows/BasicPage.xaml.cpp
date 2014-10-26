@@ -126,5 +126,11 @@ void RiplGame::BasicPage::TextBlock_SelectionChanged(Platform::Object^ sender, W
 
 void RiplGame::BasicPage::Difficulty_ValueChanged(Platform::Object^ sender, Windows::UI::Xaml::Controls::Primitives::RangeBaseValueChangedEventArgs^ e)
 {
-	RiplGame::SceneRenderer::diffVal = Difficulty->Value;
+	//RiplGame::SceneRenderer::diffVal = Difficulty->Value;
+}
+
+
+void RiplGame::BasicPage::backButton_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
+{
+	Frame->Navigate(TypeName(DirectXPage::typeid),Difficulty);
 }

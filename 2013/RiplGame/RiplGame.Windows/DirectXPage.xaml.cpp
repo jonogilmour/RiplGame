@@ -257,3 +257,4 @@ void RiplGame::DirectXPage::Button_Click_2(Platform::Object^ sender, Windows::UI
 		Frame->Navigate(TypeName(Help::typeid));
 	}
 }
+
