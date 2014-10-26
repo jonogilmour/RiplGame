@@ -6,15 +6,25 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-
+    
   <SwapChainPanel x:Name="swapChainPanel">
         <Canvas HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent"/>
         <TextBlock Text="RiplGame Test Environment"
                HorizontalAlignment="Center"
                VerticalAlignment="Top"
                FontSize="30" Margin="0,40,0,0" />
-  </SwapChainPanel>
+        <Grid x:Name="LayoutRoot">
+            <TextBlock HorizontalAlignment="Left" Height="20" Margin="0,8,0,0" TextWrapping="Wrap" Text="X:" VerticalAlignment="Top" Width="45" Foreground="#FF050404"/>
+            <TextBlock x:Name="txtX" HorizontalAlignment="Left" Height="20" Margin="49,8,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="41" Foreground="#FF0C0C0C"/>
+            <TextBlock HorizontalAlignment="Left" Height="22" Margin="0,28,0,0" TextWrapping="Wrap" Text="Y:" VerticalAlignment="Top" Width="45" Foreground="#FF090909"/>
+            <TextBlock x:Name="txtY" HorizontalAlignment="Left" Height="22" Margin="49,28,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="41" Foreground="#FF0C0C0C"/>
+            <TextBlock HorizontalAlignment="Left" Height="21" Margin="0,54,0,0" TextWrapping="Wrap" Text="Z:" VerticalAlignment="Top" Width="45" Foreground="#FF0C0C0C"/>
+            <TextBlock x:Name="txtZ" HorizontalAlignment="Left" Height="21" Margin="49,54,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="41" Foreground="#FF070606"/>
 
+        </Grid>
+    </SwapChainPanel>
+
+   
   <Page.BottomAppBar>
     <AppBar x:Name="bottomAppBar" Padding="10,0,10,0">
       <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
