@@ -12,9 +12,7 @@ namespace Windows {
     namespace UI {
         namespace Xaml {
             namespace Controls {
-                ref class Frame;
-                ref class SwapChainPanel;
-                ref class Grid;
+                ref class Button;
                 ref class TextBlock;
             }
         }
@@ -23,7 +21,7 @@ namespace Windows {
 
 namespace RiplGame
 {
-    partial ref class DirectXPage : public ::Windows::UI::Xaml::Controls::Page, 
+    partial ref class BasicPage : public ::Windows::UI::Xaml::Controls::Page, 
         public ::Windows::UI::Xaml::Markup::IComponentConnector
     {
     public:
@@ -33,12 +31,8 @@ namespace RiplGame
     private:
         bool _contentLoaded;
     
-        private: ::Windows::UI::Xaml::Controls::Frame^ MainMenu;
-        private: ::Windows::UI::Xaml::Controls::SwapChainPanel^ swapChainPanel;
-        private: ::Windows::UI::Xaml::Controls::Grid^ LayoutRoot;
-        private: ::Windows::UI::Xaml::Controls::TextBlock^ txtX;
-        private: ::Windows::UI::Xaml::Controls::TextBlock^ txtY;
-        private: ::Windows::UI::Xaml::Controls::TextBlock^ txtZ;
+        private: ::Windows::UI::Xaml::Controls::Button^ backButton;
+        private: ::Windows::UI::Xaml::Controls::TextBlock^ pageTitle;
     };
 }
 

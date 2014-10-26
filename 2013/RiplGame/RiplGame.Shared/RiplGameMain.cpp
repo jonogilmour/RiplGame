@@ -25,7 +25,7 @@ RiplGameMain::RiplGameMain(const std::shared_ptr<DX::DeviceResources>& deviceRes
 	m_timer.SetFixedTimeStep(true);
 	m_timer.SetTargetElapsedSeconds(1.0 / 60);
 	
-	CoreWindow::GetForCurrentThread()->PointerCursor = nullptr;
+	//CoreWindow::GetForCurrentThread()->PointerCursor = nullptr;
 }
 
 // The tilde (~) means this is the DESTRUCTOR, or denitialiser

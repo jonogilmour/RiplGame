@@ -10,9 +10,11 @@
 #include "XamlTypeInfo.g.h"
 
 #include "App.xaml.h"
+#include "BasicPage.xaml.h"
 #include "DirectXPage.xaml.h"
 
 #include "App.g.hpp"
+#include "BasicPage.g.hpp"
 #include "DirectXPage.g.hpp"
 
 ::Platform::Collections::Vector<::Windows::UI::Xaml::Markup::IXamlMetadataProvider^>^ ::XamlTypeInfo::InfoProvider::XamlTypeInfoProvider::OtherProviders::get()
@@ -72,6 +74,58 @@
         return ref new XamlSystemBaseType(typeName);
     }
 
+    if (typeName == L"Object")
+    {
+        return ref new XamlSystemBaseType(typeName);
+    }
+
+    if (typeName == L"String")
+    {
+        return ref new XamlSystemBaseType(typeName);
+    }
+
+    if (typeName == L"RiplGame.BasicPage")
+    {
+        ::XamlTypeInfo::InfoProvider::XamlUserType^ userType = ref new ::XamlTypeInfo::InfoProvider::XamlUserType(this, typeName, GetXamlTypeByName(L"Windows.UI.Xaml.Controls.Page"));
+        userType->KindOfType = ::Windows::UI::Xaml::Interop::TypeKind::Custom;
+        userType->Activator =
+            []() -> Platform::Object^ 
+            {
+                return ref new ::RiplGame::BasicPage(); 
+            };
+        userType->AddMemberName(L"NavigationHelper");
+        userType->AddMemberName(L"DefaultViewModel");
+        userType->SetIsLocalType();
+        return userType;
+    }
+
+    if (typeName == L"RiplGame.Common.NavigationHelper")
+    {
+        ::XamlTypeInfo::InfoProvider::XamlUserType^ userType = ref new ::XamlTypeInfo::InfoProvider::XamlUserType(this, typeName, GetXamlTypeByName(L"Object"));
+        userType->KindOfType = ::Windows::UI::Xaml::Interop::TypeKind::Custom;
+        userType->AddMemberName(L"GoForwardCommand");
+        userType->AddMemberName(L"GoBackCommand");
+        userType->SetIsBindable();
+        userType->SetIsLocalType();
+        return userType;
+    }
+
+    if (typeName == L"Windows.Foundation.Collections.IObservableMap`2<String, Object>")
+    {
+        ::XamlTypeInfo::InfoProvider::XamlUserType^ userType = ref new ::XamlTypeInfo::InfoProvider::XamlUserType(this, typeName, nullptr);
+        userType->KindOfType = ::Windows::UI::Xaml::Interop::TypeKind::Metadata;
+        userType->DictionaryAdd =
+            [](Object^ instance, Object^ key, Object^ item) -> void
+            {
+                auto collection = (Windows::Foundation::Collections::IObservableMap<::Platform::String^, ::Platform::Object^>^)instance;
+                auto newKey = (Platform::String^)key;
+                auto newItem = (Platform::Object^)item;
+                collection->Insert(newKey, newItem);
+            };
+        userType->SetIsReturnTypeStub();
+        return userType;
+    }
+
     if (typeName == L"RiplGame.DirectXPage")
     {
         ::XamlTypeInfo::InfoProvider::XamlUserType^ userType = ref new ::XamlTypeInfo::InfoProvider::XamlUserType(this, typeName, GetXamlTypeByName(L"Windows.UI.Xaml.Controls.Page"));
@@ -85,13 +139,76 @@
         return userType;
     }
 
+    if (typeName == L"RiplGame.Common.RelayCommand")
+    {
+        ::XamlTypeInfo::InfoProvider::XamlUserType^ userType = ref new ::XamlTypeInfo::InfoProvider::XamlUserType(this, typeName, GetXamlTypeByName(L"Object"));
+        userType->KindOfType = ::Windows::UI::Xaml::Interop::TypeKind::Custom;
+        userType->SetIsReturnTypeStub();
+        userType->SetIsLocalType();
+        return userType;
+    }
+
     return nullptr;
 }
 
 ::Windows::UI::Xaml::Markup::IXamlMember^ ::XamlTypeInfo::InfoProvider::XamlTypeInfoProvider::CreateXamlMember(::Platform::String^ longMemberName)
 {
-    // No Local Properties
-    (void)longMemberName; // Unused parameter
+    if (longMemberName == L"RiplGame.BasicPage.NavigationHelper")
+    {
+        ::XamlTypeInfo::InfoProvider::XamlMember^ xamlMember = ref new ::XamlTypeInfo::InfoProvider::XamlMember(this, L"NavigationHelper", L"RiplGame.Common.NavigationHelper");
+        xamlMember->Getter =
+            [](Object^ instance) -> Object^
+            {
+                auto that = (::RiplGame::BasicPage^)instance;
+                return that->NavigationHelper;
+            };
+
+        xamlMember->SetIsReadOnly();
+        return xamlMember;
+    }
+
+    if (longMemberName == L"RiplGame.BasicPage.DefaultViewModel")
+    {
+        ::XamlTypeInfo::InfoProvider::XamlMember^ xamlMember = ref new ::XamlTypeInfo::InfoProvider::XamlMember(this, L"DefaultViewModel", L"Windows.Foundation.Collections.IObservableMap`2<String, Object>");
+        xamlMember->Getter =
+            [](Object^ instance) -> Object^
+            {
+                auto that = (::RiplGame::BasicPage^)instance;
+                return that->DefaultViewModel;
+            };
+
+        xamlMember->SetIsReadOnly();
+        return xamlMember;
+    }
+
+    if (longMemberName == L"RiplGame.Common.NavigationHelper.GoForwardCommand")
+    {
+        ::XamlTypeInfo::InfoProvider::XamlMember^ xamlMember = ref new ::XamlTypeInfo::InfoProvider::XamlMember(this, L"GoForwardCommand", L"RiplGame.Common.RelayCommand");
+        xamlMember->Getter =
+            [](Object^ instance) -> Object^
+            {
+                auto that = (::RiplGame::Common::NavigationHelper^)instance;
+                return that->GoForwardCommand;
+            };
+
+        xamlMember->SetIsReadOnly();
+        return xamlMember;
+    }
+
+    if (longMemberName == L"RiplGame.Common.NavigationHelper.GoBackCommand")
+    {
+        ::XamlTypeInfo::InfoProvider::XamlMember^ xamlMember = ref new ::XamlTypeInfo::InfoProvider::XamlMember(this, L"GoBackCommand", L"RiplGame.Common.RelayCommand");
+        xamlMember->Getter =
+            [](Object^ instance) -> Object^
+            {
+                auto that = (::RiplGame::Common::NavigationHelper^)instance;
+                return that->GoBackCommand;
+            };
+
+        xamlMember->SetIsReadOnly();
+        return xamlMember;
+    }
+
     return nullptr;
 }
 

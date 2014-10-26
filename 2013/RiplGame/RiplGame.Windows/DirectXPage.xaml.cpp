@@ -5,6 +5,7 @@
 
 #include "pch.h"
 #include "DirectXPage.xaml.h"
+#include "BasicPage.xaml.h"
 
 using namespace RiplGame;
 
@@ -23,6 +24,7 @@ using namespace Windows::UI::Xaml::Input;
 using namespace Windows::UI::Xaml::Media;
 using namespace Windows::UI::Xaml::Navigation;
 using namespace concurrency;
+using namespace Windows::UI::Xaml::Interop;
 
 using namespace Windows::System;
 using namespace Windows::Foundation;
@@ -227,4 +229,24 @@ void DirectXPage::ReadingChanged(Accelerometer^ sender, AccelerometerReadingChan
 }
 void DirectXPage::OnNavigatedTo(NavigationEventArgs^ e)
 {
+}
+
+void RiplGame::DirectXPage::Button_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
+{
+
+}
+
+
+void RiplGame::DirectXPage::Button_Click_1(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
+{
+	//if (this->Frame != nullptr)
+//	{
+		this->Frame->Navigate(TypeName(BasicPage::typeid));
+	//}
+}
+
+
+void RiplGame::DirectXPage::Button_Click_2(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
+{
+
 }

@@ -1,4 +1,5 @@
-﻿<Page
+﻿
+    <Page
     x:Class="RiplGame.DirectXPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -6,32 +7,42 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-    
-  <SwapChainPanel x:Name="swapChainPanel">
-        <Canvas HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent"/>
+    <Frame x:Name="MainMenu">
+        <SwapChainPanel x:Name="swapChainPanel">
+
+
+
         <TextBlock Text="RiplGame Test Environment"
                HorizontalAlignment="Center"
                VerticalAlignment="Top"
                FontSize="30" Margin="0,40,0,0" />
         <Grid x:Name="LayoutRoot">
+
+            <Canvas HorizontalAlignment="Stretch" Height="2000" VerticalAlignment="Stretch" Width="2000">
+                <Canvas.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="White" Offset="0"/>
+                        <GradientStop Color="#FF3699C7" Offset="1"/>
+                        <GradientStop Color="#FF137BAE" Offset="0.337"/>
+                        <GradientStop Color="#FF256888" Offset="0.687"/>
+                    </LinearGradientBrush>
+                </Canvas.Background>
+            </Canvas>
+
             <TextBlock HorizontalAlignment="Left" Height="20" Margin="0,8,0,0" TextWrapping="Wrap" Text="X:" VerticalAlignment="Top" Width="45" Foreground="#FF050404"/>
             <TextBlock x:Name="txtX" HorizontalAlignment="Left" Height="20" Margin="49,8,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="41" Foreground="#FF0C0C0C"/>
             <TextBlock HorizontalAlignment="Left" Height="22" Margin="0,28,0,0" TextWrapping="Wrap" Text="Y:" VerticalAlignment="Top" Width="45" Foreground="#FF090909"/>
             <TextBlock x:Name="txtY" HorizontalAlignment="Left" Height="22" Margin="49,28,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="41" Foreground="#FF0C0C0C"/>
             <TextBlock HorizontalAlignment="Left" Height="21" Margin="0,54,0,0" TextWrapping="Wrap" Text="Z:" VerticalAlignment="Top" Width="45" Foreground="#FF0C0C0C"/>
             <TextBlock x:Name="txtZ" HorizontalAlignment="Left" Height="21" Margin="49,54,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="41" Foreground="#FF070606"/>
+            <Button HorizontalAlignment="Center" VerticalAlignment="Center" Content="Options" Canvas.Left="583" Canvas.Top="253" Height="88" Width="189" Click="Button_Click_1" Margin="589,260,588,420"/>
+            <Button HorizontalAlignment="Center" VerticalAlignment="Center" Content="Start" Canvas.Left="583" Canvas.Top="131" Height="88" Width="189" Click="Button_Click" Margin="589,145,588,535"/>
+            <Button HorizontalAlignment="Center" VerticalAlignment="Center" Content="Help" Canvas.Left="583" Canvas.Top="378" Height="87" Width="189" Click="Button_Click_2" Margin="589,375,588,306"/>
 
         </Grid>
     </SwapChainPanel>
 
-   
-  <Page.BottomAppBar>
-    <AppBar x:Name="bottomAppBar" Padding="10,0,10,0">
-      <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-        <AppBarButton AutomationProperties.Name="Sample Button"
-                      AutomationProperties.AutomationId="SampleAppBarButton"
-                      Click="AppBarButton_Click"/>
-      </StackPanel>
-    </AppBar>
-  </Page.BottomAppBar>
+
+  
+    </Frame>
 </Page>

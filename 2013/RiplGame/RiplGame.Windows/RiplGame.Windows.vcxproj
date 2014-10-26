@@ -198,6 +198,12 @@
     <ClInclude Include="App.xaml.h">
       <DependentUpon>App.xaml</DependentUpon>
     </ClInclude>
+    <ClInclude Include="BasicPage.xaml.h">
+      <DependentUpon>BasicPage.xaml</DependentUpon>
+    </ClInclude>
+    <ClInclude Include="Common\NavigationHelper.h" />
+    <ClInclude Include="Common\RelayCommand.h" />
+    <ClInclude Include="Common\SuspensionManager.h" />
     <ClInclude Include="DirectXPage.xaml.h">
       <DependentUpon>DirectXPage.xaml</DependentUpon>
     </ClInclude>
@@ -206,6 +212,12 @@
     <ClCompile Include="App.xaml.cpp">
       <DependentUpon>App.xaml</DependentUpon>
     </ClCompile>
+    <ClCompile Include="BasicPage.xaml.cpp">
+      <DependentUpon>BasicPage.xaml</DependentUpon>
+    </ClCompile>
+    <ClCompile Include="Common\NavigationHelper.cpp" />
+    <ClCompile Include="Common\RelayCommand.cpp" />
+    <ClCompile Include="Common\SuspensionManager.cpp" />
     <ClCompile Include="DirectXPage.xaml.cpp">
       <DependentUpon>DirectXPage.xaml</DependentUpon>
     </ClCompile>
@@ -220,6 +232,9 @@
     <ApplicationDefinition Include="App.xaml">
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="BasicPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="DirectXPage.xaml">
       <SubType>Designer</SubType>
     </Page>

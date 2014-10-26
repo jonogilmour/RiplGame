@@ -22,6 +22,8 @@ void ::RiplGame::DirectXPage::InitializeComponent()
     // Call LoadComponent on ms-appx:///DirectXPage.xaml
     ::Windows::UI::Xaml::Application::LoadComponent(this, ref new ::Windows::Foundation::Uri(L"ms-appx:///DirectXPage.xaml"), ::Windows::UI::Xaml::Controls::Primitives::ComponentResourceLocation::Application);
 
+    // Get the Frame named 'MainMenu'
+    MainMenu = safe_cast<::Windows::UI::Xaml::Controls::Frame^>(static_cast<Windows::UI::Xaml::IFrameworkElement^>(this)->FindName(L"MainMenu"));
     // Get the SwapChainPanel named 'swapChainPanel'
     swapChainPanel = safe_cast<::Windows::UI::Xaml::Controls::SwapChainPanel^>(static_cast<Windows::UI::Xaml::IFrameworkElement^>(this)->FindName(L"swapChainPanel"));
     // Get the Grid named 'LayoutRoot'
@@ -32,8 +34,6 @@ void ::RiplGame::DirectXPage::InitializeComponent()
     txtY = safe_cast<::Windows::UI::Xaml::Controls::TextBlock^>(static_cast<Windows::UI::Xaml::IFrameworkElement^>(this)->FindName(L"txtY"));
     // Get the TextBlock named 'txtZ'
     txtZ = safe_cast<::Windows::UI::Xaml::Controls::TextBlock^>(static_cast<Windows::UI::Xaml::IFrameworkElement^>(this)->FindName(L"txtZ"));
-    // Get the AppBar named 'bottomAppBar'
-    bottomAppBar = safe_cast<::Windows::UI::Xaml::Controls::AppBar^>(static_cast<Windows::UI::Xaml::IFrameworkElement^>(this)->FindName(L"bottomAppBar"));
 }
 
 void ::RiplGame::DirectXPage::Connect(int connectionId, Platform::Object^ target)
@@ -42,7 +42,15 @@ void ::RiplGame::DirectXPage::Connect(int connectionId, Platform::Object^ target
     {
     case 1:
         (safe_cast<::Windows::UI::Xaml::Controls::Primitives::ButtonBase^>(target))->Click +=
-            ref new ::Windows::UI::Xaml::RoutedEventHandler(this, (void (::RiplGame::DirectXPage::*)(Platform::Object^, Windows::UI::Xaml::RoutedEventArgs^))&DirectXPage::AppBarButton_Click);
+            ref new ::Windows::UI::Xaml::RoutedEventHandler(this, (void (::RiplGame::DirectXPage::*)(Platform::Object^, Windows::UI::Xaml::RoutedEventArgs^))&DirectXPage::Button_Click_1);
+        break;
+    case 2:
+        (safe_cast<::Windows::UI::Xaml::Controls::Primitives::ButtonBase^>(target))->Click +=
+            ref new ::Windows::UI::Xaml::RoutedEventHandler(this, (void (::RiplGame::DirectXPage::*)(Platform::Object^, Windows::UI::Xaml::RoutedEventArgs^))&DirectXPage::Button_Click);
+        break;
+    case 3:
+        (safe_cast<::Windows::UI::Xaml::Controls::Primitives::ButtonBase^>(target))->Click +=
+            ref new ::Windows::UI::Xaml::RoutedEventHandler(this, (void (::RiplGame::DirectXPage::*)(Platform::Object^, Windows::UI::Xaml::RoutedEventArgs^))&DirectXPage::Button_Click_2);
         break;
     }
     (void)connectionId; // Unused parameter
