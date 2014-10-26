@@ -110,12 +110,17 @@ void MoveLookController::OnKeyDown(
 	if (Key == VirtualKey::M){
 		dest_position = XMFLOAT3(0, 5.0f, 0);	// temporary destination location for testing
 		dest_lookat = XMFLOAT3(3.0f, 3.0f, 3.0f);				// temporary look at location for testing
+		//dest_position = ; // follow cube position
+		//dest_lookat = ; // look at cube
 
 		XMFLOAT2 target_orientation = computeTargetOrientation();
 		float target_pitch = target_orientation.x;
 		float target_yaw = target_orientation.y;
 
 		m_point = true;
+	} else if (Key == VirtualKey::P) { // follow the object
+		// set m_followBlock to true
+		m_followBlock = true;
 	}
 
 	// OBJECT
@@ -161,6 +166,10 @@ void MoveLookController::OnKeyUp(
 		m_up = false;
 	if (Key == VirtualKey::Control)		// down
 		m_down = false;
+
+	if (Key == VirtualKey::P) { // dont follow object
+		m_followBlock = false;
+	}
 
 	// OBJECT
 	if (Key == VirtualKey::PageDown)		// down
@@ -367,8 +376,7 @@ void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4*
 		m_moveCommand.z -= (up_axis.z * timeDelta * MOVEMENT_GAIN);
 	}
 
-	// Move camera to a specific location
-	if (m_point) {				// if keypressed and current position is not destination position
+	 if (m_point) { // Move camera to a specific location. if keypressed and current position is not destination position 
 		XMFLOAT3 dir_vector = computeDirectionVector();
 		XMFLOAT3 dir = computeDirection();
 
@@ -382,33 +390,29 @@ void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4*
 			m_moveCommand.x += (dir_vector.x * timeDelta * speed);
 			m_moveCommand.y += (dir_vector.y * timeDelta * speed);
 			m_moveCommand.z += (dir_vector.z * timeDelta * speed);
-		}
-		else {
+		} else {
 			dir_completed = true;
 		}
 
-		if (m_pitch >= target_pitch + 0.02){
-			m_pitch -= ((m_pitch - target_pitch)* timeDelta * speed);
-		}
-		else if (m_pitch <= target_pitch - 0.02){
+		if (m_pitch >= target_pitch + 0.02) {
+			m_pitch -= ((m_pitch - target_pitch) * timeDelta * speed);
+		} else if (m_pitch <= target_pitch - 0.02) {
 			m_pitch += ((target_pitch - m_pitch) * timeDelta * speed);
-		}
-		else {
+		} else {
 			pitch_completed = true;
 		}
 
-		if (m_yaw >= target_yaw + 0.02){
-			m_yaw -= ((m_yaw - target_yaw)* timeDelta * speed);
-		}
-		else if (m_yaw <= target_yaw - 0.02){
+		if (m_yaw >= target_yaw + 0.02) {
+			m_yaw -= ((m_yaw - target_yaw) * timeDelta * speed);
+		} else if (m_yaw <= target_yaw - 0.02) {
 			m_yaw += ((target_yaw - m_yaw) * timeDelta * speed);
-		}
-		else {
+		} else {
 			yaw_completed = true;
 		}
 
-		if (dir_completed && pitch_completed && yaw_completed)
+		if (dir_completed && pitch_completed && yaw_completed) {
 			m_point = false;
+		}
 	}
 
 	// make sure that 45 degree cases are not faster
@@ -423,6 +427,7 @@ void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4*
 
 	// integrate
 	m_position = XMFLOAT3(m_position.x + command.x, m_position.y + command.y, m_position.z + command.z);
+
 	// Sample collision for origin
 	spheresphereCollision(&m_position, 0.5, XMFLOAT3(0, 0, 0), 0.5);
 	m_lookat = XMFLOAT3(m_position.x + dir.x, m_position.y + dir.y, m_position.z + dir.z);
@@ -431,7 +436,7 @@ void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4*
 
 	// clear movement input accumulator for use during next frame
 	m_moveCommand = XMFLOAT3(0.0f, 0.0f, 0.0f);
-
+	XMFLOAT3 centre;
 
 	// OBJECT MOVEMENT
 	if (moveObjectTransform != nullptr) {
@@ -456,10 +461,17 @@ void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4*
 		}
 
 		// Save new centre point
-		XMFLOAT3 centre(moveObjectTransform->_14, moveObjectTransform->_24, moveObjectTransform->_34);
+		centre = XMFLOAT3(moveObjectTransform->_14, moveObjectTransform->_24, moveObjectTransform->_34);
 		// Save new coordinates into F3
 		// Detect collisions, which may alter F3
 		// If true, apply F3 to MOT
+	}
+
+	// Move camera to follow the block
+	if (m_followBlock){
+		// look at object
+		// be above object
+		m_position = centre;
 	}
 
 }

@@ -47,6 +47,7 @@ namespace RiplGame {
 		XMFLOAT3 dest_position, dir_vector, dest_lookat;
 		float target_pitch, target_yaw;
 		bool m_point, reached_dest;
+		bool m_followBlock; // should the camera follow the block
 
 		//Ray Tracing STANLEY
 		bool tapped;
