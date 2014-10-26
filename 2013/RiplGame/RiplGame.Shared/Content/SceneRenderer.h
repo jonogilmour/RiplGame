@@ -58,8 +58,7 @@ namespace RiplGame
 		LightCBuffer m_constantBufferData_Light;
 		MoveLookController^ m_controller;
 
-		// Water plane stuff for STANLEY
-		struct water_storage ws;
+		std::list<XMFLOAT3> wallList;
 	};
 }
 

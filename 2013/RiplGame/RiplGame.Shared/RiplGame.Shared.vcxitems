@@ -23,6 +23,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)HeightMap.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MoveObject.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)RippleMove.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)WallCollision.cpp" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Content\CommonFunctions.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Content\MoveLookController.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Content\Objects\World\Landscape.h" />
@@ -46,6 +47,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Content\SceneRenderer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Content\Structures\VertexStructures.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)RippleMove.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)WallCollision.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="$(MSBuildThisFileDirectory)Content\Shaders\Pixel\PixelShader.hlsl">

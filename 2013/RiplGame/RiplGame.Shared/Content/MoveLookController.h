@@ -107,7 +107,7 @@ namespace RiplGame {
 
 		XMFLOAT3 get_UpAxis();
 
-		void Update(Windows::UI::Core::CoreWindow^ window, float timeDelta, XMFLOAT4X4* moveObjectTransform, Size outputSize, XMFLOAT4X4 proj, XMFLOAT4X4 view, struct water_storage* ws);
+		void Update(Windows::UI::Core::CoreWindow^ window, float timeDelta, XMFLOAT4X4* moveObjectTransform, Size outputSize, XMFLOAT4X4 proj, XMFLOAT4X4 view, std::list<XMFLOAT3>* wallList);
 
 		XMFLOAT3 computeRAxis();
 		XMFLOAT3 computeDirection();
