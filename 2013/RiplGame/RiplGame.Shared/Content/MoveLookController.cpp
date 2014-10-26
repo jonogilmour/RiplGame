@@ -36,7 +36,7 @@ void MoveLookController::Initialize(_In_ CoreWindow^ window)
 	deltaTime = 0;
 
 	SetOrientation(-(XM_PI / 4.0f), 0);				// look down slightly ahead when the app starts
-	SetPosition(XMFLOAT3(0, 10.0f, 0));
+	SetPosition(XMFLOAT3(-20, 13, -28));
 
 	acc = Windows::Devices::Sensors::Accelerometer::GetDefault();
 }
@@ -334,13 +334,7 @@ XMFLOAT3 MoveLookController::computeDirectionVector(){
 
 void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4* moveObjectTransform, Size outputSize, XMFLOAT4X4 view, XMFLOAT4X4 proj, std::list<XMFLOAT3>* wallList)
 {
-	if (acc != nullptr) {
-		auto reading = acc->GetCurrentReading();
-		auto txtX = reading->AccelerationX;
-		m_moveCommand.x += txtX;
-		auto txtZ = reading->AccelerationZ;
-		m_moveCommand.z += txtZ;
-	}
+	
 
 
 	deltaTime = timeDelta;
@@ -348,7 +342,17 @@ void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4*
 	XMFLOAT3 r_axis = computeRAxis();
 	XMFLOAT3 up_axis = computeUpAxis(r_axis, dir);
 
-	XMFLOAT3 lookat_vector = XMFLOAT3(0, 0, 0);
+	if (acc != nullptr) {
+		auto reading = acc->GetCurrentReading();
+
+		auto txtX = reading->AccelerationX;
+		m_moveCommand.x += txtX * timeDelta * MOVEMENT_GAIN;
+		moveObjectTransform->_14 += txtX * timeDelta * MOVEMENT_GAIN;
+
+		auto txtZ = reading->AccelerationZ;
+		m_moveCommand.z += txtZ * timeDelta * MOVEMENT_GAIN;
+		moveObjectTransform->_34 += txtZ * timeDelta * MOVEMENT_GAIN;
+	}
 
 	// poll our state bits set by the keyboard input events
 	if (m_forward) {
@@ -445,26 +449,19 @@ void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4*
 	XMFLOAT3 centre;
 
 	// OBJECT MOVEMENT
-	if (moveObjectTransform != nullptr&&acc != nullptr) {
-		
-		auto reading = acc->GetCurrentReading();
-		auto txtX = reading->AccelerationX;
-		auto txtZ = reading->AccelerationZ;
+	if (moveObjectTransform != nullptr) {
+
 		if (obj_fwd) {
-			//moveObjectTransform->_34 += (timeDelta * OBJ_MOVEMENT_GAIN);
-			moveObjectTransform->_34 + txtZ;
+			moveObjectTransform->_34 += (timeDelta * OBJ_MOVEMENT_GAIN);
 		}
 		if (obj_back) {
-			//moveObjectTransform->_34 -= (timeDelta * OBJ_MOVEMENT_GAIN);
-			moveObjectTransform->_34 + txtZ;
+			moveObjectTransform->_34 -= (timeDelta * OBJ_MOVEMENT_GAIN);
 		}
 		if (obj_left){
-			//moveObjectTransform->_14 -= (timeDelta * OBJ_MOVEMENT_GAIN);
-			moveObjectTransform->_14 + txtX;
+			moveObjectTransform->_14 -= (timeDelta * OBJ_MOVEMENT_GAIN);
 		}
 		if (obj_rght) {
-			//moveObjectTransform->_14 += (timeDelta * OBJ_MOVEMENT_GAIN);
-			moveObjectTransform->_14 + txtX;
+			moveObjectTransform->_14 += (timeDelta * OBJ_MOVEMENT_GAIN);
 		}
 		if (obj_up) {
 			moveObjectTransform->_24 += (timeDelta * OBJ_MOVEMENT_GAIN);
@@ -492,7 +489,7 @@ void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4*
 	if (m_followBlock){
 		// look at object
 		// be above object
-		m_position = { centre.x - 3.0f, centre.y + 2.0f, centre.z - 3.0f };
+		//m_position = { centre.x - 3.0f, centre.y + 2.0f, centre.z - 3.0f };
 		m_lookat = centre;
 	}
 
