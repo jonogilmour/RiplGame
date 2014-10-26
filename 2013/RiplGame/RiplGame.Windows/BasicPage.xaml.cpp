@@ -5,6 +5,7 @@
 
 #include "pch.h"
 #include "BasicPage.xaml.h"
+#include "DirectXPage.xaml.h"
 
 using namespace RiplGame;
 
@@ -76,6 +77,12 @@ void BasicPage::OnNavigatedTo(NavigationEventArgs^ e)
 
 void BasicPage::OnNavigatedFrom(NavigationEventArgs^ e)
 {
+	DirectXPage^ mainMenu = (DirectXPage^)e->Content;
+
+	if (mainMenu != nullptr) {
+		mainMenu->setDifficulty(Difficulty->Value);
+	}
+
 	NavigationHelper->OnNavigatedFrom(e);
 }
 
@@ -132,5 +139,5 @@ void RiplGame::BasicPage::Difficulty_ValueChanged(Platform::Object^ sender, Wind
 
 void RiplGame::BasicPage::backButton_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
-	Frame->Navigate(TypeName(DirectXPage::typeid),Difficulty);
+	Frame->Navigate(TypeName(DirectXPage::typeid),(int)Difficulty->Value);
 }

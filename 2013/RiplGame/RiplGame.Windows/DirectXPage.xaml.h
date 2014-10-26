@@ -24,6 +24,8 @@ namespace RiplGame
 		void SaveInternalState(Windows::Foundation::Collections::IPropertySet^ state);
 		void LoadInternalState(Windows::Foundation::Collections::IPropertySet^ state);
 
+		void setDifficulty(int difficulty);
+
 	private:
 		// XAML low-level rendering event handler.
 		void OnRendering(Platform::Object^ sender, Platform::Object^ args);
@@ -67,6 +69,8 @@ namespace RiplGame
 		//void Button_Click_1();
 		void Button_Click_2(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 		bool GameStarted;
+		bool firstVisit;
+		int difficulty;
 	};
 }
 
