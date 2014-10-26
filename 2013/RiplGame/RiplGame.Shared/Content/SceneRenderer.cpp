@@ -512,9 +512,9 @@ void SceneRenderer::CreateDeviceDependentResources()
 		XMStoreFloat4x4(&tempMatrix, XMMatrixIdentity());
 		XMStoreFloat4x4(&objectPosition, XMMatrixIdentity());
 
-		objectPosition._14 = 0;
-		objectPosition._24 = 7;
-		objectPosition._34 = 0;
+		objectPosition._14 = -28;
+		objectPosition._24 = 4;
+		objectPosition._34 = -28;
 
 		int currentVertexCount = 0; // Counter for current length of vertex array
 

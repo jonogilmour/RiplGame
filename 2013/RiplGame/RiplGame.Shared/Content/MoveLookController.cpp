@@ -326,80 +326,6 @@ XMFLOAT3 MoveLookController::computeDirectionVector(){
 		);
 }
 
-bool MoveLookController::raycalc(Size size, XMFLOAT2 position, XMFLOAT4X4 view, XMFLOAT4X4 proj, XMFLOAT2* ripplePosition, struct water_storage* ws)
-{
-	//takes in size(height,width), touch x and y, view matrix, proj, and water struct. outputs co ords of touch in xmfloat2
-/*	float height = size.Height;
-	float width = size.Width;
-	XMFLOAT4X4 p = proj;
-	XMFLOAT4X4 v = view;
-	float vx = (2.0f * position.x / width - 1.0f) / p._11;
-	float vy = (-2.0f * position.y / height + 1.0f) / p._22;
-	XMFLOAT3 positionRay;
-	XMFLOAT3 directionRay(vx, vy, 1.0f);
-	XMMATRIX invView = XMMatrixInverse(nullptr, XMLoadFloat4x4(&v));
-	XMVECTOR posConv = XMLoadFloat3(&positionRay);
-	XMVECTOR dirConv = XMLoadFloat3(&directionRay);
-
-	XMVECTOR posRayResult = XMVector3TransformCoord(posConv, invView);
-	XMVECTOR dirRayTemp = XMVector3TransformNormal(dirConv, invView);
-	XMVECTOR dirRayResult = XMVector3Normalize(dirRayTemp);*/
-	XMVECTOR posRayResult;
-	XMVECTOR dirRayResult;
-	pickRay(size, position, view, proj, &posRayResult,&dirRayResult);
-
-
-	XMMATRIX invWorldMatrix = XMMatrixInverse(nullptr, XMMatrixTranspose(XMMatrixIdentity()));
-	XMVECTOR finalPosCalc = XMVector3TransformCoord(posRayResult, invWorldMatrix);
-	XMVECTOR finalDirTemp = XMVector3TransformNormal(dirRayResult, invWorldMatrix);
-	XMVECTOR finalDirCalc = XMVector3Normalize(finalDirTemp);
-
-	// Set a breakpoint after these to see the contents of the above vectors
-	XMFLOAT3 positionTemp(XMVectorGetX(finalPosCalc), XMVectorGetY(finalPosCalc), XMVectorGetZ(finalPosCalc));
-	XMFLOAT3 directionTemp(XMVectorGetX(finalDirCalc), XMVectorGetY(finalDirCalc), XMVectorGetZ(finalDirCalc));
-	//
-
-	for (unsigned int i = 0; i < ws->indices.size() / 3; i++)
-	{
-		XMVECTOR v0 = XMLoadFloat3(&ws->vertices[ws->indices[i * 3]].pos);
-		XMVECTOR v1 = XMLoadFloat3(&ws->vertices[ws->indices[i * 3 + 1]].pos);
-		XMVECTOR v2 = XMLoadFloat3(&ws->vertices[ws->indices[i * 3 + 2]].pos);
-		float dist;
-		bool doesIntersect = Intersects(finalPosCalc, finalDirCalc, v0, v1, v2, dist);
-		printf("%b",doesIntersect);
-		if (doesIntersect)
-		{
-			ripplePosition->x = (ws->vertices[ws->indices[i * 3]].pos.x + ws->vertices[ws->indices[i * 3 + 2]].pos.x) / 2;
-			ripplePosition->y = (ws->vertices[ws->indices[i * 3]].pos.y + ws->vertices[ws->indices[i * 3 + 1]].pos.y) / 2;
-			return true;
-		}
-	}
-	return false;
-}
-
-void MoveLookController::pickRay(Size screenSize, XMFLOAT2 mouse, XMFLOAT4X4 view, XMFLOAT4X4 proj, XMVECTOR* pos, XMVECTOR* dir)
-{
-	XMMATRIX projectionMatrix = XMLoadFloat4x4(&proj);
-	XMMATRIX viewMatrix = XMLoadFloat4x4(&view);
-
-	XMVECTOR CursorScreenSpace = XMVectorSet(mouse.x, mouse.y, 1.0f, 0.0f);
-
-	XMVECTOR CursorObjectSpace = XMVector3Unproject(CursorScreenSpace, 0, 0, screenSize.Width, screenSize.Height, 0.0f, 1.0f,
-		projectionMatrix, viewMatrix, XMMatrixIdentity());
-
-	XMVECTOR RayOrigin = XMVectorSet(view._41, view._42, view._43, 0);
-	XMVECTOR RayDir = CursorObjectSpace - RayOrigin;
-	RayDir = XMVector3Normalize(RayDir);
-	
-	*dir = RayDir;
-	*pos = RayOrigin;
-
-	float x = XMVectorGetX(*dir);
-	float y = XMVectorGetY(*dir);
-	float z = XMVectorGetZ(*dir);
-	int u = 1;
-}
-
 void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4* moveObjectTransform, Size outputSize, XMFLOAT4X4 view, XMFLOAT4X4 proj, struct water_storage* ws)
 {
 	deltaTime = timeDelta;
@@ -534,23 +460,6 @@ void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4*
 		// Save new coordinates into F3
 		// Detect collisions, which may alter F3
 		// If true, apply F3 to MOT
-	}
-
-
-	
-	bool intersected = false;
-
-	if (tapped) {
-		OutputDebugString(L"RAY CALCING\n");
-		intersected = raycalc(outputSize, tapPosition, view, proj, &ripplePosition, ws);
-		tapped = false;
-	}
-	
-	if(intersected) {
-		OutputDebugString(L"INTERSECTION FOUND\n");
-		//placeRipple(ripplePosition.x, ripplePosition.y);
-		moveObjectTransform->_14 = ripplePosition.x;
-		moveObjectTransform->_34 = ripplePosition.y;
 	}
 
 }
