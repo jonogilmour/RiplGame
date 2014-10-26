@@ -39,7 +39,7 @@ void MoveLookController::Initialize(_In_ CoreWindow^ window)
 	SetPosition(XMFLOAT3(0, 10.0f, 0));
 
 	tapped = false;
-	acc = ref new Windows::Devices::Sensors::Accelerometer();
+	acc = Windows::Devices::Sensors::Accelerometer::GetDefault();
 }
 
 void MoveLookController::OnPointerPressed(
