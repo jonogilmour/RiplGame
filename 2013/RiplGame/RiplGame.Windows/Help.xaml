@@ -46,6 +46,22 @@
             <TextBlock x:Name="pageTitle" Text="Help" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
                         IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,30,40" SelectionChanged="pageTitle_SelectionChanged_1"/>
         </Grid>
-        <TextBox HorizontalAlignment="Left" Height="285" Margin="437,96,0,0" Grid.Row="1" TextWrapping="Wrap" Text="Welcome to Ripl&#xD;&#xA;&#xD;&#xA;The dam has broken, and the water level has dropped. Prevent the level from dropping too low!&#xD;&#xA;&#xD;&#xA;Your aim is to bring your building blocks to the damn by navigating the maze. Tilt your device to move the block, but don't hit the walls or your block will get stuck, making it harder for you to pass.&#xD;&#xA;&#xD;&#xA;Bring enough blocks to the dam, repair it, and save the pond. Just don't run out of blocks!" VerticalAlignment="Top" Width="466"/>
+        <TextBlock HorizontalAlignment="Left" Margin="491,236,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Height="256" Width="444">
+        	<Run Text="Welcome to Ripl"/>
+        	<LineBreak/>
+        	<Run/>
+        	<LineBreak/>
+        	<Run Text="The dam has broken, and the water level has dropped. Prevent the level "/>
+        	<Run Text="from "/>
+        	<Run Text="dropping too low!"/>
+        	<LineBreak/>
+        	<Run/>
+        	<LineBreak/>
+        	<Run Text="Your aim is to bring your building blocks to the damn by navigating the maze. Tilt your device to move the block, but don't hit the walls or your block will get stuck, making it harder for you to pass."/>
+        	<LineBreak/>
+        	<Run/>
+        	<LineBreak/>
+        	<Run Text="Bring enough blocks to the dam, repair it, and save the pond. Just don't run out of blocks!"/>
+        </TextBlock>
     </Grid>
 </Page>
