@@ -22,6 +22,8 @@ void ::RiplGame::BasicPage::InitializeComponent()
     // Call LoadComponent on ms-appx:///BasicPage.xaml
     ::Windows::UI::Xaml::Application::LoadComponent(this, ref new ::Windows::Foundation::Uri(L"ms-appx:///BasicPage.xaml"), ::Windows::UI::Xaml::Controls::Primitives::ComponentResourceLocation::Application);
 
+    // Get the Slider named 'Difficulty'
+    Difficulty = safe_cast<::Windows::UI::Xaml::Controls::Slider^>(static_cast<Windows::UI::Xaml::IFrameworkElement^>(this)->FindName(L"Difficulty"));
     // Get the Button named 'backButton'
     backButton = safe_cast<::Windows::UI::Xaml::Controls::Button^>(static_cast<Windows::UI::Xaml::IFrameworkElement^>(this)->FindName(L"backButton"));
     // Get the TextBlock named 'pageTitle'
@@ -33,6 +35,10 @@ void ::RiplGame::BasicPage::Connect(int connectionId, Platform::Object^ target)
     switch (connectionId)
     {
     case 1:
+        (safe_cast<::Windows::UI::Xaml::Controls::TextBlock^>(target))->SelectionChanged +=
+            ref new ::Windows::UI::Xaml::RoutedEventHandler(this, (void (::RiplGame::BasicPage::*)(Platform::Object^, Windows::UI::Xaml::RoutedEventArgs^))&BasicPage::TextBlock_SelectionChanged);
+        break;
+    case 2:
         (safe_cast<::Windows::UI::Xaml::Controls::TextBlock^>(target))->SelectionChanged +=
             ref new ::Windows::UI::Xaml::RoutedEventHandler(this, (void (::RiplGame::BasicPage::*)(Platform::Object^, Windows::UI::Xaml::RoutedEventArgs^))&BasicPage::pageTitle_SelectionChanged);
         break;

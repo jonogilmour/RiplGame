@@ -12,6 +12,7 @@ namespace Windows {
     namespace UI {
         namespace Xaml {
             namespace Controls {
+                ref class Slider;
                 ref class Button;
                 ref class TextBlock;
             }
@@ -31,6 +32,7 @@ namespace RiplGame
     private:
         bool _contentLoaded;
     
+        private: ::Windows::UI::Xaml::Controls::Slider^ Difficulty;
         private: ::Windows::UI::Xaml::Controls::Button^ backButton;
         private: ::Windows::UI::Xaml::Controls::TextBlock^ pageTitle;
     };
