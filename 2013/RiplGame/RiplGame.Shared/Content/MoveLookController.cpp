@@ -341,9 +341,9 @@ void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4*
 {
 	if (acc != nullptr) {
 		auto reading = acc->GetCurrentReading();
-		auto xAccel = reading->AccelerationX;
-		auto yAccel = reading->AccelerationY;
-		auto zAccel = reading->AccelerationZ;
+		auto txtX = reading->AccelerationX;
+		auto txtY = reading->AccelerationY;
+		auto txtZ = reading->AccelerationZ;
 	}
 
 
