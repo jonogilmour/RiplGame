@@ -6,7 +6,7 @@
 
 void MoveLookController::Initialize(_In_ CoreWindow^ window)
 {
-
+	
 	// opt in to recieve touch/mouse events
 
 
@@ -39,6 +39,8 @@ void MoveLookController::Initialize(_In_ CoreWindow^ window)
 	SetPosition(XMFLOAT3(0, 10.0f, 0));
 
 	tapped = false;
+	acc = ref new Windows::Devices::Sensors::Accelerometer();
+	auto Currread =acc ->GetCurrentReading;
 }
 
 void MoveLookController::OnPointerPressed(
