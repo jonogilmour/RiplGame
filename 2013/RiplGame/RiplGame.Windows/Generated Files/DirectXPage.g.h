@@ -13,6 +13,8 @@ namespace Windows {
         namespace Xaml {
             namespace Controls {
                 ref class SwapChainPanel;
+                ref class Grid;
+                ref class TextBlock;
                 ref class AppBar;
             }
         }
@@ -32,6 +34,10 @@ namespace RiplGame
         bool _contentLoaded;
     
         private: ::Windows::UI::Xaml::Controls::SwapChainPanel^ swapChainPanel;
+        private: ::Windows::UI::Xaml::Controls::Grid^ LayoutRoot;
+        private: ::Windows::UI::Xaml::Controls::TextBlock^ txtX;
+        private: ::Windows::UI::Xaml::Controls::TextBlock^ txtY;
+        private: ::Windows::UI::Xaml::Controls::TextBlock^ txtZ;
         private: ::Windows::UI::Xaml::Controls::AppBar^ bottomAppBar;
     };
 }

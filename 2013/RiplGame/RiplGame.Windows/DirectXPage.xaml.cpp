@@ -24,12 +24,32 @@ using namespace Windows::UI::Xaml::Media;
 using namespace Windows::UI::Xaml::Navigation;
 using namespace concurrency;
 
+using namespace Windows::System;
+using namespace Windows::Foundation;
+using namespace Platform;
+using namespace Windows::Devices::Sensors;
+using namespace Windows::UI::Core;
+
 DirectXPage::DirectXPage():
 	m_windowVisible(true),
 	m_coreInput(nullptr)
 {
 	InitializeComponent();
+	accelerometer = Accelerometer::GetDefault();
+	// Setup the event handler
+	if (accelerometer != nullptr)
+	{
+		// Establish the report interval for all scenarios
+		uint32 minReportInterval = accelerometer->MinimumReportInterval;
+		uint32 reportInterval = minReportInterval > 16 ? minReportInterval : 16;
+		accelerometer->ReportInterval = reportInterval;
 
+		// Establish the event handler
+		listenerToken = accelerometer->ReadingChanged::add(ref new TypedEventHandler<Accelerometer^,
+			AccelerometerReadingChangedEventArgs^>(this, &DirectXPage::ReadingChanged));
+
+
+	}
 	// Register event handlers for page lifecycle.
 	CoreWindow^ window = Window::Current->CoreWindow;
 
@@ -187,4 +207,24 @@ void DirectXPage::OnSwapChainPanelSizeChanged(Object^ sender, SizeChangedEventAr
 	critical_section::scoped_lock lock(m_main->GetCriticalSection());
 	m_deviceResources->SetLogicalSize(e->NewSize);
 	m_main->CreateWindowSizeDependentResources();
+}
+void DirectXPage::ReadingChanged(Accelerometer^ sender, AccelerometerReadingChangedEventArgs^ e)
+{
+	auto ignored = Dispatcher->RunAsync(
+		CoreDispatcherPriority::Normal,
+		ref new DispatchedHandler(
+		[this, e]()
+	{
+		AccelerometerReading^ reading = e->Reading;
+
+		txtX->Text = reading->AccelerationX.ToString();
+		txtY->Text = reading->AccelerationY.ToString();
+		txtZ->Text = reading->AccelerationZ.ToString();
+	},
+		CallbackContext::Any
+		)
+		);
+}
+void DirectXPage::OnNavigatedTo(NavigationEventArgs^ e)
+{
 }
