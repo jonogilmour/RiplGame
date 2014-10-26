@@ -241,7 +241,7 @@ void RiplGame::DirectXPage::Button_Click_1(Platform::Object^ sender, Windows::UI
 {
 	//if (this->Frame != nullptr)
 //	{
-		this->Frame->Navigate(TypeName(BasicPage::typeid));
+		Frame->Navigate(TypeName(BasicPage::typeid));
 	//}
 }
 

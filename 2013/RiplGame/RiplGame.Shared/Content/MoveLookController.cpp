@@ -461,7 +461,6 @@ void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4*
 
 	// OBJECT MOVEMENT
 	if (moveObjectTransform != nullptr && !m_point) {
-		OutputDebugString(L"MOVING");
 		if (obj_fwd) {
 			moveObjectTransform->_34 += (timeDelta * OBJ_MOVEMENT_GAIN);
 		}

@@ -41,6 +41,57 @@ App::App()
 /// <param name="e">Details about the launch request and process.</param>
 void App::OnLaunched(Windows::ApplicationModel::Activation::LaunchActivatedEventArgs^ e)
 {
+	auto rootFrame = dynamic_cast<Frame^>(Window::Current->Content);
+
+	// Do not repeat app initialization when the Window already has content,
+	// just ensure that the window is active
+	if (rootFrame == nullptr)
+	{
+		// Create a Frame to act as the navigation context and associate it with
+		// a SuspensionManager key
+		rootFrame = ref new Frame();
+
+		if (rootFrame->Content == nullptr || e->Arguments != nullptr)
+		{
+			// When the navigation stack isn't restored or there are launch arguments
+			// indicating an alternate launch (e.g.: via toast or secondary tile), 
+			// navigate to the appropriate page, configuring the new page by passing required 
+			// information as a navigation parameter
+			if (!rootFrame->Navigate(TypeName(DirectXPage::typeid), e->Arguments))
+			{
+				throw ref new FailureException("Failed to create initial page");
+			}
+		}
+		// Place the frame in the current Window
+		Window::Current->Content = rootFrame;
+		// Ensure the current window is active
+		Window::Current->Activate();
+
+	}
+	else
+	{
+		if (rootFrame->Content == nullptr || e->Arguments != nullptr)
+		{
+			// When the navigation stack isn't restored or there are launch arguments
+			// indicating an alternate launch (e.g.: via toast or secondary tile), 
+			// navigate to the appropriate page, configuring the new page by passing required 
+			// information as a navigation parameter
+			if (!rootFrame->Navigate(TypeName(DirectXPage::typeid), e->Arguments))
+			{
+				throw ref new FailureException("Failed to create initial page");
+			}
+		}
+		// Ensure the current window is active
+		Window::Current->Activate();
+	}
+
+
+
+
+
+
+
+	/*
 #if _DEBUG
 	if (IsDebuggerPresent())
 	{
@@ -60,7 +111,7 @@ void App::OnLaunched(Windows::ApplicationModel::Activation::LaunchActivatedEvent
 
 	// Place the page in the current window and ensure that it is active.
 	Window::Current->Content = m_directXPage;
-	Window::Current->Activate();
+	Window::Current->Activate();*/
 }
 
 /// <summary>
