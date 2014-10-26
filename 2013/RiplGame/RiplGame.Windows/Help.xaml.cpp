@@ -116,3 +116,9 @@ void RiplGame::Help::pageTitle_SelectionChanged(Platform::Object^ sender, Window
 {
 
 }
+
+
+void RiplGame::Help::pageTitle_SelectionChanged_1(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
+{
+
+}

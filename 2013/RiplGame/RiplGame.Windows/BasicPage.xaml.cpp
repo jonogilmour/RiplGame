@@ -110,3 +110,9 @@ void BasicPage::SaveState(Object^ sender, Common::SaveStateEventArgs^ e){
 	(void) sender;	// Unused parameter
 	(void) e; // Unused parameter
 }
+
+
+void RiplGame::BasicPage::pageTitle_SelectionChanged(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
+{
+
+}

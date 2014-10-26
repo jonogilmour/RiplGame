@@ -44,8 +44,9 @@
                         AutomationProperties.AutomationId="BackButton"
                         AutomationProperties.ItemType="Navigation Button"/>
             <TextBlock x:ConnectionId='1' x:Name="pageTitle" Text="Help" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
-                        IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,30,40"                                              />
+                        IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,30,40"                                                />
         </Grid>
+        <TextBox HorizontalAlignment="Left" Height="285" Margin="437,96,0,0" Grid.Row="1" TextWrapping="Wrap" Text="Welcome to Ripl&#xD;&#xA;&#xD;&#xA;The dam has broken, and the water level has dropped. Prevent the level from dropping too low!&#xD;&#xA;&#xD;&#xA;Your aim is to bring your building blocks to the damn by navigating the maze. Tilt your device to move the block, but don't hit the walls or your block will get stuck, making it harder for you to pass.&#xD;&#xA;&#xD;&#xA;Bring enough blocks to the dam, repair it, and save the pond. Just don't run out of blocks!" VerticalAlignment="Top" Width="466"/>
     </Grid>
 </Page>
 

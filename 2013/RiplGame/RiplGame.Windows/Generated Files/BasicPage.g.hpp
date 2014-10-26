@@ -30,6 +30,13 @@ void ::RiplGame::BasicPage::InitializeComponent()
 
 void ::RiplGame::BasicPage::Connect(int connectionId, Platform::Object^ target)
 {
+    switch (connectionId)
+    {
+    case 1:
+        (safe_cast<::Windows::UI::Xaml::Controls::TextBlock^>(target))->SelectionChanged +=
+            ref new ::Windows::UI::Xaml::RoutedEventHandler(this, (void (::RiplGame::BasicPage::*)(Platform::Object^, Windows::UI::Xaml::RoutedEventArgs^))&BasicPage::pageTitle_SelectionChanged);
+        break;
+    }
     (void)connectionId; // Unused parameter
     (void)target; // Unused parameter
     _contentLoaded = true;
