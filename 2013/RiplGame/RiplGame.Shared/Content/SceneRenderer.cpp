@@ -4,6 +4,7 @@
 #include "Content\Objects\World\Landscape.h"
 #include "Content\Objects\World\Water.h"
 #include "MoveObject.h"
+#include "WallCollision.h"
 
 #define LIVES 2 // also max cubes in game
 
@@ -39,11 +40,11 @@ void SceneRenderer::Update(DX::StepTimer const& timer)
 	// ws - water storage
 	// controller update - movement of camera and objects
 	if (!(dynamicObject_Transforms.size() < 1))	{
-		m_controller->Update(CoreWindow::GetForCurrentThread(), timer.GetElapsedSeconds(), &dynamicObject_Transforms[0], outputSize, m_constantBufferData_View.view, m_constantBufferData_Proj.projection, &ws);
+		m_controller->Update(CoreWindow::GetForCurrentThread(), timer.GetElapsedSeconds(), &dynamicObject_Transforms[0], outputSize, m_constantBufferData_View.view, m_constantBufferData_Proj.projection, &wallList);
 		CubePos = XMFLOAT4(dynamicObject_Transforms[0]._14, dynamicObject_Transforms[0]._24+1, dynamicObject_Transforms[0]._34, 1);
 	}
 	else { // runs very time
-		m_controller->Update(CoreWindow::GetForCurrentThread(), timer.GetElapsedSeconds(), nullptr, outputSize, m_constantBufferData_View.view, m_constantBufferData_Proj.projection, &ws);
+		m_controller->Update(CoreWindow::GetForCurrentThread(), timer.GetElapsedSeconds(), nullptr, outputSize, m_constantBufferData_View.view, m_constantBufferData_Proj.projection, &wallList);
 		CubePos = XMFLOAT4(0, 0, 0, 1);
 	}
 
@@ -439,15 +440,11 @@ void SceneRenderer::CreateDeviceDependentResources()
 	auto createLandscapeTask = (createPSTask && createVSTask).then([this]() {
 		// make it same as bitmap
 		unsigned short landscapeSize = 96;
-		Landscape landscape(landscapeSize, landscapeSize);
+		Landscape landscape(landscapeSize, landscapeSize, &wallList); // also sets up wall collisions
 		Water water(landscapeSize, landscapeSize);
 
 		// this is our cube
 		MoveObject moveObject(0.5f,0.5f,0.5f);
-
-		// Setup water plane storage for ray tracing STANLEY
-		ws.vertices.insert(ws.vertices.end(), water.vertices.begin(), water.vertices.end());
-		ws.indices.insert(ws.indices.end(), water.indices.begin(), water.indices.end());
 
 		// This creates the data (vertices) to put into the vertex buffer, and zeroes it
 		D3D11_SUBRESOURCE_DATA vertexBufferData = { 0 };

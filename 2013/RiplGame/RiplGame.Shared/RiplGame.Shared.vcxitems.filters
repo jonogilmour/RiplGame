@@ -17,6 +17,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)RiplGameMain.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)pch.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Common\DeviceResources.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)WallCollision.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)Content\CommonFunctions.h" />
@@ -37,6 +38,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Content\Structures\VertexStructures.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)RippleMove.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameInfo.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)WallCollision.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="$(MSBuildThisFileDirectory)heightmap_medium.bmp" />

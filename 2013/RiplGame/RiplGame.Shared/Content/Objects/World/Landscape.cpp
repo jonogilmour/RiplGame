@@ -10,9 +10,9 @@ using namespace Windows::Foundation;
 // Loads vertex and pixel shaders from files and instantiates the cube geometry.
 // NOTE: This uses initialiser list syntax, essentially each part is initialised using the initialiser for that type.
 // DeviceResources uses a couple of initialisers to complete its initialisation, hence the braces.
-Landscape::Landscape(unsigned short sideLengthZ, unsigned short sideLengthX) {
+Landscape::Landscape(unsigned short sideLengthZ, unsigned short sideLengthX, std::list<XMFLOAT3>* wallList) {
 	fillIndices(sideLengthZ, sideLengthX);
-	fillVertices(sideLengthZ, sideLengthX, XMFLOAT4(0.0f, 0.3f, 0.3f, 1.0f));
+	fillVertices(sideLengthZ, sideLengthX, XMFLOAT4(0.0f, 0.3f, 0.3f, 1.0f), wallList);
 }
 
 XMFLOAT4 colourForHeight(float h) {
@@ -24,9 +24,11 @@ XMFLOAT4 colourForHeight(float h) {
 }
 
 // Fills a vertex array for a rectangular landscape
-void Landscape::fillVertices(unsigned short sideLengthZ, unsigned short sideLengthX, XMFLOAT4 colour) {
+void Landscape::fillVertices(unsigned short sideLengthZ, unsigned short sideLengthX, XMFLOAT4 colour, std::list<XMFLOAT3>* wallList) {
 	HeightMapInfo* hm = new HeightMapInfo;
 	HeightMapLoad("heightmap_medium.bmp", hm);
+
+	wallArray(hm, 4, sideLengthZ, sideLengthX, wallList);
 
 	// If you want to use the current HeightMapInfo structure:.
 	// Access height at (x, z) with:

@@ -10,7 +10,7 @@ namespace RiplGame
 	class Landscape
 	{
 	public:
-		Landscape(unsigned short sideLengthZ, unsigned short sideLengthX);
+		Landscape(unsigned short sideLengthZ, unsigned short sideLengthX, std::list<XMFLOAT3>* wallList);
 		uint32 getIndexCount();
 		uint32 getVertexCount();
 		uint32 getStartIndexOffset();
@@ -35,7 +35,7 @@ namespace RiplGame
 		uint32 startIndexOffset;
 		uint32 startVertexOffset;
 
-		void fillVertices(unsigned short sideLengthZ, unsigned short sideLengthX, XMFLOAT4 colour);
+		void fillVertices(unsigned short sideLengthZ, unsigned short sideLengthX, XMFLOAT4 colour, std::list<XMFLOAT3>* wallList);
 		void fillIndices(unsigned short sideLengthZ, unsigned short sideLengthX);
 	};
 }

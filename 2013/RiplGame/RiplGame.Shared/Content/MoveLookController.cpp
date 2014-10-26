@@ -2,6 +2,7 @@
 #include "Content\CommonFunctions.h"
 #include "Collision.h"
 #include "SceneRenderer.h"
+#include "WallCollision.h"
 
 void MoveLookController::Initialize(_In_ CoreWindow^ window)
 {
@@ -326,7 +327,7 @@ XMFLOAT3 MoveLookController::computeDirectionVector(){
 		);
 }
 
-void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4* moveObjectTransform, Size outputSize, XMFLOAT4X4 view, XMFLOAT4X4 proj, struct water_storage* ws)
+void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4* moveObjectTransform, Size outputSize, XMFLOAT4X4 view, XMFLOAT4X4 proj, std::list<XMFLOAT3>* wallList)
 {
 	deltaTime = timeDelta;
 	XMFLOAT3 dir = computeDirection();
@@ -457,6 +458,13 @@ void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4*
 
 		// Save new centre point
 		XMFLOAT3 centre(moveObjectTransform->_14, moveObjectTransform->_24, moveObjectTransform->_34);
+
+		wallCollision(&centre, 0.5, wallList);
+
+		moveObjectTransform->_14 = centre.x;
+		moveObjectTransform->_24 = centre.y;
+		moveObjectTransform->_34 = centre.z;
+
 		// Save new coordinates into F3
 		// Detect collisions, which may alter F3
 		// If true, apply F3 to MOT
