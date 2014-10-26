@@ -40,8 +40,6 @@ void MoveLookController::Initialize(_In_ CoreWindow^ window)
 
 	tapped = false;
 	acc = ref new Windows::Devices::Sensors::Accelerometer();
-
-	if (acc != nullptr)	auto reading = acc->GetCurrentReading();
 }
 
 void MoveLookController::OnPointerPressed(
@@ -332,6 +330,9 @@ XMFLOAT3 MoveLookController::computeDirectionVector(){
 
 void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4* moveObjectTransform, Size outputSize, XMFLOAT4X4 view, XMFLOAT4X4 proj, std::list<XMFLOAT3>* wallList)
 {
+	if (acc != nullptr)	auto reading = acc->GetCurrentReading();
+
+
 	deltaTime = timeDelta;
 	XMFLOAT3 dir = computeDirection();
 	XMFLOAT3 r_axis = computeRAxis();
