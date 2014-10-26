@@ -43,11 +43,11 @@
                         AutomationProperties.Name="Back"
                         AutomationProperties.AutomationId="BackButton"
                         AutomationProperties.ItemType="Navigation Button"/>
-            <TextBlock x:ConnectionId='2' x:Name="pageTitle" Text="Options" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
+            <TextBlock x:ConnectionId='3' x:Name="pageTitle" Text="Options" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
                         IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,30,40"                                              />
         </Grid>
-        <Slider x:Name ="Difficulty" HorizontalAlignment="Left" Margin="315,190,0,0" Grid.Row="1" VerticalAlignment="Top" Width="315" Height="63" Maximum="3" Minimum="1"/>
-        <TextBlock x:ConnectionId='1' HorizontalAlignment="Left" Margin="422,170,0,0" Grid.Row="1" TextWrapping="Wrap" Text="Difficulty" VerticalAlignment="Top" Height="16" Width="99"                                              />
+        <Slider x:ConnectionId='1' x:Name ="Difficulty" HorizontalAlignment="Left" Margin="315,190,0,0" Grid.Row="1" VerticalAlignment="Top" Width="315" Height="63" Maximum="3" Minimum="1"                                       />
+        <TextBlock x:ConnectionId='2' HorizontalAlignment="Left" Margin="422,170,0,0" Grid.Row="1" TextWrapping="Wrap" Text="Difficulty" VerticalAlignment="Top" Height="16" Width="99"                                              />
     </Grid>
 </Page>
 

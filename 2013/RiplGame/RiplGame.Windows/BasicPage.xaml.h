@@ -7,6 +7,8 @@
 
 #include "BasicPage.g.h"
 #include "Common\NavigationHelper.h"
+#include "Common\DeviceResources.h"
+#include "RiplGameMain.h"
 
 namespace RiplGame
 {
@@ -48,5 +50,6 @@ namespace RiplGame
 		static Windows::UI::Xaml::DependencyProperty^ _navigationHelperProperty;
 		void pageTitle_SelectionChanged(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 		void TextBlock_SelectionChanged(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
+		void Difficulty_ValueChanged(Platform::Object^ sender, Windows::UI::Xaml::Controls::Primitives::RangeBaseValueChangedEventArgs^ e);
 	};
 }

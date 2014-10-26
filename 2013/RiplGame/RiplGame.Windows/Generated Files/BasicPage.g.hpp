@@ -35,10 +35,14 @@ void ::RiplGame::BasicPage::Connect(int connectionId, Platform::Object^ target)
     switch (connectionId)
     {
     case 1:
+        (safe_cast<::Windows::UI::Xaml::Controls::Primitives::RangeBase^>(target))->ValueChanged +=
+            ref new ::Windows::UI::Xaml::Controls::Primitives::RangeBaseValueChangedEventHandler(this, (void (::RiplGame::BasicPage::*)(Platform::Object^, Windows::UI::Xaml::Controls::Primitives::RangeBaseValueChangedEventArgs^))&BasicPage::Difficulty_ValueChanged);
+        break;
+    case 2:
         (safe_cast<::Windows::UI::Xaml::Controls::TextBlock^>(target))->SelectionChanged +=
             ref new ::Windows::UI::Xaml::RoutedEventHandler(this, (void (::RiplGame::BasicPage::*)(Platform::Object^, Windows::UI::Xaml::RoutedEventArgs^))&BasicPage::TextBlock_SelectionChanged);
         break;
-    case 2:
+    case 3:
         (safe_cast<::Windows::UI::Xaml::Controls::TextBlock^>(target))->SelectionChanged +=
             ref new ::Windows::UI::Xaml::RoutedEventHandler(this, (void (::RiplGame::BasicPage::*)(Platform::Object^, Windows::UI::Xaml::RoutedEventArgs^))&BasicPage::pageTitle_SelectionChanged);
         break;

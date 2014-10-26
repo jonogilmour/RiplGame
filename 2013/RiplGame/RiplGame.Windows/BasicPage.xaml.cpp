@@ -122,3 +122,9 @@ void RiplGame::BasicPage::TextBlock_SelectionChanged(Platform::Object^ sender, W
 {
 
 }
+
+
+void RiplGame::BasicPage::Difficulty_ValueChanged(Platform::Object^ sender, Windows::UI::Xaml::Controls::Primitives::RangeBaseValueChangedEventArgs^ e)
+{
+	RiplGame::SceneRenderer::diffVal = Difficulty->Value;
+}
