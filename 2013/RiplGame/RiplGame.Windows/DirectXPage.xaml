@@ -9,16 +9,13 @@
     mc:Ignorable="d">
     <Frame x:Name="MainMenu">
         <SwapChainPanel x:Name="swapChainPanel">
-
-
-
-        <TextBlock Text="RiplGame Test Environment"
+        <Grid x:Name="LayoutRoot">
+                <TextBlock Text="Ripl"
                HorizontalAlignment="Center"
                VerticalAlignment="Top"
-               FontSize="30" Margin="0,40,0,0" />
-        <Grid x:Name="LayoutRoot">
-
-            <Canvas x:Name="canvas" HorizontalAlignment="Stretch" Height="2000" VerticalAlignment="Stretch" Width="2000" Opacity="0.5">
+               FontSize="50" Margin="0,40,0,0" />
+            
+                <Canvas x:Name="canvas" HorizontalAlignment="Stretch" Height="2000" VerticalAlignment="Stretch" Width="2000" Opacity="0.5">
                 <Canvas.Background>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                         <GradientStop Color="White" Offset="0"/>

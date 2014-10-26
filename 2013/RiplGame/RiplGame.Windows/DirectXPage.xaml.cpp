@@ -233,20 +233,23 @@ void DirectXPage::OnNavigatedTo(NavigationEventArgs^ e)
 
 void RiplGame::DirectXPage::Button_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
-	this->canvas->Opacity = 0;
+	if (!GameStarted) {
+		this->LayoutRoot->Opacity = 0;
+		GameStarted = true;
+	}
 }
 
 
 void RiplGame::DirectXPage::Button_Click_1(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
-	//if (this->Frame != nullptr)
-//	{
+	if (this->Frame != nullptr && !GameStarted)
+	{
 		Frame->Navigate(TypeName(BasicPage::typeid));
-	//}
+	}
 }
 
 
 void RiplGame::DirectXPage::Button_Click_2(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
-
+	if (!GameStarted) {}
 }

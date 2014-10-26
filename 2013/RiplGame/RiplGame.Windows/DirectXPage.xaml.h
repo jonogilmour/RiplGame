@@ -66,6 +66,7 @@ namespace RiplGame
 		void Button_Click_1(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 		//void Button_Click_1();
 		void Button_Click_2(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
+		bool GameStarted;
 	};
 }
 
