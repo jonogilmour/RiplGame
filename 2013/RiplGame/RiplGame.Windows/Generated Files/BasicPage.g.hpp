@@ -43,10 +43,6 @@ void ::RiplGame::BasicPage::Connect(int connectionId, Platform::Object^ target)
             ref new ::Windows::UI::Xaml::RoutedEventHandler(this, (void (::RiplGame::BasicPage::*)(Platform::Object^, Windows::UI::Xaml::RoutedEventArgs^))&BasicPage::TextBlock_SelectionChanged);
         break;
     case 3:
-        (safe_cast<::Windows::UI::Xaml::Controls::Primitives::ButtonBase^>(target))->Click +=
-            ref new ::Windows::UI::Xaml::RoutedEventHandler(this, (void (::RiplGame::BasicPage::*)(Platform::Object^, Windows::UI::Xaml::RoutedEventArgs^))&BasicPage::backButton_Click);
-        break;
-    case 4:
         (safe_cast<::Windows::UI::Xaml::Controls::TextBlock^>(target))->SelectionChanged +=
             ref new ::Windows::UI::Xaml::RoutedEventHandler(this, (void (::RiplGame::BasicPage::*)(Platform::Object^, Windows::UI::Xaml::RoutedEventArgs^))&BasicPage::pageTitle_SelectionChanged);
         break;

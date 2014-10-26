@@ -37,13 +37,11 @@
                 <ColumnDefinition Width="120"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button x:ConnectionId='3' x:Name="backButton" Margin="39,59,39,0" Command="{Binding NavigationHelper.GoBackCommand, ElementName=pageRoot}"
+            <Button x:Name="backButton" Margin="39,59,39,0" Command="{Binding NavigationHelper.GoBackCommand, ElementName=pageRoot}"
                         Style="{StaticResource NavigationBackButtonNormalStyle}"
                         VerticalAlignment="Top"
-                        AutomationProperties.Name="Back"
-                        AutomationProperties.AutomationId="BackButton"
-                        AutomationProperties.ItemType="Navigation Button"                         />
-            <TextBlock x:ConnectionId='4' x:Name="pageTitle" Text="Options" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
+                />
+            <TextBlock x:ConnectionId='3' x:Name="pageTitle" Text="Options" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
                         IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,30,40"                                              />
         </Grid>
         <Slider x:ConnectionId='1' x:Name ="Difficulty" HorizontalAlignment="Left" Margin="315,190,0,0" Grid.Row="1" VerticalAlignment="Top" Width="315" Height="63" Maximum="3" Minimum="1"                                       />
