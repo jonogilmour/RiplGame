@@ -342,11 +342,9 @@ void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4*
 	if (acc != nullptr) {
 		auto reading = acc->GetCurrentReading();
 		auto txtX = reading->AccelerationX;
-		m_moveCommand.x + txtX;
-		auto txtY = reading->AccelerationY;
+		m_moveCommand.x += txtX;
 		auto txtZ = reading->AccelerationZ;
-		m_moveCommand.z + txtZ;
-
+		m_moveCommand.z += txtZ;
 	}
 
 

@@ -21,7 +21,7 @@ namespace RiplGame {
 	{
 	private:
 		// properties of the controller object
-		XMFLOAT3 m_position, m_lookat, m_upaxis, m_camPosition;
+		XMFLOAT3 m_position, m_lookat, m_upaxis;
 		float m_pitch, m_yaw;			// orientation euler angles in radians
 
 		// properties of the Move control
@@ -50,10 +50,6 @@ namespace RiplGame {
 		bool m_point, reached_dest;
 		bool m_followBlock; // should the camera follow the block
 
-		//Ray Tracing STANLEY
-		bool tapped;
-		XMFLOAT2 tapPosition;
-		XMFLOAT2 ripplePosition;
 
 		//void ReadingChanged(Windows::Devices::Sensors::Accelerometer^ sender, Windows::Devices::Sensors::AccelerometerReadingChangedEventArgs^ e);
 		Windows::Devices::Sensors::Accelerometer^ acc;
