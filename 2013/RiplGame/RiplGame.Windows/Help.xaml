@@ -20,7 +20,15 @@
         * Row 0 contains the back button and page title
         * Row 1 contains the rest of the page layout
     -->
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="White" Offset="0"/>
+                <GradientStop Color="#FF3699C7" Offset="1"/>
+                <GradientStop Color="#FF137BAE" Offset="0.337"/>
+                <GradientStop Color="#FF256888" Offset="0.687"/>
+            </LinearGradientBrush>
+        </Grid.Background>
         <Grid.ChildrenTransitions>
             <TransitionCollection>
                 <EntranceThemeTransition/>
@@ -46,7 +54,7 @@
             <TextBlock x:Name="pageTitle" Text="Help" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
                         IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,30,40" SelectionChanged="pageTitle_SelectionChanged_1"/>
         </Grid>
-        <TextBlock HorizontalAlignment="Left" Margin="491,236,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Height="256" Width="444">
+        <TextBlock HorizontalAlignment="Left" Margin="491,236,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Height="256" Width="444" SelectionChanged="TextBlock_SelectionChanged">
         	<Run Text="Welcome to Ripl"/>
         	<LineBreak/>
         	<Run/>
@@ -61,7 +69,8 @@
         	<LineBreak/>
         	<Run/>
         	<LineBreak/>
-        	<Run Text="Bring enough blocks to the dam, repair it, and save the pond. Just don't run out of blocks!"/>
+        	<Run Text="Bring "/>
+        	<Run Text="three blocks to the dam and save the pond!"/>
         </TextBlock>
     </Grid>
 </Page>

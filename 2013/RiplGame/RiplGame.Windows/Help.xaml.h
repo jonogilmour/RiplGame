@@ -48,5 +48,6 @@ namespace RiplGame
 		static Windows::UI::Xaml::DependencyProperty^ _navigationHelperProperty;
 		void pageTitle_SelectionChanged(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 		void pageTitle_SelectionChanged_1(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
+		void TextBlock_SelectionChanged(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 	};
 }

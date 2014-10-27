@@ -34,6 +34,10 @@ void ::RiplGame::Help::Connect(int connectionId, Platform::Object^ target)
     {
     case 1:
         (safe_cast<::Windows::UI::Xaml::Controls::TextBlock^>(target))->SelectionChanged +=
+            ref new ::Windows::UI::Xaml::RoutedEventHandler(this, (void (::RiplGame::Help::*)(Platform::Object^, Windows::UI::Xaml::RoutedEventArgs^))&Help::TextBlock_SelectionChanged);
+        break;
+    case 2:
+        (safe_cast<::Windows::UI::Xaml::Controls::TextBlock^>(target))->SelectionChanged +=
             ref new ::Windows::UI::Xaml::RoutedEventHandler(this, (void (::RiplGame::Help::*)(Platform::Object^, Windows::UI::Xaml::RoutedEventArgs^))&Help::pageTitle_SelectionChanged_1);
         break;
     }
