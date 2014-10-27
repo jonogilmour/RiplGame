@@ -102,13 +102,13 @@ void SceneRenderer::Update(DX::StepTimer const& timer)
 	if (wallCollision(&cubeCentre, 0.5, &wallList)) {
 		// Cube has hit a wall. Freeze it and spawn a new one at the base point
 		current_game_info.current_life++;
-		if (current_game_info.current_life > LIVES) {
+		if (current_game_info.current_life >= LIVES) {
 			// Ran out of lives
 			// GAME.END
-
+			std:exit(0);
 			// fatal error for now!
-			int x = 0;
-			int y = 1 / x;
+			//int x = 0;
+			//int y = 1 / x;
 		}
 
 		// Add previous cube to collisions list
