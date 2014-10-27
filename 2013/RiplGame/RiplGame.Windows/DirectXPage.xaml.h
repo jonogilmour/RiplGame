@@ -25,6 +25,7 @@ namespace RiplGame
 		void LoadInternalState(Windows::Foundation::Collections::IPropertySet^ state);
 
 		void setDifficulty(int difficulty);
+		void subtractTimeLeft(float time);
 
 	private:
 		// XAML low-level rendering event handler.
@@ -61,6 +62,8 @@ namespace RiplGame
 		Windows::Devices::Sensors::Accelerometer^ accelerometer;
 		Windows::Foundation::EventRegistrationToken listenerToken;
 
+		void TextBlock_SelectionChanged(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs e);
+
 	protected:
 		virtual void OnNavigatedTo(Windows::UI::Xaml::Navigation::NavigationEventArgs^ e) override;
 	private:
@@ -71,6 +74,7 @@ namespace RiplGame
 		bool GameStarted;
 		bool firstVisit;
 		int difficulty;
+		float timeLeftValue;
 	};
 }
 

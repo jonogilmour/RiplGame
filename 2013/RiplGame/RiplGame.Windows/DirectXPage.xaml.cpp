@@ -109,8 +109,9 @@ DirectXPage::DirectXPage():
 	m_inputLoopWorker = ThreadPool::RunAsync(workItemHandler, WorkItemPriority::High, WorkItemOptions::TimeSliced);
 
 	firstVisit = true;
+	timeLeftValue = 100;
 
-	m_main = std::unique_ptr<RiplGameMain>(new RiplGameMain(m_deviceResources));
+	m_main = std::unique_ptr<RiplGameMain>(new RiplGameMain(m_deviceResources, this));
 	m_main->StartRenderLoop();
 }
 
@@ -242,6 +243,7 @@ void RiplGame::DirectXPage::Button_Click(Platform::Object^ sender, Windows::UI::
 	if (!GameStarted) {
 		this->LayoutRoot->Opacity = 0;
 		GameStarted = true;
+		m_main->startGame();
 	}
 }
 
@@ -265,4 +267,20 @@ void RiplGame::DirectXPage::Button_Click_2(Platform::Object^ sender, Windows::UI
 
 void RiplGame::DirectXPage::setDifficulty(int difficulty) {
 	this->difficulty = difficulty;
+}
+
+void RiplGame::DirectXPage::subtractTimeLeft(float time) {
+
+	if (GameStarted) {
+		timeLeftValue -= time;
+
+		int tleft = (int)timeLeftValue;
+
+		timeLeft->Text = tleft.ToString() + "%";
+	}
+}
+
+void RiplGame::DirectXPage::TextBlock_SelectionChanged(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs e)
+{
+	int p = 0;
 }

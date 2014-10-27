@@ -21,6 +21,7 @@ m_loadingComplete(false),
 m_indexCount(0),
 m_deviceResources(deviceResources)
 {
+	GameStarted = false;
 	CreateDeviceDependentResources();
 	CreateWindowSizeDependentResources();
 }
@@ -50,8 +51,8 @@ void SceneRenderer::Update(DX::StepTimer const& timer)
 
 	// camera stuff
 	XMVECTOR eye = XMLoadFloat3(&m_controller->get_Position()); // position of camera in world
-	XMVECTOR at  = XMLoadFloat3(&m_controller->get_LookAt());   // what point is the camera looking at
-	XMVECTOR up  = XMLoadFloat3(&m_controller->get_UpAxis());   // which direction is up, important for getting things in correct perspective
+	XMVECTOR at = XMLoadFloat3(&m_controller->get_LookAt());   // what point is the camera looking at
+	XMVECTOR up = XMLoadFloat3(&m_controller->get_UpAxis());   // which direction is up, important for getting things in correct perspective
 
 	// Store the eye position
 	// convert eye to XMFLOAT4
@@ -66,12 +67,12 @@ void SceneRenderer::Update(DX::StepTimer const& timer)
 	Light light;
 	light.Enabled = 1;
 	light.LightType = DirectionalLight;
-	light.Color = XMFLOAT4(1,1,1,1);
+	light.Color = XMFLOAT4(1, 1, 1, 1);
 	light.SpotAngle = XMConvertToRadians(45.0f);
 	light.ConstantAttenuation = 1.0f;
 	light.LinearAttenuation = 0.08f;
 	light.QuadraticAttenuation = 0.0f;
-	light.Position = XMFLOAT4(0,0,0,1);
+	light.Position = XMFLOAT4(0, 0, 0, 1);
 	XMVECTOR LightDirection = XMVectorSet(10, -5, 10, 0.0f);
 	LightDirection = XMVector3Normalize(LightDirection);
 	XMStoreFloat4(&light.Direction, LightDirection);
@@ -95,7 +96,7 @@ void SceneRenderer::Update(DX::StepTimer const& timer)
 
 	// Store the light
 	m_constantBufferData_Light.Lights[0] = light2;
-	
+
 	// Do wall collisions for the object and increment
 	XMFLOAT3 cubeCentre(CubePos.x, CubePos.y, CubePos.z);
 	if (wallCollision(&cubeCentre, 0.5, &wallList)) {
@@ -685,4 +686,4 @@ void SceneRenderer::MakeCubes(){
 			dynamicObject_StartVertexOffset.push_back(dynamicObject_StartVertexOffset[0]);
 		}
 	}
-};
+}

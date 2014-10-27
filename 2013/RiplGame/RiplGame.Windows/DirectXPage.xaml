@@ -23,9 +23,7 @@
                             <GradientStop Color="#FF256888" Offset="0.687"/>
                         </LinearGradientBrush>
                     </Canvas.Background>
-                    <TextBlock x:Name="timeLeft" TextWrapping="Wrap" Text="TextBlock" SelectionChanged="TextBlock_SelectionChanged" Height="48" Width="120"/>
-                    <TextBlock x:Name="livesLeft" Canvas.Left="1286" TextWrapping="Wrap" Text="TextBlock" Canvas.Top="21" Height="44" Width="68"/>
-                    <TextBlock x:Name="blocksToFinish" Canvas.Left="1286" TextWrapping="Wrap" Text="TextBlock" Canvas.Top="89" Height="42" Width="78"/>
+
                 </Canvas>
 
                 <TextBlock HorizontalAlignment="Left" Height="20" Margin="9,233,0,0" TextWrapping="Wrap" Text="X:" VerticalAlignment="Top" Width="45" Foreground="#FF050404"/>
@@ -39,6 +37,9 @@
                 <Button HorizontalAlignment="Center" VerticalAlignment="Center" Content="Help" Canvas.Left="583" Canvas.Top="378" Height="87" Width="189" Click="Button_Click_2" Margin="589,375,588,306"/>
 
             </Grid>
+            <TextBlock x:Name="timeLeft" TextWrapping="Wrap" Text="100%" FontSize="20" SelectionChanged="TextBlock_SelectionChanged" Height="48" Width="120" Margin="55,39,1191,681"/>
+            <TextBlock x:Name="livesLeft" Canvas.Left="1286" TextWrapping="Wrap" Text="Lives Remaining: X/Y"  FontSize="20" Canvas.Top="21" Height="44" Margin="1100,39,55,685"/>
+            <TextBlock x:Name="blocksToFinish" Canvas.Left="1286" TextWrapping="Wrap" Text="Goal: Z/W"  FontSize="20" Canvas.Top="89" Height="42" Margin="1100,88,55,638"/>
         </SwapChainPanel>
 
 

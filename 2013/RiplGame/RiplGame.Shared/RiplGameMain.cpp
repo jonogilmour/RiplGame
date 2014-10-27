@@ -10,7 +10,7 @@ using namespace Concurrency;
 
 // Loads and initializes application assets when the application is loaded.
 // Again this is using initialiser list syntax to initialise each member separately
-RiplGameMain::RiplGameMain(const std::shared_ptr<DX::DeviceResources>& deviceResources) :
+RiplGameMain::RiplGameMain(const std::shared_ptr<DX::DeviceResources>& deviceResources, DirectXPage^ mainmenu) :
 	m_deviceResources(deviceResources), m_pointerLocationX(0.0f)
 {
 	// Register to be notified if the Device is lost or recreated
@@ -26,6 +26,9 @@ RiplGameMain::RiplGameMain(const std::shared_ptr<DX::DeviceResources>& deviceRes
 	m_timer.SetTargetElapsedSeconds(1.0 / 60);
 	
 	//CoreWindow::GetForCurrentThread()->PointerCursor = nullptr;
+
+	mainpage = mainmenu;
+	gameStarted = false;
 }
 
 // The tilde (~) means this is the DESTRUCTOR, or denitialiser
@@ -89,11 +92,13 @@ void RiplGameMain::Update()
 	m_timer.Tick([&]()
 	{
 		// TODO: Replace this with your app's content update functions.
-		m_sceneRenderer->Update(m_timer);
+		if (gameStarted) {
+			m_sceneRenderer->Update(m_timer);
+		}
 	});
 }
 
-// Process all input from the user before updating game state (like mouse clicks)
+// Process all input from the user before updating game state (like mouse clic)
 void RiplGameMain::ProcessInput()
 {
 }
@@ -145,4 +150,16 @@ void RiplGameMain::OnDeviceRestored()
 {
 	m_sceneRenderer->CreateDeviceDependentResources();
 	CreateWindowSizeDependentResources();
+}
+
+void RiplGameMain::setPageForRenderer(DirectXPage^ page) {
+	mainpage = page;
+}
+
+void RiplGameMain::startGame() {
+	gameStarted = true;
+}
+
+void RiplGameMain::subtractTimeLeft(float time) {
+	mainpage->subtractTimeLeft(time);
 }

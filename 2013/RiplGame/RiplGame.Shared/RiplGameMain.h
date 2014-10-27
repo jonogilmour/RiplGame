@@ -12,7 +12,7 @@ namespace RiplGame
 	{
 	public:
 		
-		RiplGameMain(const std::shared_ptr<DX::DeviceResources>& deviceResources);
+		RiplGameMain(const std::shared_ptr<DX::DeviceResources>& deviceResources, DirectXPage^ mainmenu);
 		~RiplGameMain();
 		void CreateWindowSizeDependentResources();
 		void StartRenderLoop();
@@ -23,10 +23,14 @@ namespace RiplGame
 		virtual void OnDeviceLost();
 		virtual void OnDeviceRestored();
 
+		void setPageForRenderer(DirectXPage^ page);
+		void startGame();
+
 	private:
 		void ProcessInput();
 		void Update();
 		bool Render();
+		void subtractTimeLeft(float time);
 
 		// Cached pointer to device resources.
 		std::shared_ptr<DX::DeviceResources> m_deviceResources;
@@ -42,5 +46,9 @@ namespace RiplGame
 
 		// Track current input pointer position.
 		float m_pointerLocationX;
+
+		DirectXPage^ mainpage;
+
+		bool gameStarted;
 	};
 }

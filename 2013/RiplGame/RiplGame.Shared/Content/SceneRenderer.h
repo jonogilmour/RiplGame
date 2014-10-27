@@ -34,7 +34,12 @@ namespace RiplGame
 		std::vector<XMFLOAT4X4> staticObject_Transforms;
 		std::vector<XMFLOAT4X4> dynamicObject_Transforms;
 		static int diffVal;
+		bool GameStarted;
+
 	private:
+
+		void subtractTimeLeft(float time);
+
 		// Cached pointer to device resources.
 		std::shared_ptr<DX::DeviceResources> m_deviceResources;
 
