@@ -44,5 +44,6 @@
   <ItemGroup>
     <Image Include="$(MSBuildThisFileDirectory)heightmap_medium.bmp" />
     <Image Include="$(MSBuildThisFileDirectory)heightmap_small.bmp" />
+    <Image Include="$(MSBuildThisFileDirectory)heightmap_medium_mountains.bmp" />
   </ItemGroup>
 </Project>

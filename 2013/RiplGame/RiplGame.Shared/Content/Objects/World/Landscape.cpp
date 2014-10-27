@@ -18,15 +18,19 @@ Landscape::Landscape(unsigned short sideLengthZ, unsigned short sideLengthX, std
 XMFLOAT4 colourForHeight(float h) {
 	if (h < 2) return XMFLOAT4(0.19f, 0.14f, 0.0f, 1.0f);
 	if (h < 4) return XMFLOAT4(0.22f, 0.25f, 0.16f, 1.0f);
-	if (h < 7) return XMFLOAT4(0.34f, 0.3f, 0.17f, 1.0f);
-	if (h < 10) return XMFLOAT4(0.2f, 0.3f, 0.05f, 1.0f);
+	if (h < 4.2) return XMFLOAT4(0.4f, 0.4f, 0.08f, 1.0f);
+	if (h < 4.6) return XMFLOAT4(0.36f, 0.36f, 0.14f, 1.0f);
+	if (h < 6) return XMFLOAT4(0.34f, 0.3f, 0.17f, 1.0f);
+	if (h < 8) return XMFLOAT4(0.2f, 0.3f, 0.05f, 1.0f);
+	if (h > 12) return XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	return XMFLOAT4(0.1f, 0.6f, 0.2f, 1.0f);
 }
 
 // Fills a vertex array for a rectangular landscape
 void Landscape::fillVertices(unsigned short sideLengthZ, unsigned short sideLengthX, XMFLOAT4 colour, std::list<XMFLOAT3>* wallList) {
 	HeightMapInfo* hm = new HeightMapInfo;
-	HeightMapLoad("heightmap_medium.bmp", hm);
+	//HeightMapLoad("heightmap_medium.bmp", hm);
+	HeightMapLoad("heightmap_medium_mountains.bmp", hm);
 
 	wallArray(hm, 4, sideLengthZ, sideLengthX, wallList);
 
