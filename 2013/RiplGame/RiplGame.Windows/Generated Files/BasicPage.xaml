@@ -20,7 +20,15 @@
         * Row 0 contains the back button and page title
         * Row 1 contains the rest of the page layout
     -->
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="White" Offset="0"/>
+                <GradientStop Color="#FF3699C7" Offset="1"/>
+                <GradientStop Color="#FF137BAE" Offset="0.337"/>
+                <GradientStop Color="#FF256888" Offset="0.687"/>
+            </LinearGradientBrush>
+        </Grid.Background>
         <Grid.ChildrenTransitions>
             <TransitionCollection>
                 <EntranceThemeTransition/>
@@ -32,15 +40,7 @@
         </Grid.RowDefinitions>
 
         <!-- Back button and page title -->
-        <Grid>
-            <Grid.Background>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="White" Offset="0"/>
-                    <GradientStop Color="#FF3699C7" Offset="1"/>
-                    <GradientStop Color="#FF137BAE" Offset="0.337"/>
-                    <GradientStop Color="#FF256888" Offset="0.687"/>
-                </LinearGradientBrush>
-            </Grid.Background>
+        <Grid Background="Transparent">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="120"/>
                 <ColumnDefinition Width="*"/>
@@ -50,7 +50,7 @@
                         VerticalAlignment="Top"
                 />
             <TextBlock x:ConnectionId='3' x:Name="pageTitle" Text="Options" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
-                        IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,30,40"                                              />
+                        IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,30,41"                                              />
         </Grid>
         <Slider x:ConnectionId='1' x:Name ="Difficulty" HorizontalAlignment="Left" Margin="315,190,0,0" Grid.Row="1" VerticalAlignment="Top" Width="315" Height="63" Maximum="3" Minimum="1"                                       />
         <TextBlock x:ConnectionId='2' HorizontalAlignment="Left" Margin="422,170,0,0" Grid.Row="1" TextWrapping="Wrap" Text="Difficulty" VerticalAlignment="Top" Height="16" Width="99"                                              />
