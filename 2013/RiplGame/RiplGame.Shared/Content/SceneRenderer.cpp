@@ -116,7 +116,7 @@ void SceneRenderer::Update(DX::StepTimer const& timer)
 		// Do wall collisions for the object and increment
 		XMFLOAT3 cubeCentre(CubePos.x, CubePos.y, CubePos.z);
 		if (wallCollision(&cubeCentre, 0.5, &wallList)) {
-			if (cubeCentre.x > 26.5) {
+			if (cubeCentre.z > 33) {
 				succeeds++;
 				if (succeeds == current_game_info.target) {
 					gameWon = true;
