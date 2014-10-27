@@ -38,6 +38,13 @@ void MoveLookController::Initialize(_In_ CoreWindow^ window)
 	SetPosition(XMFLOAT3(-20, 13, -28));
 
 	acc = Windows::Devices::Sensors::Accelerometer::GetDefault();
+	// Establish the report interval
+
+	if (acc != nullptr) {
+		auto minimumReportInterval = acc->MinimumReportInterval;
+		auto reportInterval = minimumReportInterval > 16 ? minimumReportInterval : 16;
+		acc->ReportInterval = reportInterval;
+	}
 
 	shouldLookAt = false;
 
