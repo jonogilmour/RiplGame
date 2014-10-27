@@ -3,12 +3,6 @@
 //If this works, when we try looking inside the box object we have right now, the camera should stop just outside the surface.
 
 
-
-
-
-
-
-
 //MoveTo method is for CAMERA (MoveLookController.cpp?) , then we can test if its working when camera tries to go 
 //inside the box object.
 
