@@ -29,7 +29,6 @@ RiplGameMain::RiplGameMain(const std::shared_ptr<DX::DeviceResources>& deviceRes
 
 	mainpage = mainmenu;
 	gameStarted = false;
-	current_game_info = { 1, 2 };
 }
 
 // The tilde (~) means this is the DESTRUCTOR, or denitialiser
@@ -129,7 +128,7 @@ bool RiplGameMain::Render()
 
 	// Clear the back buffer and depth stencil view.
 	// These things have to do with the queue of frames waiting to be displayed on the screen
-	context->ClearRenderTargetView(m_deviceResources->GetBackBufferRenderTargetView(), DirectX::Colors::CornflowerBlue);
+	context->ClearRenderTargetView(m_deviceResources->GetBackBufferRenderTargetView(), DirectX::Colors::DarkSlateGray);
 	context->ClearDepthStencilView(m_deviceResources->GetDepthStencilView(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
 	// Render the scene objects.

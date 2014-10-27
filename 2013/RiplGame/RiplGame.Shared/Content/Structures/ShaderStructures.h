@@ -18,8 +18,8 @@ namespace RiplGame {
 	{
 		_Material() 
 			: Emissive( 0.0f, 0.0f, 0.0f, 1.0f )
-			, Ambient( 0.0f, 0.0f, 0.0f, 1.0f )
-			, Diffuse( 0.4f, 0.4f, 0.4f, 1.0f )
+			, Ambient( 0.08f, 0.08f, 0.08f, 1.0f )
+			, Diffuse( 1.0f, 1.0f, 1.0f, 1.0f )
 			, Specular(0.774597f, 0.774597f, 0.774597f, 1.0f)
 			, SpecularPower( 76.8f )
 		{}

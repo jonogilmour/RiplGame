@@ -1,3 +1,5 @@
 #include "pch.h"
 
-GameInfo current_game_info;
+#define LIVES 5  // also max cubes in game
+
+GameInfo current_game_info = { 0, LIVES };
