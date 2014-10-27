@@ -7,6 +7,7 @@ typedef struct GameInfo {
 	// if life == 3, this is 3rd life, should have 3 cubes drawn
 	int current_life;
 	int max_lives;
+	int target;
 } GameInfo;
 
 extern GameInfo current_game_info;

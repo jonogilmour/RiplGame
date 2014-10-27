@@ -24,6 +24,7 @@ m_deviceResources(deviceResources)
 	GameStarted = false;
 	gameWon = false;
 	gameEnded = false;
+	succeeds = 0;
 	CreateDeviceDependentResources();
 	CreateWindowSizeDependentResources();
 }
@@ -115,9 +116,16 @@ void SceneRenderer::Update(DX::StepTimer const& timer)
 		// Do wall collisions for the object and increment
 		XMFLOAT3 cubeCentre(CubePos.x, CubePos.y, CubePos.z);
 		if (wallCollision(&cubeCentre, 0.5, &wallList)) {
+			if (cubeCentre.x > 26.5) {
+				succeeds++;
+				if (succeeds == current_game_info.target) {
+					gameWon = true;
+				}
+			}
+
 			// Cube has hit a wall. Freeze it and spawn a new one at the base point
 			current_game_info.current_life++;
-			if (current_game_info.current_life >= current_game_info.max_lives) {
+			if (current_game_info.current_life >= current_game_info.max_lives && !gameWon) {
 				// Ran out of lives
 				// GAME.END
 				gameEnded = true;

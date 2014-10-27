@@ -2,4 +2,4 @@
 
 #define LIVES 5  // also max cubes in game
 
-GameInfo current_game_info = { 0, LIVES };
+GameInfo current_game_info = { 0, LIVES, 2 };

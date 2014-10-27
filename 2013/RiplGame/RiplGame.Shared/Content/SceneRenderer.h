@@ -67,6 +67,7 @@ namespace RiplGame
 
 		bool gameWon;
 		bool gameEnded;
+		int succeeds;
 	};
 }
 
