@@ -22,6 +22,8 @@ m_indexCount(0),
 m_deviceResources(deviceResources)
 {
 	GameStarted = false;
+	gameWon = false;
+	gameEnded = false;
 	CreateDeviceDependentResources();
 	CreateWindowSizeDependentResources();
 }
@@ -29,94 +31,109 @@ m_deviceResources(deviceResources)
 // Called once per frame, rotates the cube and calculates the model and view matrices.
 void SceneRenderer::Update(DX::StepTimer const& timer)
 {
-	XMFLOAT4 CubePos;
-
-	Size outputSize = m_deviceResources->GetOutputSize();
-	// check if not 1st tick
-	// cube is at position 0 in dynamicObject
-	// dynamicObject_Transforms is the world matrix
-	// to move ANY object at all, take each vertex * worldMatrix and it moves the entire object
-	// view moves world around camera
-	// projection distorts all vertices so that it looks normal - like an eye would see (FOV, aspect ratio etc.) - created in WindowSize... - projectionMatrix is always constant
-	// ws - water storage
-	// controller update - movement of camera and objects
-	if (!(dynamicObject_Transforms.size() < 1))	{
-		m_controller->Update(CoreWindow::GetForCurrentThread(), timer.GetElapsedSeconds(), &dynamicObject_Transforms[current_game_info.current_life], outputSize, m_constantBufferData_View.view, m_constantBufferData_Proj.projection, &wallList);
-		CubePos = XMFLOAT4(dynamicObject_Transforms[current_game_info.current_life]._14, dynamicObject_Transforms[current_game_info.current_life]._24, dynamicObject_Transforms[current_game_info.current_life]._34, 1);
+	if (gameWon) {
+		if (staticObject_Transforms[1]._24 < 4) {
+			staticObject_Transforms[1]._24 += timer.GetElapsedSeconds() * 2.0f;
+		}
 	}
+
+	else if (gameEnded) {
+		if (staticObject_Transforms[1]._24 > -4) {
+			staticObject_Transforms[1]._24 -= timer.GetElapsedSeconds() * 2.0f;
+		}
+	}
+
 	else {
-		m_controller->Update(CoreWindow::GetForCurrentThread(), timer.GetElapsedSeconds(), nullptr, outputSize, m_constantBufferData_View.view, m_constantBufferData_Proj.projection, &wallList);
-		CubePos = XMFLOAT4(0, 0, 0, 1);
-	}
+		XMFLOAT4 CubePos;
 
-	// camera stuff
-	XMVECTOR eye = XMLoadFloat3(&m_controller->get_Position()); // position of camera in world
-	XMVECTOR at = XMLoadFloat3(&m_controller->get_LookAt());   // what point is the camera looking at
-	XMVECTOR up = XMLoadFloat3(&m_controller->get_UpAxis());   // which direction is up, important for getting things in correct perspective
-
-	// Store the eye position
-	// convert eye to XMFLOAT4
-	XMStoreFloat4(&m_constantBufferData_Light.EyePosition, eye);
-
-	// Setup the constant buffer
-	XMStoreFloat4x4(&m_constantBufferData_View.view, XMMatrixTranspose(XMMatrixLookAtLH(eye, at, up)));
-
-	// Set up lights
-
-	// Do lights (directional)
-	Light light;
-	light.Enabled = 1;
-	light.LightType = DirectionalLight;
-	light.Color = XMFLOAT4(1, 1, 1, 1);
-	light.SpotAngle = XMConvertToRadians(45.0f);
-	light.ConstantAttenuation = 1.0f;
-	light.LinearAttenuation = 0.08f;
-	light.QuadraticAttenuation = 0.0f;
-	light.Position = XMFLOAT4(0, 0, 0, 1);
-	XMVECTOR LightDirection = XMVectorSet(10, -5, 10, 0.0f);
-	LightDirection = XMVector3Normalize(LightDirection);
-	XMStoreFloat4(&light.Direction, LightDirection);
-
-	// Store the light
-	//m_constantBufferData_Light.Lights[0] = light;
-
-	// Do lights (point)
-	Light light2;
-	light2.Enabled = 1;
-	light2.LightType = PointLight;
-	light2.Color = XMFLOAT4(1, 1, 1, 1);
-	light2.SpotAngle = XMConvertToRadians(45.0f);
-	light2.ConstantAttenuation = 0.0f;
-	light2.LinearAttenuation = 0.2f;
-	light2.QuadraticAttenuation = 0.05f;
-	light2.Position = XMFLOAT4(CubePos.x, CubePos.y + 3, CubePos.z, 1.0);
-	LightDirection = XMVectorSet(0, -1, 0, 0.0f);
-	LightDirection = XMVector3Normalize(LightDirection);
-	XMStoreFloat4(&light2.Direction, LightDirection);
-
-	// Store the light
-	m_constantBufferData_Light.Lights[0] = light2;
-
-	// Do wall collisions for the object and increment
-	XMFLOAT3 cubeCentre(CubePos.x, CubePos.y, CubePos.z);
-	if (wallCollision(&cubeCentre, 0.5, &wallList)) {
-		// Cube has hit a wall. Freeze it and spawn a new one at the base point
-		current_game_info.current_life++;
-		if (current_game_info.current_life >= current_game_info.max_lives) {
-			// Ran out of lives
-			// GAME.END
-			std:exit(0);
-			// fatal error for now!
-			//int x = 0;
-			//int y = 1 / x;
+		Size outputSize = m_deviceResources->GetOutputSize();
+		// check if not 1st tick
+		// cube is at position 0 in dynamicObject
+		// dynamicObject_Transforms is the world matrix
+		// to move ANY object at all, take each vertex * worldMatrix and it moves the entire object
+		// view moves world around camera
+		// projection distorts all vertices so that it looks normal - like an eye would see (FOV, aspect ratio etc.) - created in WindowSize... - projectionMatrix is always constant
+		// ws - water storage
+		// controller update - movement of camera and objects
+		if (!(dynamicObject_Transforms.size() < 1))	{
+			m_controller->Update(CoreWindow::GetForCurrentThread(), timer.GetElapsedSeconds(), &dynamicObject_Transforms[current_game_info.current_life], outputSize, m_constantBufferData_View.view, m_constantBufferData_Proj.projection, &wallList);
+			CubePos = XMFLOAT4(dynamicObject_Transforms[current_game_info.current_life]._14, dynamicObject_Transforms[current_game_info.current_life]._24, dynamicObject_Transforms[current_game_info.current_life]._34, 1);
+		}
+		else {
+			m_controller->Update(CoreWindow::GetForCurrentThread(), timer.GetElapsedSeconds(), nullptr, outputSize, m_constantBufferData_View.view, m_constantBufferData_Proj.projection, &wallList);
+			CubePos = XMFLOAT4(0, 0, 0, 1);
 		}
 
-		// Add previous cube to collisions list
-		wallList.push_back(cubeCentre);
+		// camera stuff
+		XMVECTOR eye = XMLoadFloat3(&m_controller->get_Position()); // position of camera in world
+		XMVECTOR at = XMLoadFloat3(&m_controller->get_LookAt());   // what point is the camera looking at
+		XMVECTOR up = XMLoadFloat3(&m_controller->get_UpAxis());   // which direction is up, important for getting things in correct perspective
 
-		XMFLOAT3 targetPosition(-20, 13, -28);
-		// Still have lives left, spawn a new cube and move camera to start
-		m_controller->moveCameraToLocation(targetPosition, XMFLOAT3(-28, 4, -28), true);
+		// Store the eye position
+		// convert eye to XMFLOAT4
+		XMStoreFloat4(&m_constantBufferData_Light.EyePosition, eye);
+
+		// Setup the constant buffer
+		XMStoreFloat4x4(&m_constantBufferData_View.view, XMMatrixTranspose(XMMatrixLookAtLH(eye, at, up)));
+
+		// Set up lights
+
+		// Do lights (directional)
+		Light light;
+		light.Enabled = 1;
+		light.LightType = DirectionalLight;
+		light.Color = XMFLOAT4(1, 1, 1, 1);
+		light.SpotAngle = XMConvertToRadians(45.0f);
+		light.ConstantAttenuation = 1.0f;
+		light.LinearAttenuation = 0.08f;
+		light.QuadraticAttenuation = 0.0f;
+		light.Position = XMFLOAT4(0, 0, 0, 1);
+		XMVECTOR LightDirection = XMVectorSet(10, -5, 10, 0.0f);
+		LightDirection = XMVector3Normalize(LightDirection);
+		XMStoreFloat4(&light.Direction, LightDirection);
+
+		// Store the light
+		//m_constantBufferData_Light.Lights[0] = light;
+
+		// Do lights (point)
+		Light light2;
+		light2.Enabled = 1;
+		light2.LightType = PointLight;
+		light2.Color = XMFLOAT4(1, 1, 1, 1);
+		light2.SpotAngle = XMConvertToRadians(45.0f);
+		light2.ConstantAttenuation = 0.0f;
+		light2.LinearAttenuation = 0.2f;
+		light2.QuadraticAttenuation = 0.05f;
+		light2.Position = XMFLOAT4(CubePos.x, CubePos.y + 3, CubePos.z, 1.0);
+		LightDirection = XMVectorSet(0, -1, 0, 0.0f);
+		LightDirection = XMVector3Normalize(LightDirection);
+		XMStoreFloat4(&light2.Direction, LightDirection);
+
+		// Store the light
+		m_constantBufferData_Light.Lights[0] = light2;
+
+		// Do wall collisions for the object and increment
+		XMFLOAT3 cubeCentre(CubePos.x, CubePos.y, CubePos.z);
+		if (wallCollision(&cubeCentre, 0.5, &wallList)) {
+			// Cube has hit a wall. Freeze it and spawn a new one at the base point
+			current_game_info.current_life++;
+			if (current_game_info.current_life >= current_game_info.max_lives) {
+				// Ran out of lives
+				// GAME.END
+				gameEnded = true;
+				return;
+				// fatal error for now!
+				//int x = 0;
+				//int y = 1 / x;
+			}
+
+			// Add previous cube to collisions list
+			wallList.push_back(cubeCentre);
+
+			XMFLOAT3 targetPosition(-20, 13, -28);
+			// Still have lives left, spawn a new cube and move camera to start
+			m_controller->moveCameraToLocation(targetPosition, XMFLOAT3(-28, 4, -28), true);
+		}
 	}
 }
 
@@ -262,7 +279,9 @@ void SceneRenderer::Render()
 	// 2nd - draw dynamic objects
 	for (unsigned int x = 0; x < staticObject_IndexCount.size(); x++) {
 		// First, set the model matrix to render the static object and update the constant buffer
-		XMStoreFloat4x4(&m_constantBufferData_Model.model, XMMatrixTranspose(XMMatrixIdentity()));
+		if (staticObject_Transforms.size() > 0) {
+			memcpy(&m_constantBufferData_Model.model, &staticObject_Transforms[x], sizeof(XMFLOAT4X4));
+		}
 
 		// _Material set in ShaderStructures.h
 		// send material to shader

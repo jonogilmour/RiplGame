@@ -64,6 +64,9 @@ namespace RiplGame
 		MoveLookController^ m_controller;
 
 		std::list<XMFLOAT3> wallList;
+
+		bool gameWon;
+		bool gameEnded;
 	};
 }
 
