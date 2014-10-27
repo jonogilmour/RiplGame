@@ -361,12 +361,12 @@ void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4*
 			auto reading = acc->GetCurrentReading();
 
 			auto txtX = reading->AccelerationX;
-			m_moveCommand.x += txtX * timeDelta * MOVEMENT_GAIN;
-			moveObjectTransform->_14 += txtX * timeDelta * MOVEMENT_GAIN;
+			m_moveCommand.z += txtX * timeDelta * MOVEMENT_GAIN;
+			moveObjectTransform->_34 += txtX * timeDelta * MOVEMENT_GAIN;
 
-			auto txtZ = reading->AccelerationZ;
-			m_moveCommand.z += txtZ * timeDelta * MOVEMENT_GAIN;
-			moveObjectTransform->_34 += txtZ * timeDelta * MOVEMENT_GAIN;
+			auto txtZ = -reading->AccelerationY;
+			m_moveCommand.x += txtZ * timeDelta * MOVEMENT_GAIN;
+			moveObjectTransform->_14 += txtZ * timeDelta * MOVEMENT_GAIN;
 		}
 
 		// poll our state bits set by the keyboard input events
