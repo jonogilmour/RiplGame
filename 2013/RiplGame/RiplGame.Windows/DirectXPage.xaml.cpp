@@ -265,8 +265,4 @@ void RiplGame::DirectXPage::setDifficulty(int difficulty) {
 	this->difficulty = difficulty;
 }
 
-void RiplGame::DirectXPage::TextBlock_SelectionChanged(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
-{
-
-}
 

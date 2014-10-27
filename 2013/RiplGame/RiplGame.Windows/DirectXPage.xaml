@@ -8,7 +8,7 @@
     mc:Ignorable="d">
     <Frame x:Name="MainMenu">
         <SwapChainPanel x:Name="swapChainPanel">
-            <Grid x:Name="LayoutRoot">
+            <Grid x:Name="LayoutRoot" Margin="-22,27,22,-27">
                 <TextBlock Text="Ripl"
                HorizontalAlignment="Center"
                VerticalAlignment="Top"
@@ -30,6 +30,7 @@
                 <Button HorizontalAlignment="Center" VerticalAlignment="Center" Content="Options" Canvas.Left="583" Canvas.Top="253" Height="88" Width="189" Click="Button_Click_1" Margin="589,260,588,420"/>
                 <Button HorizontalAlignment="Center" VerticalAlignment="Center" Content="Start" Canvas.Left="583" Canvas.Top="131" Height="88" Width="189" Click="Button_Click" Margin="589,145,588,535"/>
                 <Button HorizontalAlignment="Center" VerticalAlignment="Center" Content="Help" Canvas.Left="583" Canvas.Top="378" Height="87" Width="189" Click="Button_Click_2" Margin="589,375,588,306"/>
+                <TextBlock  HorizontalAlignment="Center" VerticalAlignment="Center" Text="Made by Jonathan Gilmour, Stanley Quay, Michael Liu, Quinn Blay, and Lucy Yang." Margin="398,503,415,233"/>
 
             </Grid>
         </SwapChainPanel>
