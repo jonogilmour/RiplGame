@@ -41,6 +41,9 @@ namespace RiplGame
         private: ::Windows::UI::Xaml::Controls::TextBlock^ txtX;
         private: ::Windows::UI::Xaml::Controls::TextBlock^ txtY;
         private: ::Windows::UI::Xaml::Controls::TextBlock^ txtZ;
+        private: ::Windows::UI::Xaml::Controls::TextBlock^ timeLeft;
+        private: ::Windows::UI::Xaml::Controls::TextBlock^ livesLeft;
+        private: ::Windows::UI::Xaml::Controls::TextBlock^ blocksToFinish;
     };
 }
 
