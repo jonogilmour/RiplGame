@@ -28,20 +28,8 @@ void ::RiplGame::DirectXPage::InitializeComponent()
     swapChainPanel = safe_cast<::Windows::UI::Xaml::Controls::SwapChainPanel^>(static_cast<Windows::UI::Xaml::IFrameworkElement^>(this)->FindName(L"swapChainPanel"));
     // Get the Grid named 'LayoutRoot'
     LayoutRoot = safe_cast<::Windows::UI::Xaml::Controls::Grid^>(static_cast<Windows::UI::Xaml::IFrameworkElement^>(this)->FindName(L"LayoutRoot"));
-    // Get the TextBlock named 'timeLeft'
-    timeLeft = safe_cast<::Windows::UI::Xaml::Controls::TextBlock^>(static_cast<Windows::UI::Xaml::IFrameworkElement^>(this)->FindName(L"timeLeft"));
-    // Get the TextBlock named 'livesLeft'
-    livesLeft = safe_cast<::Windows::UI::Xaml::Controls::TextBlock^>(static_cast<Windows::UI::Xaml::IFrameworkElement^>(this)->FindName(L"livesLeft"));
-    // Get the TextBlock named 'blocksToFinish'
-    blocksToFinish = safe_cast<::Windows::UI::Xaml::Controls::TextBlock^>(static_cast<Windows::UI::Xaml::IFrameworkElement^>(this)->FindName(L"blocksToFinish"));
     // Get the Canvas named 'canvas'
     canvas = safe_cast<::Windows::UI::Xaml::Controls::Canvas^>(static_cast<Windows::UI::Xaml::IFrameworkElement^>(this)->FindName(L"canvas"));
-    // Get the TextBlock named 'txtX'
-    txtX = safe_cast<::Windows::UI::Xaml::Controls::TextBlock^>(static_cast<Windows::UI::Xaml::IFrameworkElement^>(this)->FindName(L"txtX"));
-    // Get the TextBlock named 'txtY'
-    txtY = safe_cast<::Windows::UI::Xaml::Controls::TextBlock^>(static_cast<Windows::UI::Xaml::IFrameworkElement^>(this)->FindName(L"txtY"));
-    // Get the TextBlock named 'txtZ'
-    txtZ = safe_cast<::Windows::UI::Xaml::Controls::TextBlock^>(static_cast<Windows::UI::Xaml::IFrameworkElement^>(this)->FindName(L"txtZ"));
 }
 
 void ::RiplGame::DirectXPage::Connect(int connectionId, Platform::Object^ target)
@@ -49,18 +37,14 @@ void ::RiplGame::DirectXPage::Connect(int connectionId, Platform::Object^ target
     switch (connectionId)
     {
     case 1:
-        (safe_cast<::Windows::UI::Xaml::Controls::TextBlock^>(target))->SelectionChanged +=
-            ref new ::Windows::UI::Xaml::RoutedEventHandler(this, (void (::RiplGame::DirectXPage::*)(Platform::Object^, Windows::UI::Xaml::RoutedEventArgs^))&DirectXPage::TextBlock_SelectionChanged);
-        break;
-    case 2:
         (safe_cast<::Windows::UI::Xaml::Controls::Primitives::ButtonBase^>(target))->Click +=
             ref new ::Windows::UI::Xaml::RoutedEventHandler(this, (void (::RiplGame::DirectXPage::*)(Platform::Object^, Windows::UI::Xaml::RoutedEventArgs^))&DirectXPage::Button_Click_1);
         break;
-    case 3:
+    case 2:
         (safe_cast<::Windows::UI::Xaml::Controls::Primitives::ButtonBase^>(target))->Click +=
             ref new ::Windows::UI::Xaml::RoutedEventHandler(this, (void (::RiplGame::DirectXPage::*)(Platform::Object^, Windows::UI::Xaml::RoutedEventArgs^))&DirectXPage::Button_Click);
         break;
-    case 4:
+    case 3:
         (safe_cast<::Windows::UI::Xaml::Controls::Primitives::ButtonBase^>(target))->Click +=
             ref new ::Windows::UI::Xaml::RoutedEventHandler(this, (void (::RiplGame::DirectXPage::*)(Platform::Object^, Windows::UI::Xaml::RoutedEventArgs^))&DirectXPage::Button_Click_2);
         break;

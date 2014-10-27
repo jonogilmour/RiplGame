@@ -30,7 +30,6 @@ namespace RiplGame
 		void ProcessInput();
 		void Update();
 		bool Render();
-		void subtractTimeLeft(float time);
 
 		// Cached pointer to device resources.
 		std::shared_ptr<DX::DeviceResources> m_deviceResources;

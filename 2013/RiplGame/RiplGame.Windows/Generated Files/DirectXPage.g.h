@@ -15,7 +15,6 @@ namespace Windows {
                 ref class Frame;
                 ref class SwapChainPanel;
                 ref class Grid;
-                ref class TextBlock;
                 ref class Canvas;
             }
         }
@@ -37,13 +36,7 @@ namespace RiplGame
         private: ::Windows::UI::Xaml::Controls::Frame^ MainMenu;
         private: ::Windows::UI::Xaml::Controls::SwapChainPanel^ swapChainPanel;
         private: ::Windows::UI::Xaml::Controls::Grid^ LayoutRoot;
-        private: ::Windows::UI::Xaml::Controls::TextBlock^ timeLeft;
-        private: ::Windows::UI::Xaml::Controls::TextBlock^ livesLeft;
-        private: ::Windows::UI::Xaml::Controls::TextBlock^ blocksToFinish;
         private: ::Windows::UI::Xaml::Controls::Canvas^ canvas;
-        private: ::Windows::UI::Xaml::Controls::TextBlock^ txtX;
-        private: ::Windows::UI::Xaml::Controls::TextBlock^ txtY;
-        private: ::Windows::UI::Xaml::Controls::TextBlock^ txtZ;
     };
 }
 

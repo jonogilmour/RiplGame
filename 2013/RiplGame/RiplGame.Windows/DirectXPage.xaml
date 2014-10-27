@@ -26,20 +26,12 @@
 
                 </Canvas>
 
-                <TextBlock HorizontalAlignment="Left" Height="20" Margin="9,233,0,0" TextWrapping="Wrap" Text="X:" VerticalAlignment="Top" Width="45" Foreground="#FF050404"/>
-                <TextBlock x:Name="txtX" HorizontalAlignment="Left" Height="20" Margin="58,233,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="41" Foreground="#FF0C0C0C"/>
-                <TextBlock HorizontalAlignment="Left" Height="22" Margin="9,253,0,0" TextWrapping="Wrap" Text="Y:" VerticalAlignment="Top" Width="45" Foreground="#FF090909"/>
-                <TextBlock x:Name="txtY" HorizontalAlignment="Left" Height="22" Margin="58,253,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="41" Foreground="#FF0C0C0C"/>
-                <TextBlock HorizontalAlignment="Left" Height="21" Margin="9,279,0,0" TextWrapping="Wrap" Text="Z:" VerticalAlignment="Top" Width="45" Foreground="#FF0C0C0C"/>
-                <TextBlock x:Name="txtZ" HorizontalAlignment="Left" Height="21" Margin="58,279,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="41" Foreground="#FF070606"/>
+                
                 <Button HorizontalAlignment="Center" VerticalAlignment="Center" Content="Options" Canvas.Left="583" Canvas.Top="253" Height="88" Width="189" Click="Button_Click_1" Margin="589,260,588,420"/>
                 <Button HorizontalAlignment="Center" VerticalAlignment="Center" Content="Start" Canvas.Left="583" Canvas.Top="131" Height="88" Width="189" Click="Button_Click" Margin="589,145,588,535"/>
                 <Button HorizontalAlignment="Center" VerticalAlignment="Center" Content="Help" Canvas.Left="583" Canvas.Top="378" Height="87" Width="189" Click="Button_Click_2" Margin="589,375,588,306"/>
 
             </Grid>
-            <TextBlock x:Name="timeLeft" TextWrapping="Wrap" Text="100%" FontSize="20" SelectionChanged="TextBlock_SelectionChanged" Height="48" Width="120" Margin="55,39,1191,681"/>
-            <TextBlock x:Name="livesLeft" Canvas.Left="1286" TextWrapping="Wrap" Text="Lives Remaining: X/Y"  FontSize="20" Canvas.Top="21" Height="44" Margin="1100,39,55,685"/>
-            <TextBlock x:Name="blocksToFinish" Canvas.Left="1286" TextWrapping="Wrap" Text="Goal: Z/W"  FontSize="20" Canvas.Top="89" Height="42" Margin="1100,88,55,638"/>
         </SwapChainPanel>
 
 

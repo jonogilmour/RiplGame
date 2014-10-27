@@ -222,10 +222,6 @@ void DirectXPage::ReadingChanged(Accelerometer^ sender, AccelerometerReadingChan
 		[this, e]()
 	{
 		AccelerometerReading^ reading = e->Reading;
-
-		txtX->Text = reading->AccelerationX.ToString();
-		txtY->Text = reading->AccelerationY.ToString();
-		txtZ->Text = reading->AccelerationZ.ToString();
 	},
 		CallbackContext::Any
 		)
@@ -269,25 +265,8 @@ void RiplGame::DirectXPage::setDifficulty(int difficulty) {
 	this->difficulty = difficulty;
 }
 
-<<<<<<< HEAD
-void RiplGame::DirectXPage::subtractTimeLeft(float time) {
-
-	if (GameStarted) {
-		timeLeftValue -= time;
-
-		int tleft = (int)timeLeftValue;
-
-		timeLeft->Text = tleft.ToString() + "%";
-	}
-}
-
-void RiplGame::DirectXPage::TextBlock_SelectionChanged(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs e)
-{
-	int p = 0;
-}
-=======
 void RiplGame::DirectXPage::TextBlock_SelectionChanged(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
 
 }
->>>>>>> origin/master
+

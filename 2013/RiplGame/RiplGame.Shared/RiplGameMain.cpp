@@ -159,7 +159,3 @@ void RiplGameMain::setPageForRenderer(DirectXPage^ page) {
 void RiplGameMain::startGame() {
 	gameStarted = true;
 }
-
-void RiplGameMain::subtractTimeLeft(float time) {
-	mainpage->subtractTimeLeft(time);
-}
