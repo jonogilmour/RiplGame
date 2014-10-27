@@ -29,6 +29,7 @@ RiplGameMain::RiplGameMain(const std::shared_ptr<DX::DeviceResources>& deviceRes
 
 	mainpage = mainmenu;
 	gameStarted = false;
+	current_game_info = { 1, 2 };
 }
 
 // The tilde (~) means this is the DESTRUCTOR, or denitialiser

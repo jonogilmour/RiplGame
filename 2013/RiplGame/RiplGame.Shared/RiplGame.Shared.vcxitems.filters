@@ -18,6 +18,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)pch.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Common\DeviceResources.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)WallCollision.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)GameInfo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)Content\CommonFunctions.h" />
