@@ -365,8 +365,8 @@ void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4*
 			moveObjectTransform->_34 += txtX * timeDelta * MOVEMENT_GAIN;
 
 			auto txtZ = -reading->AccelerationY;
-			m_moveCommand.x += txtZ * timeDelta * MOVEMENT_GAIN;
-			moveObjectTransform->_14 += txtZ * timeDelta * MOVEMENT_GAIN;
+			m_moveCommand.x += txtZ * timeDelta * MOVEMENT_GAIN * 3.0f;
+			moveObjectTransform->_14 += txtZ * timeDelta * MOVEMENT_GAIN * 3.0f;
 		}
 
 		// poll our state bits set by the keyboard input events
@@ -461,8 +461,8 @@ void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4*
 
 	// make sure that 45 degree cases are not faster
 	XMFLOAT3 command = m_moveCommand;
-	if (fabsf(command.x) > 0.1f || fabsf(command.z) > 0.1f || fabsf(command.y) > 0.1f)
-		normalizeF3(&command);
+	/*if (fabsf(command.x) > 0.1f || fabsf(command.z) > 0.1f || fabsf(command.y) > 0.1f)
+		normalizeF3(&command);*/
 	// integrate
 	m_position = XMFLOAT3(m_position.x + command.x, m_position.y + command.y, m_position.z + command.z);
 	m_lookat = XMFLOAT3(moveObjectTransform->_14, moveObjectTransform->_24, moveObjectTransform->_34);
