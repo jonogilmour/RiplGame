@@ -459,17 +459,15 @@ void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4*
 		}
 	}
 
-	// make sure that 45 degree cases are not faster
 	XMFLOAT3 command = m_moveCommand;
-	/*if (fabsf(command.x) > 0.1f || fabsf(command.z) > 0.1f || fabsf(command.y) > 0.1f)
-		normalizeF3(&command);*/
-	// integrate
 	m_position = XMFLOAT3(m_position.x + command.x, m_position.y + command.y, m_position.z + command.z);
 	m_lookat = XMFLOAT3(moveObjectTransform->_14, moveObjectTransform->_24, moveObjectTransform->_34);
 	
 	m_upaxis = up_axis;
+
 	// clear movement input accumulator for use during next frame
 	m_moveCommand = XMFLOAT3(0.0f, 0.0f, 0.0f);
+
 	XMFLOAT3 centre;
 
 	
