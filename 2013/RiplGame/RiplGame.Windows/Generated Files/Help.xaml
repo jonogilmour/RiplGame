@@ -79,7 +79,7 @@
 
             <LineBreak/>
             <Run Text="Lighting." Foreground="#FFA5EE8A"/>
-            <LineBreak/><Run Text="Point - lighting the block"/>
+            <LineBreak/><Run Text="Point light (Ambient, Diffuse, Specular) - lighting the block"/>
             <LineBreak/><Run Text="Ambient, Diffuse, Specular - lighting the river banks"/>
         	<LineBreak/>
         </TextBlock>

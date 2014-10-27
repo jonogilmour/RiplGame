@@ -66,10 +66,6 @@ float4 DoSpecular(Light light, float3 V, float3 L, float3 N)
 	float3 R = normalize(reflect(-L, N));
 		float RdotV = max(0, dot(R, V));
 
-	// Blinn-Phong lighting
-	float3 H = normalize(L + V);
-		float NdotH = max(0, dot(N, H));
-
 	return light.Color * pow(RdotV, Material.SpecularPower);
 }
 
@@ -84,7 +80,7 @@ struct LightingResult
 	float4 Specular;
 };
 
-LightingResult DoPointLight(Light light, float3 V, float4 P, float3 N)
+LightingResult PointLight(Light light, float3 V, float4 P, float3 N)
 {
 	LightingResult result;
 
@@ -100,7 +96,7 @@ LightingResult DoPointLight(Light light, float3 V, float4 P, float3 N)
 	return result;
 }
 
-LightingResult DoDirectionalLight(Light light, float3 V, float4 P, float3 N)
+LightingResult DirectionalLight(Light light, float3 V, float4 P, float3 N)
 {
 	LightingResult result;
 
@@ -120,7 +116,7 @@ float DoSpotCone(Light light, float3 L)
 	return smoothstep(spotMinAngle, spotMaxAngle, cosAngle);
 }
 
-LightingResult DoSpotLight(Light light, float3 V, float4 P, float3 N)
+LightingResult SpotLight(Light light, float3 V, float4 P, float3 N)
 {
 	LightingResult result;
 
@@ -153,17 +149,17 @@ LightingResult ComputeLighting(float4 P, float3 N)
 		{
 		case DIRECTIONAL_LIGHT:
 		{
-			result = DoDirectionalLight(Lights[i], V, P, N);
+			result = DirectionalLight(Lights[i], V, P, N);
 		}
 			break;
 		case POINT_LIGHT:
 		{
-			result = DoPointLight(Lights[i], V, P, N);
+			result = PointLight(Lights[i], V, P, N);
 		}
 			break;
 		case SPOT_LIGHT:
 		{
-			result = DoSpotLight(Lights[i], V, P, N);
+			result = SpotLight(Lights[i], V, P, N);
 		}
 			break;
 		}

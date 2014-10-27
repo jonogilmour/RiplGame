@@ -55,41 +55,18 @@ void MoveLookController::OnPointerPressed(
 	_In_ CoreWindow^ sender,
 	_In_ PointerEventArgs^ args)
 {
-	OutputDebugString(L"TAP ON\n");
-
-	// get the current pointer position
-	uint32 pointerID = args->CurrentPoint->PointerId;
 }
 
 void MoveLookController::OnPointerMoved(
 	_In_ CoreWindow ^sender,
 	_In_ PointerEventArgs ^args)
 {
-
-	XMFLOAT2 position = XMFLOAT2(args->CurrentPoint->Position.X, args->CurrentPoint->Position.Y);
-
-	XMFLOAT2 pointerDelta;
-	pointerDelta = XMFLOAT2(position.x - m_lookLastPoint.x, position.y - m_lookLastPoint.y);		// how far did pointer move
-
-	XMFLOAT2 rotationDelta;
-	rotationDelta = XMFLOAT2(pointerDelta.x * deltaTime * ROTATION_GAIN, pointerDelta.y * deltaTime * ROTATION_GAIN);	// scale for control sensitivity
-	m_lookLastPoint = position;			 			// save for next time through
-
-	// update our orientation based on the command
-	m_pitch -= rotationDelta.y;						// mouse y increases down, but pitch increases up
-	m_yaw += rotationDelta.x;						// yaw defined as CCW around y-axis
-
-	// Limit pitch to straight up or straight down
-	m_pitch = (float)__max(-XM_PI / 2.0f, m_pitch);
-	m_pitch = (float)__min(+XM_PI / 2.0f, m_pitch);
 }
 
 void MoveLookController::OnPointerReleased(
 	_In_ CoreWindow ^sender,
 	_In_ PointerEventArgs ^args)
 {
-	uint32 pointerID = args->CurrentPoint->PointerId;
-	XMFLOAT2 position = XMFLOAT2(args->CurrentPoint->Position.X, args->CurrentPoint->Position.Y);
 }
 
 void MoveLookController::OnKeyDown(
@@ -361,12 +338,12 @@ void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4*
 			auto reading = acc->GetCurrentReading();
 
 			auto txtX = reading->AccelerationX;
-			m_moveCommand.z += txtX * timeDelta * MOVEMENT_GAIN * 2.0f;
-			moveObjectTransform->_34 += txtX * timeDelta * MOVEMENT_GAIN * 2.0f;
+			m_moveCommand.z += (float)txtX * timeDelta * MOVEMENT_GAIN * 2.0f;
+			moveObjectTransform->_34 += (float)txtX * timeDelta * MOVEMENT_GAIN * 2.0f;
 
 			auto txtZ = -reading->AccelerationY;
-			m_moveCommand.x += txtZ * timeDelta * MOVEMENT_GAIN;
-			moveObjectTransform->_14 += txtZ * timeDelta * MOVEMENT_GAIN;
+			m_moveCommand.x += (float)txtZ * timeDelta * MOVEMENT_GAIN;
+			moveObjectTransform->_14 += (float)txtZ * timeDelta * MOVEMENT_GAIN;
 		}
 
 		// poll our state bits set by the keyboard input events
