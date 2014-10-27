@@ -5,7 +5,7 @@
 //#include "Ray.h"
 
 #define ROTATION_GAIN 0.2f	// sensitivity adjustment for look controller
-#define MOVEMENT_GAIN 15.0f		// sensitivity adjustment for move controller
+#define MOVEMENT_GAIN 10.0f		// sensitivity adjustment for move controller
 #define OBJ_MOVEMENT_GAIN 2.0f
 #define DIV_CAMERA_SPEED 10.0f
 
