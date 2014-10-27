@@ -85,7 +85,7 @@ DirectXPage::DirectXPage():
 	// We can create the device-dependent resources.
 	m_deviceResources = std::make_shared<DX::DeviceResources>();
 	m_deviceResources->SetSwapChainPanel(swapChainPanel);
-
+//	SceneRenderer.Mainpage = self;
 	// Register our SwapChainPanel to get independent input pointer events
 	auto workItemHandler = ref new WorkItemHandler([this] (IAsyncAction ^)
 	{
@@ -269,6 +269,7 @@ void RiplGame::DirectXPage::setDifficulty(int difficulty) {
 	this->difficulty = difficulty;
 }
 
+<<<<<<< HEAD
 void RiplGame::DirectXPage::subtractTimeLeft(float time) {
 
 	if (GameStarted) {
@@ -284,3 +285,9 @@ void RiplGame::DirectXPage::TextBlock_SelectionChanged(Platform::Object^ sender,
 {
 	int p = 0;
 }
+=======
+void RiplGame::DirectXPage::TextBlock_SelectionChanged(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
+{
+
+}
+>>>>>>> origin/master

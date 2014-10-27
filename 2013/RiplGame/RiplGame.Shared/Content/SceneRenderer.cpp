@@ -29,6 +29,8 @@ m_deviceResources(deviceResources)
 // Called once per frame, rotates the cube and calculates the model and view matrices.
 void SceneRenderer::Update(DX::StepTimer const& timer)
 {
+	if (gameStart == true)
+	{
 	XMFLOAT4 CubePos;
 
 	Size outputSize = m_deviceResources->GetOutputSize();
@@ -117,6 +119,7 @@ void SceneRenderer::Update(DX::StepTimer const& timer)
 		XMFLOAT3 targetPosition(-20, 13, -28);
 		// Still have lives left, spawn a new cube and move camera to start
 		m_controller->moveCameraToLocation(targetPosition, XMFLOAT3(0, 0, 0), false);
+	}
 	}
 }
 

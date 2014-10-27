@@ -34,8 +34,12 @@ namespace RiplGame
 		std::vector<XMFLOAT4X4> staticObject_Transforms;
 		std::vector<XMFLOAT4X4> dynamicObject_Transforms;
 		static int diffVal;
+<<<<<<< HEAD
 		bool GameStarted;
 
+=======
+		bool gameStart = false;
+>>>>>>> origin/master
 	private:
 
 		void subtractTimeLeft(float time);

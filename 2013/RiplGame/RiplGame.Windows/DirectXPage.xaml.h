@@ -74,7 +74,11 @@ namespace RiplGame
 		bool GameStarted;
 		bool firstVisit;
 		int difficulty;
+<<<<<<< HEAD
 		float timeLeftValue;
+=======
+		void TextBlock_SelectionChanged(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
+>>>>>>> origin/master
 	};
 }
 
