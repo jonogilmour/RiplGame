@@ -1,5 +1,4 @@
-﻿
-    <Page
+﻿<Page
     x:Class="RiplGame.DirectXPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -9,38 +8,41 @@
     mc:Ignorable="d">
     <Frame x:Name="MainMenu">
         <SwapChainPanel x:Name="swapChainPanel">
-        <Grid x:Name="LayoutRoot">
+            <Grid x:Name="LayoutRoot">
                 <TextBlock Text="Ripl"
                HorizontalAlignment="Center"
                VerticalAlignment="Top"
                FontSize="50" Margin="0,40,0,0" />
-            
+
                 <Canvas x:Name="canvas" HorizontalAlignment="Stretch" Height="2000" VerticalAlignment="Stretch" Width="2000" Opacity="0.5">
-                <Canvas.Background>
-                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                        <GradientStop Color="White" Offset="0"/>
-                        <GradientStop Color="#FF3699C7" Offset="1"/>
-                        <GradientStop Color="#FF137BAE" Offset="0.337"/>
-                        <GradientStop Color="#FF256888" Offset="0.687"/>
-                    </LinearGradientBrush>
-                </Canvas.Background>
-            </Canvas>
+                    <Canvas.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="White" Offset="0"/>
+                            <GradientStop Color="#FF3699C7" Offset="1"/>
+                            <GradientStop Color="#FF137BAE" Offset="0.337"/>
+                            <GradientStop Color="#FF256888" Offset="0.687"/>
+                        </LinearGradientBrush>
+                    </Canvas.Background>
+                    <TextBlock x:ConnectionId='4' x:Name="timeLeft" TextWrapping="Wrap" Text="TextBlock"                                               Height="48" Width="120"/>
+                    <TextBlock x:Name="livesLeft" Canvas.Left="1286" TextWrapping="Wrap" Text="TextBlock" Canvas.Top="21" Height="44" Width="68"/>
+                    <TextBlock x:Name="blocksToFinish" Canvas.Left="1286" TextWrapping="Wrap" Text="TextBlock" Canvas.Top="89" Height="42" Width="78"/>
+                </Canvas>
 
-            <TextBlock HorizontalAlignment="Left" Height="20" Margin="0,8,0,0" TextWrapping="Wrap" Text="X:" VerticalAlignment="Top" Width="45" Foreground="#FF050404"/>
-            <TextBlock x:Name="txtX" HorizontalAlignment="Left" Height="20" Margin="49,8,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="41" Foreground="#FF0C0C0C"/>
-            <TextBlock HorizontalAlignment="Left" Height="22" Margin="0,28,0,0" TextWrapping="Wrap" Text="Y:" VerticalAlignment="Top" Width="45" Foreground="#FF090909"/>
-            <TextBlock x:Name="txtY" HorizontalAlignment="Left" Height="22" Margin="49,28,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="41" Foreground="#FF0C0C0C"/>
-            <TextBlock HorizontalAlignment="Left" Height="21" Margin="0,54,0,0" TextWrapping="Wrap" Text="Z:" VerticalAlignment="Top" Width="45" Foreground="#FF0C0C0C"/>
-            <TextBlock x:Name="txtZ" HorizontalAlignment="Left" Height="21" Margin="49,54,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="41" Foreground="#FF070606"/>
-            <Button x:ConnectionId='1' HorizontalAlignment="Center" VerticalAlignment="Center" Content="Options" Canvas.Left="583" Canvas.Top="253" Height="88" Width="189"                        Margin="589,260,588,420"/>
-            <Button x:ConnectionId='2' HorizontalAlignment="Center" VerticalAlignment="Center" Content="Start" Canvas.Left="583" Canvas.Top="131" Height="88" Width="189"                      Margin="589,145,588,535"/>
-            <Button x:ConnectionId='3' HorizontalAlignment="Center" VerticalAlignment="Center" Content="Help" Canvas.Left="583" Canvas.Top="378" Height="87" Width="189"                        Margin="589,375,588,306"/>
+                <TextBlock HorizontalAlignment="Left" Height="20" Margin="9,233,0,0" TextWrapping="Wrap" Text="X:" VerticalAlignment="Top" Width="45" Foreground="#FF050404"/>
+                <TextBlock x:Name="txtX" HorizontalAlignment="Left" Height="20" Margin="58,233,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="41" Foreground="#FF0C0C0C"/>
+                <TextBlock HorizontalAlignment="Left" Height="22" Margin="9,253,0,0" TextWrapping="Wrap" Text="Y:" VerticalAlignment="Top" Width="45" Foreground="#FF090909"/>
+                <TextBlock x:Name="txtY" HorizontalAlignment="Left" Height="22" Margin="58,253,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="41" Foreground="#FF0C0C0C"/>
+                <TextBlock HorizontalAlignment="Left" Height="21" Margin="9,279,0,0" TextWrapping="Wrap" Text="Z:" VerticalAlignment="Top" Width="45" Foreground="#FF0C0C0C"/>
+                <TextBlock x:Name="txtZ" HorizontalAlignment="Left" Height="21" Margin="58,279,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Width="41" Foreground="#FF070606"/>
+                <Button x:ConnectionId='1' HorizontalAlignment="Center" VerticalAlignment="Center" Content="Options" Canvas.Left="583" Canvas.Top="253" Height="88" Width="189"                        Margin="589,260,588,420"/>
+                <Button x:ConnectionId='2' HorizontalAlignment="Center" VerticalAlignment="Center" Content="Start" Canvas.Left="583" Canvas.Top="131" Height="88" Width="189"                      Margin="589,145,588,535"/>
+                <Button x:ConnectionId='3' HorizontalAlignment="Center" VerticalAlignment="Center" Content="Help" Canvas.Left="583" Canvas.Top="378" Height="87" Width="189"                        Margin="589,375,588,306"/>
 
-        </Grid>
-    </SwapChainPanel>
+            </Grid>
+        </SwapChainPanel>
 
 
-  
+
     </Frame>
 </Page>
 

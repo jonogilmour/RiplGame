@@ -71,6 +71,7 @@ namespace RiplGame
 		bool GameStarted;
 		bool firstVisit;
 		int difficulty;
+		void TextBlock_SelectionChanged(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 	};
 }
 

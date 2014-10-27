@@ -36,6 +36,12 @@ void ::RiplGame::DirectXPage::InitializeComponent()
     txtY = safe_cast<::Windows::UI::Xaml::Controls::TextBlock^>(static_cast<Windows::UI::Xaml::IFrameworkElement^>(this)->FindName(L"txtY"));
     // Get the TextBlock named 'txtZ'
     txtZ = safe_cast<::Windows::UI::Xaml::Controls::TextBlock^>(static_cast<Windows::UI::Xaml::IFrameworkElement^>(this)->FindName(L"txtZ"));
+    // Get the TextBlock named 'timeLeft'
+    timeLeft = safe_cast<::Windows::UI::Xaml::Controls::TextBlock^>(static_cast<Windows::UI::Xaml::IFrameworkElement^>(this)->FindName(L"timeLeft"));
+    // Get the TextBlock named 'livesLeft'
+    livesLeft = safe_cast<::Windows::UI::Xaml::Controls::TextBlock^>(static_cast<Windows::UI::Xaml::IFrameworkElement^>(this)->FindName(L"livesLeft"));
+    // Get the TextBlock named 'blocksToFinish'
+    blocksToFinish = safe_cast<::Windows::UI::Xaml::Controls::TextBlock^>(static_cast<Windows::UI::Xaml::IFrameworkElement^>(this)->FindName(L"blocksToFinish"));
 }
 
 void ::RiplGame::DirectXPage::Connect(int connectionId, Platform::Object^ target)
@@ -53,6 +59,10 @@ void ::RiplGame::DirectXPage::Connect(int connectionId, Platform::Object^ target
     case 3:
         (safe_cast<::Windows::UI::Xaml::Controls::Primitives::ButtonBase^>(target))->Click +=
             ref new ::Windows::UI::Xaml::RoutedEventHandler(this, (void (::RiplGame::DirectXPage::*)(Platform::Object^, Windows::UI::Xaml::RoutedEventArgs^))&DirectXPage::Button_Click_2);
+        break;
+    case 4:
+        (safe_cast<::Windows::UI::Xaml::Controls::TextBlock^>(target))->SelectionChanged +=
+            ref new ::Windows::UI::Xaml::RoutedEventHandler(this, (void (::RiplGame::DirectXPage::*)(Platform::Object^, Windows::UI::Xaml::RoutedEventArgs^))&DirectXPage::TextBlock_SelectionChanged);
         break;
     }
     (void)connectionId; // Unused parameter
