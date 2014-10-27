@@ -1,6 +1,8 @@
 #pragma once
 #include "pch.h"
 
+#define LIVES 5 // also max cubes in game
+
 typedef struct GameInfo {
 	// what life is the player currently on
 	// if life == 1, this is the first life, draw 1 cube
@@ -9,4 +11,4 @@ typedef struct GameInfo {
 	int max_lives;
 } GameInfo;
 
-extern GameInfo current_game_info = { 0, 2 };
+extern GameInfo current_game_info = { 0, LIVES };

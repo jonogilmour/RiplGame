@@ -6,7 +6,7 @@
 #include "MoveObject.h"
 #include "WallCollision.h"
 
-#define LIVES 2 // also max cubes in game
+
 
 // Namespaces just spare us from having to write "RiplGame." before everything
 using namespace RiplGame;
@@ -87,9 +87,9 @@ void SceneRenderer::Update(DX::StepTimer const& timer)
 	light2.Color = XMFLOAT4(1, 1, 1, 1);
 	light2.SpotAngle = XMConvertToRadians(45.0f);
 	light2.ConstantAttenuation = 0.0f;
-	light2.LinearAttenuation = 0.3f;
-	light2.QuadraticAttenuation = 0.1f;
-	light2.Position = CubePos;
+	light2.LinearAttenuation = 0.2f;
+	light2.QuadraticAttenuation = 0.05f;
+	light2.Position = XMFLOAT4(CubePos.x, CubePos.y + 3, CubePos.z, 1.0);
 	LightDirection = XMVectorSet(0, -1, 0, 0.0f);
 	LightDirection = XMVector3Normalize(LightDirection);
 	XMStoreFloat4(&light2.Direction, LightDirection);
@@ -102,7 +102,7 @@ void SceneRenderer::Update(DX::StepTimer const& timer)
 	if (wallCollision(&cubeCentre, 0.5, &wallList)) {
 		// Cube has hit a wall. Freeze it and spawn a new one at the base point
 		current_game_info.current_life++;
-		if (current_game_info.current_life >= LIVES) {
+		if (current_game_info.current_life >= current_game_info.max_lives) {
 			// Ran out of lives
 			// GAME.END
 			std:exit(0);
