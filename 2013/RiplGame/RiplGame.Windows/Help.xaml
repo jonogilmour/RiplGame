@@ -54,7 +54,7 @@
             <TextBlock x:Name="pageTitle" Text="Help" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
                         IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,30,40" SelectionChanged="pageTitle_SelectionChanged_1"/>
         </Grid>
-        <TextBlock HorizontalAlignment="Left" Margin="491,236,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Height="256" Width="444" SelectionChanged="TextBlock_SelectionChanged">
+        <TextBlock HorizontalAlignment="Left" Margin="451,157,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Height="286" Width="444" SelectionChanged="TextBlock_SelectionChanged">
         	<Run Text="Welcome to Ripl" Foreground="#FFA5EE8A"/>
         	<LineBreak/>
         	<Run/>
@@ -69,8 +69,14 @@
         	<Run/>
         	<LineBreak/>
             <LineBreak/>
-        	<Run Text="Bring three blocks to the dam and save the pond!"/>
+        	<Run Text="Bring blocks to the dam to raise the water level and save the pond! You have limited blocks, fail and the water will drain from the pond."/>
             <LineBreak/>
+            <LineBreak/>
+            <Run Text="There are three difficulty levels:"/><LineBreak/>
+            <Run Text="1: You have 6 lives, and must bring 2 blocks to the end"/><LineBreak/>
+            <Run Text="2: You have 6 lives, and must bring 4 blocks to the end"/><LineBreak/>
+            <Run Text="3: You have 8 lives, and must bring 6 blocks to the end"/><LineBreak/>
+
             <LineBreak/>
             <Run Text="Lighting." Foreground="#FFA5EE8A"/>
             <LineBreak/><Run Text="Point - lighting the block"/>

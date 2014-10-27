@@ -36,6 +36,9 @@ namespace RiplGame
 		static int diffVal;
 		bool GameStarted;
 
+		int target;
+		int lives;
+
 	private:
 
 

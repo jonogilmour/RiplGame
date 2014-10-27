@@ -24,7 +24,7 @@ namespace RiplGame
 		virtual void OnDeviceRestored();
 
 		void setPageForRenderer(DirectXPage^ page);
-		void startGame();
+		void startGame(int difficulty);
 
 	private:
 		void ProcessInput();

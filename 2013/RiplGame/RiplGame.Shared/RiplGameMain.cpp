@@ -109,7 +109,7 @@ bool RiplGameMain::Render()
 {
 	// Don't try to render anything before the first Update.
 	// Or there will nothing to render, silly
-	if (m_timer.GetFrameCount() == 0)
+	if (m_timer.GetFrameCount() == 0 || !gameStarted)
 	{
 		return false;
 	}
@@ -156,6 +156,34 @@ void RiplGameMain::setPageForRenderer(DirectXPage^ page) {
 	mainpage = page;
 }
 
-void RiplGameMain::startGame() {
+void RiplGameMain::startGame(int difficulty) {
+	
+
+	int lives;
+	int target;
+
+	switch(difficulty) {
+	case 1:
+		lives = 6;
+		target = 2;
+		break;
+	case 2:
+		lives = 6;
+		target = 4;
+		break;
+	case 3:
+		lives = 8;
+		target = 6;
+		break;
+	default:
+		lives = 6;
+		target = 2;
+		break;
+	}
+	m_sceneRenderer->lives = lives;
+	m_sceneRenderer->target = target;
+
+	m_sceneRenderer->MakeCubes();
+
 	gameStarted = true;
 }

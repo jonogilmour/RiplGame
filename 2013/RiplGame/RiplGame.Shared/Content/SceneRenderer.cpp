@@ -25,6 +25,8 @@ m_deviceResources(deviceResources)
 	gameWon = false;
 	gameEnded = false;
 	succeeds = 0;
+
+
 	CreateDeviceDependentResources();
 	CreateWindowSizeDependentResources();
 }
@@ -32,6 +34,7 @@ m_deviceResources(deviceResources)
 // Called once per frame, rotates the cube and calculates the model and view matrices.
 void SceneRenderer::Update(DX::StepTimer const& timer)
 {
+	
 	if (gameWon) {
 		if (staticObject_Transforms[1]._24 < 4) {
 			staticObject_Transforms[1]._24 += timer.GetElapsedSeconds() * 2.0f;
@@ -596,7 +599,7 @@ void SceneRenderer::CreateDeviceDependentResources()
 		currentVertexCount += moveObject.getVertexCount();
 		
 		// Make all the other cubes
-		MakeCubes();
+		//MakeCubes();
 
 		////////////////////////
 		/* MODEL INDICES DONE */
@@ -698,6 +701,9 @@ void SceneRenderer::CreateWindowSizeDependentResources()
 // this INCLUDES the very first cube
 // num_cubes = number of lives allowed, 1 cube per life
 void SceneRenderer::MakeCubes(){
+	current_game_info.max_lives = lives;
+	current_game_info.target = target;
+
 	int num_cubes = current_game_info.max_lives;
 
 	if (num_cubes <= 1) {
@@ -714,3 +720,4 @@ void SceneRenderer::MakeCubes(){
 		}
 	}
 }
+

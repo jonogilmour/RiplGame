@@ -108,6 +108,8 @@ DirectXPage::DirectXPage():
 	// Run task on a dedicated high priority background thread.
 	m_inputLoopWorker = ThreadPool::RunAsync(workItemHandler, WorkItemPriority::High, WorkItemOptions::TimeSliced);
 
+	difficulty = 1;
+
 	firstVisit = true;
 	timeLeftValue = 100;
 
@@ -229,9 +231,6 @@ void DirectXPage::ReadingChanged(Accelerometer^ sender, AccelerometerReadingChan
 }
 void DirectXPage::OnNavigatedTo(NavigationEventArgs^ e)
 {
-	int i;
-	i = difficulty;
-	int u = 0;
 }
 
 void RiplGame::DirectXPage::Button_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
@@ -239,7 +238,7 @@ void RiplGame::DirectXPage::Button_Click(Platform::Object^ sender, Windows::UI::
 	if (!GameStarted) {
 		this->LayoutRoot->Opacity = 0;
 		GameStarted = true;
-		m_main->startGame();
+		m_main->startGame(difficulty);
 	}
 }
 
