@@ -13,7 +13,7 @@ void wallArray(HeightMapInfo *hm, float waterlevel, unsigned short sideLengthZ, 
 			// add points that are that are at the edges of the wall
 			float height = GetHeightAtLocation(hm, x, z);
 
-			if (height < waterlevel + 0.5 && height > waterlevel - 0.5){
+			if (height < waterlevel + 1 && height > waterlevel/* - 0.5*/){
 				wallList->push_back(XMFLOAT3(x - sideLengthX/2, waterlevel, z - sideLengthZ/2));
 			}
 		}
