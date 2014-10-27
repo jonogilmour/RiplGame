@@ -116,7 +116,7 @@ void SceneRenderer::Update(DX::StepTimer const& timer)
 
 		XMFLOAT3 targetPosition(-20, 13, -28);
 		// Still have lives left, spawn a new cube and move camera to start
-		m_controller->moveCameraToLocation(targetPosition, XMFLOAT3(0, 0, 0), false);
+		m_controller->moveCameraToLocation(targetPosition, XMFLOAT3(-28, 4, -28), true);
 	}
 }
 

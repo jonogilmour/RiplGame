@@ -35,12 +35,13 @@ void MoveLookController::Initialize(_In_ CoreWindow^ window)
 	m_moveCommand = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	deltaTime = 0;
 
-	SetOrientation(-(XM_PI / 4.0f), 0);				// look down slightly ahead when the app starts
 	SetPosition(XMFLOAT3(-20, 13, -28));
 
 	acc = Windows::Devices::Sensors::Accelerometer::GetDefault();
 
 	shouldLookAt = false;
+
+	m_lookat = XMFLOAT3(-28, 4, -28);
 }
 
 void MoveLookController::OnPointerPressed(
@@ -362,26 +363,30 @@ void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4*
 		}
 
 		// poll our state bits set by the keyboard input events
-		if (m_forward) {
+		if (m_right) {
 			m_moveCommand.x += (dir.x * timeDelta * MOVEMENT_GAIN);
 			m_moveCommand.y += (dir.y * timeDelta * MOVEMENT_GAIN);
 			m_moveCommand.z += (dir.z * timeDelta * MOVEMENT_GAIN);
+			moveObjectTransform->_34 += (timeDelta * MOVEMENT_GAIN);
 		}
-		if (m_back) {
+		if (m_left) {
 			m_moveCommand.x -= (dir.x * timeDelta * MOVEMENT_GAIN);
 			m_moveCommand.y -= (dir.y * timeDelta * MOVEMENT_GAIN);
 			m_moveCommand.z -= (dir.z * timeDelta * MOVEMENT_GAIN);
+			moveObjectTransform->_34 -= (timeDelta * MOVEMENT_GAIN);
 		}
-		if (m_left){
+		if (m_forward){
 			m_moveCommand.x -= (r_axis.x * timeDelta * MOVEMENT_GAIN);
 			m_moveCommand.y -= (r_axis.y * timeDelta * MOVEMENT_GAIN);
 			m_moveCommand.z -= (r_axis.z * timeDelta * MOVEMENT_GAIN);
+			moveObjectTransform->_14 -= (timeDelta * MOVEMENT_GAIN);
 		}
-		if (m_right) {
+		if (m_back) {
 			m_moveCommand.x += (r_axis.x * timeDelta * MOVEMENT_GAIN);
 			m_moveCommand.y += (r_axis.y * timeDelta * MOVEMENT_GAIN);
 			m_moveCommand.z += (r_axis.z * timeDelta * MOVEMENT_GAIN);
-		}
+			moveObjectTransform->_14 += (timeDelta * MOVEMENT_GAIN);
+		}/*
 		if (m_up) {
 			m_moveCommand.x += (up_axis.x * timeDelta * MOVEMENT_GAIN);
 			m_moveCommand.y += (up_axis.y * timeDelta * MOVEMENT_GAIN);
@@ -391,10 +396,14 @@ void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4*
 			m_moveCommand.x -= (up_axis.x * timeDelta * MOVEMENT_GAIN);
 			m_moveCommand.y -= (up_axis.y * timeDelta * MOVEMENT_GAIN);
 			m_moveCommand.z -= (up_axis.z * timeDelta * MOVEMENT_GAIN);
-		}
+		}*/
+
+		m_lookat = XMFLOAT3(moveObjectTransform->_14, 4, moveObjectTransform->_34);
 	}
 
 	else { // Move camera to a specific location. if keypressed and current position is not destination position 
+		m_lookat = XMFLOAT3(moveObjectTransform->_14, 4, moveObjectTransform->_34);
+
 		XMFLOAT3 dir_vector = computeDirectionVector();
 		XMFLOAT3 dir = computeDirection();
 
@@ -447,57 +456,15 @@ void MoveLookController::Update(CoreWindow ^window, float timeDelta, XMFLOAT4X4*
 	XMFLOAT3 command = m_moveCommand;
 	if (fabsf(command.x) > 0.1f || fabsf(command.z) > 0.1f || fabsf(command.y) > 0.1f)
 		normalizeF3(&command);
-	
 	// integrate
 	m_position = XMFLOAT3(m_position.x + command.x, m_position.y + command.y, m_position.z + command.z);
-
-	m_lookat = XMFLOAT3(m_position.x + dir.x, m_position.y + dir.y, m_position.z + dir.z);
+	
 	m_upaxis = up_axis;
-
-
 	// clear movement input accumulator for use during next frame
 	m_moveCommand = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	XMFLOAT3 centre;
 
-	// OBJECT MOVEMENT
-	if (moveObjectTransform != nullptr && !m_point) {
-		if (obj_fwd) {
-			moveObjectTransform->_34 += (timeDelta * OBJ_MOVEMENT_GAIN);
-		}
-		if (obj_back) {
-			moveObjectTransform->_34 -= (timeDelta * OBJ_MOVEMENT_GAIN);
-		}
-		if (obj_left){
-			moveObjectTransform->_14 -= (timeDelta * OBJ_MOVEMENT_GAIN);
-		}
-		if (obj_rght) {
-			moveObjectTransform->_14 += (timeDelta * OBJ_MOVEMENT_GAIN);
-		}
-		if (obj_up) {
-			moveObjectTransform->_24 += (timeDelta * OBJ_MOVEMENT_GAIN);
-		}
-		if (obj_down) {
-			moveObjectTransform->_24 -= (timeDelta * OBJ_MOVEMENT_GAIN);
-		}
-
-		// Save new centre point
-
-		centre = XMFLOAT3(moveObjectTransform->_14, moveObjectTransform->_24, moveObjectTransform->_34);
-
-		
-
-		// Save new coordinates into F3
-		// Detect collisions, which may alter F3
-		// If true, apply F3 to MOT
-	}
-
-	// Move camera to follow the block
-	if (m_followBlock){
-		// look at object
-		// be above object
-		//m_position = { centre.x - 3.0f, centre.y + 2.0f, centre.z - 3.0f };
-		m_lookat = centre;
-	}
+	
 
 }
 
